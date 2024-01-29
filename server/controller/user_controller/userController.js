@@ -1,0 +1,258 @@
+const userDetails = require('../../model/userModel')
+const productDetails = require('../../model/productModel')
+const catDetails = require('../../model/categoryModel')
+const userPro = require('../../model/userAddressModel')
+const order = require('../../model/orderModel')
+const cart = require('../../model/cartModel')
+const sndmail = require('./generateotp')
+const wish = require('../../model/wishlistModel')
+const bcrypt = require('bcrypt')
+const sharp = require('sharp');
+const session = require('express-session');
+require('dotenv').config();
+
+const home = async (req, res) => {
+  try {
+    const userin = req.session.userName
+    const allProducts = await productDetails.find({ list: 0 }).limit(6)
+    const women = await productDetails.find({ category: "Women" }).limit(3)
+    const men = await productDetails.find({ category: "Men" }).limit(3)
+    const cat = await catDetails.find({ list: 0 })
+    const cartCount = await cart.find({ username: req.session.userName }).countDocuments()
+    const wishCount = await wish.find({username:userin}).countDocuments() 
+    console.log('cartCount before')
+    console.log(cartCount)
+    res.render('home', { allProducts, women, men, userin, cat, cartCount,wishCount })
+    // res.render('home',{userin})
+  } catch (e) {
+    console.log('error in the home usercontroller in user side : ' + e)
+  }
+}
+
+const checkUser = async (req, res, next) => {
+  try {
+    const data = await userDetails.find({ username: req.session.userName })
+    console.log(data)
+    console.log(req.session.userName)
+    if (data.length > 0) {
+      if (data[0].status == 0) {
+        console.log("asjdhfjasasbab" + data.status)
+        next()
+      } else {
+        console.log("jjjjjjjjjj" + data.status)
+        req.session.destroy()
+        // req.session.userAuth = false
+        res.redirect('/login?block=You have been blocked ')
+      }
+    } else {
+      res.redirect('/login?block=Please Sign In')
+    }
+    // console.log(data[0].status)
+
+  } catch (e) {
+    console.log('Error in the checkUser user side : ' + e)
+  }
+}
+
+
+
+// first page which is given to user when make a request to localhost:8888
+const login = async (req, res) => {
+  try {
+    if (req.session.userAuth) {
+      res.redirect('/home')
+    } else {
+      const block = req.query.block
+      const username = req.query.username
+      const pass = req.query.pass
+      const userin = req.session.userName
+      console.log(userin)
+      console.log(block + " " + username + " " + pass)
+      const cat = await catDetails.find({ list: 0 })
+      res.render('userlogin', { block, username, pass, userin, cat })
+    }
+  } catch (e) {
+    console.log("error in the login route of user controller : " + e)
+  }
+}
+
+
+
+
+
+// validation of the user befor entering the account ie. login validation
+const validateUser = async (req, res) => {
+  console.log("validateUser")
+  console.log(req.body.password)
+  const userFound = await userDetails.findOne({ username: req.body.username })
+  console.log(userFound)
+  if (userFound) {
+    if (userFound.status == 0) {
+      const checkpass = await bcrypt.compare(req.body.password, userFound.password)
+      if (checkpass) {
+        req.session.userAuth = true
+        req.session.userName = req.body.username
+        res.redirect('/home')
+      } else {
+        res.redirect('/login?pass=incorrect password')
+      }
+    } else {
+      res.redirect('/login?block= Entry for you have been denied')
+    }
+
+  } else {
+    res.redirect('/login?username=incorrect username')
+  }
+
+}
+
+const userAccount = async (req, res) => {
+  try {
+    console.log(req.params.id)
+    const userin = req.session.userName
+    const userData = await userPro.findOne({ username: userin })
+    const user = await userDetails.findOne({ username: userin })
+    const cat = await catDetails.find({ list: 0 })
+    res.render('user-account', { userData, user, userin, cat })
+  } catch (e) {
+    console.log('error in the userAccount of userController in user side : ' + e)
+  }
+}
+
+// const changePass = (req, res) => {
+//   try {
+//     const userin = req.session.userName
+//     res.redirect('/reset-password')
+//   } catch (e) {
+//     console.log('error in the changePass in userController in user side : ' + e)
+//   }
+// }
+
+
+
+
+
+
+// user-reset-password route user can reset the password
+const reset_password = async (req, res) => {
+  try {
+    if (req.session.userAuth) {
+      res.redirect('/home')
+    } else {
+      const val = req.query.fail
+      const cat = await catDetails.find({ list: 0 })
+      res.render('user-pas-reset', { val, cat })
+    }
+  } catch (e) {
+    console.log("error in the reset-password controller ; " + e)
+  }
+}
+
+
+//=======================================================================
+const passresetverification = async (req, res) => {
+  try {
+    if (req.session.userAuth) {
+      res.redirect('/home')
+    } else {
+      notvalidotp = req.query.otpinvalid
+      const cat = await catDetails.find({ list: 0 })
+      res.render('user-pass-otp', { notvalidotp, cat })
+    }
+  } catch (e) {
+    console.log("erroor in the passresetverification user controller : " + e)
+  }
+}
+
+
+// reset-password render page 
+const reset_password_get = (req, res) => {
+  try {
+    if (req.session.userAuth) {
+      res.redirect('/home')
+    } else {
+      res.render('user-newPassword')
+    }
+  } catch (e) {
+    console.log("error in the reset_password controller : " + e)
+  }
+}
+
+
+// user can reset the password, create new password
+const newpass = async (req, res) => {
+  try {
+    const userFound = await userDetails.findOne({ email: req.session.changepass })
+    const pass = req.body.newpass
+    console.log(req.body.newpass)
+    console.log(req.session.changepass)
+    if (userFound) {
+      const hashpass = await bcrypt.hash(pass, 10)
+      await userDetails.updateOne({ email: req.session.changepass }, { $set: { password: hashpass } })
+      res.redirect('/login')
+    } else {
+      console.log("Something went wrong in updating the password of the user")
+    }
+  } catch (e) {
+    console.log("Error in the newpass in user side : " + e)
+  }
+}
+
+const signout = async (req, res) => {
+  try {
+    await req.session.destroy()
+    // req.session.userAuth = false
+    res.redirect('/')
+  } catch (e) {
+    console.log("error in the signout page of the user : " + e)
+  }
+}
+
+
+// to zoom the images of the product
+const zoom = async (req, res) => {
+  try {
+    const path = req.params.path
+
+    console.log(path)
+    const originalImage = sharp(path)
+    const zoomedImage = await originalImage.resize(Number(500), Number(500)).toBuffer();
+    res.set('Content-Type', 'image/webp')
+    res.send(zoomedImage)
+
+
+  } catch (e) {
+    console.log("error in the zoom of user controller :" + e)
+  }
+}
+
+
+// sortin based the user requiments
+const azSort = async (req, res) => {
+  try {
+    const data = req.params.id
+    console.log(data)
+    const Product = await productDetails.find({ category: data }).sort({ name: 1 })
+    data + "Products"
+    res.render("user-products", { Product, data })
+  } catch (e) {
+    console.log("Error in user controller azSort : " + e)
+  }
+}
+
+
+// exporting all function 
+module.exports = {
+  home,
+  validateUser,
+  newpass,
+  azSort,
+  zoom,
+  login,
+  reset_password_get,
+  reset_password,
+  passresetverification,
+  signout,
+  checkUser,
+  userAccount,
+}
