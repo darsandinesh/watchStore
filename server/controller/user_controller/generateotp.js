@@ -36,8 +36,8 @@ const sendmail = async (email) => {
         return [otp,time]
         //   res.redirect('/otp_verification')
     }
-    catch (err) {
-        console.log("error in sending mail:", err);
+    catch (e) {
+        console.log("error in sending mail:", e);
     }
 }
 

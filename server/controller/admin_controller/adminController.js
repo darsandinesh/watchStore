@@ -33,17 +33,7 @@ const admin = (req, res) => {
     }
 }
 
-const dashbord = (req, res) => {
-    try {
-        if (req.session.adminAuth) {
-            res.render('admin_pannel')
-        } else {
-            res.redirect('/admin')
-        }
-    } catch (e) {
-        console.log("error in the dashbord of admin controller :" + e)
-    }
-}
+
 const checkAdmin = async (req, res) => {
     try {
         const adminFound = await userDetails.findOne({ username: req.body.loginUsername })
@@ -197,7 +187,6 @@ module.exports = {
     deleteproduct,
     logout,
     admin,
-    dashbord,
     coupon,
     add_coupon,
     list_product,

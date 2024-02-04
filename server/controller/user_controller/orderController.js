@@ -26,7 +26,7 @@ const proceedtoCheckOut = async (req, res) => {
         if (userData) {
             email = userData[0].email
         }
-        const address = await userPro.findOne({ username: req.session.userName })
+        const address = await userPro.find({ username: req.session.userName })
         let totalPrice = req.session.totalCartPrice
         res.render('user-check-out', { userin, cat, address, userData, email, cartCount, wishCount, totalPrice })
     } catch (e) {
@@ -51,18 +51,21 @@ const toPayment = async (req, res) => {
         const proData = await productDetails.find({ name: catData.product })
         console.log(catDataCount)
         console.log('before type of')
-        let totalPrice = 0
-        console.log('if not entered')
-        if (catDataCount != 0) {
-            console.log('if  entered')
-            console.log(catDataCount)
-            const totalValue = await cart.aggregate([
-                { $match: { username: req.session.userName } },
-                { $group: { _id: null, total: { $sum: `$price` } } }
-            ])
-            console.log(totalValue)
-            totalPrice = (totalValue[0].total)
-        }
+        // let totalPrice = 0
+
+        // console.log('if not entered')
+        // if (catDataCount != 0) {
+        //     console.log('if  entered')
+        //     console.log(catDataCount)
+        //     const totalValue = await cart.aggregate([
+        //         { $match: { username: req.session.userName } },
+        //         { $group: { _id: null, total: { $sum: `$price` } } }
+        //     ])
+        //     console.log(totalValue)
+        //     totalPrice = (totalValue[0].total)
+        // }
+        let totalPrice = req.session.totalCartPrice
+
         //-------------------------------------------------------------------
         res.render('user-payment', { userin, wishCount, cartCount, totalPrice, catDataCount })
     } catch (e) {
@@ -144,6 +147,10 @@ const codPayment = async (req, res) => {
     } catch (e) {
         console.log('error in the codPayment of orderController in user side : ' + e)
     }
+}
+
+const order123 = (req,res)=>{
+    res.render('user-orderPlaced',{id:'dsasdkfh knasddfiasddfihi'})
 }
 
 const orderData = async (req, res) => {
@@ -229,6 +236,21 @@ const placedOrders = async (req, res) => {
     }
 }
 
+const displayaddress = async (req,res)=>{
+    try{
+        console.log(req.body)
+        const id = req.body.addressId
+        console.log(id)
+        const data = await userPro.findOne({_id:id})
+        console.log(data)
+        res.json({data})
+
+    }catch(e){
+        console.log('error in the displayaddress function in the orderController in user side: '+e)
+    }
+}
+
+
 module.exports = {
     toPayment,
     codPayment,
@@ -238,5 +260,7 @@ module.exports = {
     returnPro,
     showDetailOrderHistory,
     orderHistory,
-    placedOrders
+    placedOrders,
+    order123,
+    displayaddress
 }

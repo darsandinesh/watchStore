@@ -6,6 +6,7 @@ const userRegisteration = require('../controller/user_controller/userRegisterati
 const cartController = require('../controller/user_controller/cartController')
 const profile = require('../controller/user_controller/userProfileController')
 const order = require('../controller/user_controller/orderController')
+const onlinePayment = require('../controller/user_controller/onlinePayment')
 const { route } = require('./adminRoute')
 const router = express.Router()
 
@@ -32,6 +33,9 @@ router.post('/user-reset-password', userRegisteration.resetotpv)
 router.get('/reset-password', user.reset_password_get)
 router.post('/reset-password', user.newpass)
 
+// router to resend the otp when time experies
+router.get('/resendotp',userRegisteration.resendotp)
+
 // logout 
 router.get('/signout', user.signout)
 
@@ -43,9 +47,11 @@ router.get('/allproducts', product.allproductData)
 router.get('/catproducts/:id', product.catProduct)
 // router.get('/menproducts', user.checkUser, product.menproductData)
 // router.get('/womenproducts', user.checkUser, product.womenproductData)
+router.get('/pagination', product.catProduct)
 
 //showing the detailed page of one perticular product 
 router.get('/productDetails/:id', product.productData)
+
 
 // sorting the product based on the price
 router.get('/lowHigh', product.lowtohigh)
@@ -67,7 +73,7 @@ router.get('/add-to-cart/:id', user.checkUser, cartController.addtoCart)
 router.get('/delete-item-cart/:id', user.checkUser, cartController.deleteCart)
 
 // change the quentity of the product when going to the checkout
-// router.post('/change-quentity', user.checkUser, cartController.changeQuantity)
+router.post('/change-quentity', user.checkUser, cartController.changeQuantity)
 
 router.get('/increaseQuantity/:id', user.checkUser, cartController.increment)
 router.get('/decreaseQuantity/:id', user.checkUser, cartController.decrement)
@@ -75,11 +81,20 @@ router.get('/decreaseQuantity/:id', user.checkUser, cartController.decrement)
 // check out page 
 router.post('/checkout', user.checkUser, order.proceedtoCheckOut)
 
+// to fetch data from backend and diplay it in checkout page addreess
+router.post('/displayaddress',user.checkUser, order.displayaddress)
 // to payment page
 router.post('/to-payment', user.checkUser, order.toPayment)
-router.get('/cod', user.checkUser, order.codPayment)
+router.post('/onlinePayment', user.checkUser, onlinePayment.onlinePayment)
+router.post('/placeOrder',onlinePayment.call)
+// router.post('/createOrder',onlinePayment.ajaxCall)
+router.get('/api/payment/verify', user.checkUser, onlinePayment.razaroPayCall)
+router.get('/paymentSuccess', user.checkUser, order.codPayment)
+// online create order razaroPay
+router.post('/createOrder', user.checkUser,onlinePayment.createOrder)
+router.get('/onlinePayment', user.checkUser, order.order123)
 
-router.get('/placedOrder',user.checkUser,order.placedOrders)
+router.get('/placedOrder', user.checkUser, order.placedOrders)
 
 
 // wish list
@@ -96,11 +111,13 @@ router.post('/changePassword', user.checkUser, profile.change)
 
 router.post('/newPassword', user.checkUser, profile.newPassword)
 
+router.post('/newAddress',user.checkUser,user.newAddress)
+
 
 // history of the order 
 router.get('/orderhistory', user.checkUser, order.orderData)
 router.get('/orderHistoryPage/:id', user.checkUser, order.showDetailOrderHistory)
-router.get('/historyOrder', user.checkUser,order.orderHistory)
+router.get('/historyOrder', user.checkUser, order.orderHistory)
 
 
 // cancell the order made by the user 
@@ -118,6 +135,11 @@ router.post('/add-address', user.checkUser, profile.addAddress)
 router.get('/update-profile', user.checkUser, profile.updateProfile)
 
 router.post('/update-profile', user.checkUser, profile.updateProfileData)
+
+
+
+
+
 
 
 

@@ -112,10 +112,38 @@ const userAccount = async (req, res) => {
     const userin = req.session.userName
     const userData = await userPro.findOne({ username: userin })
     const user = await userDetails.findOne({ username: userin })
+    const useraddress = await userPro.find({username:userin,primary:0})
+    console.log(useraddress)
     const cat = await catDetails.find({ list: 0 })
-    res.render('user-account', { userData, user, userin, cat })
+    res.render('user-account', { userData, user, userin, cat, useraddress})
   } catch (e) {
     console.log('error in the userAccount of userController in user side : ' + e)
+  }
+}
+
+const newAddress = async(req,res)=>{
+  try{
+    const userin = req.session.userName
+    console.log(userin)
+    console.log(req.body)
+    const newAddress = new userPro({
+      username:userin,
+      fullname:req.body.fullname,
+      phone:req.body.phone,
+      address:{
+        houseName:req.body.house,
+        city:req.body.city,
+        state:req.body.state,
+        country:req.body.country,
+        pincode:req.body.pincode
+      },
+      primary:0
+    })
+    await newAddress.save()
+    res.redirect(`/useraccount/${userin}`)
+    
+  }catch(e){
+    console.log('error in the newAddress in userController in the user side:'+e)
   }
 }
 
@@ -149,7 +177,7 @@ const reset_password = async (req, res) => {
 }
 
 
-//=======================================================================
+//======================================================================= 
 const passresetverification = async (req, res) => {
   try {
     if (req.session.userAuth) {
@@ -255,4 +283,5 @@ module.exports = {
   signout,
   checkUser,
   userAccount,
+  newAddress,
 }

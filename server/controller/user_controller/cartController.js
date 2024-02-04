@@ -105,41 +105,64 @@ const addtoCart = async (req, res) => {
 
 const changeQuantity = async (req, res) => {
     try {
-        const catData = await cartDetails.find({ username: req.session.userName })
-        const catDataCount = await cartDetails.find({ username: req.session.userName }).countDocuments()
-        const proData = await productDetails.find({ name: catData.product })
+        const userin = req.session.userName
+        console.log(req.body)
+        const data = Object.values(req.body)
+        console.log(data)
+        const dataCart1 = await cartDetails.find({ $and: [{ username: userin }, { product: `${data[0]}` }] })
+
+
+        // const catDataCount = await cartDetails.find({ username: req.session.userName }).countDocuments()
+
         console.log('before type of')
-        let totalPrice = 0
-        if (catDataCount != 0) {
-            // const totalValue = await cartDetails.aggregate([
-            //     { $match: { username: req.session.userName } },
-            //     { $group: { _id: null, total: { $sum: `$price` } } }
-            // ])
-            const totalValue = await cartDetails.aggregate([
-                {
-                    $match: { username: req.session.userName }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: {
-                            $sum: { $multiply: ['$price', '$quantity'] }
-                        }
+        let q = dataCart1[0].quentity
+        console.log(q + Number(data[1]), 'quantity check 10')
+        let val = q + Number(data[1])
+        if ((val <= 10) & (val >= 1)) {
+            await cartDetails.updateOne({ $and: [{ username: userin }, { product: `${data[0]}` }] }, { $inc: { quentity: req.body.count } })
+            console.log('after cartupater')
+
+            console.log('changeQuantity in cart controller in')
+        }
+        const totalValue = await cartDetails.aggregate([
+            {
+                $match: { username: req.session.userName }
+            },
+            {
+                $group: {
+                    _id: '$product',
+                    totalPrice: { $sum: '$price' },
+                    totalQuantity: { $sum: '$quentity' }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    amount: {
+                        $multiply: ['$totalPrice', '$totalQuantity']
                     }
                 }
-            ])
+            },
+            {
+                $group: {
+                    _id: '',
+                    sum: {
+                        $sum: '$amount'
+                    }
+                }
+            }
+        ])
+        const dataCart = await cartDetails.find({ $and: [{ username: userin }, { product: `${data[0]}` }] })
 
-            console.log(totalValue)
-            totalPrice = (totalValue[0].total)
-        }
-        console.log('changeQuantity in cart controller in')
-        const userin = req.session.userName
-        console.log(userin)
-        console.log(req.body)
-
-        await cartDetails.updateOne({ username: userin }, { $inc: { quentity: req.body.count } })
-        //res.redirect('/cart' )
-        res.json({ response: true })
+        console.log(dataCart)
+        let quantity = dataCart[0].quentity
+        console.log(quantity, 'quantiity kiittyu')
+        let totalPrice = Number(quantity) * Number(data[2])
+        console.log(totalPrice)
+        console.log(quantity, "quantity after updation")
+        console.log(typeof (quantity), "quantity after updation")
+        let totalAmount = totalValue[0].sum
+        res.json({ response: true, totalPrice, quantity, totalAmount })
 
     } catch (e) {
         console.log('error in the changeQuantity in cartController in user side: ' + e)

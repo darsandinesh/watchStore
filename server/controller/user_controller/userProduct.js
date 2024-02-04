@@ -77,50 +77,91 @@ const allproductData = async (req, res) => {
     }
 }
 
-
+//listing the product and also pagination is also handled with category
 const catProduct = async (req, res) => {
     try {
+        let category
         console.log(req.params.id)
-        const userin = req.session.userName
-
-        // console.log(req.query.page)
-        // console.log(req.query.limit)
-        // let page = parseInt(req.query.page) || 1
-        // const pageSize = 5
-        // const totalProducts = await productDetails.find({}).countDocuments()
-
-        // const totalPage = Math.ceil(totalProducts / pageSize)
-        // const hasPrevPage = page > 1
-        // const hasNextPage = page < totalPage
-
-        // const pages = Array.from({ length: totalPage }, (_, i) => {
-        //     return {
-        //         pageNumber: i + 1,
-        //         isCurrent: i + 1 === page
-        //     }
-        // })
-
-        if (req.params.id == 'allproducts') {
-            console.log('allproduct in if')
-            // if(page==1) page--
-            // else page--
-            // console.log(page)
-            Product = await productDetails.find({ list: 0 })
-            data = "All Products"
+        if (req.params.id) {
+            category = req.params.id
         } else {
-            console.log('category in else')
-            Product = await productDetails.find({ $and: [{ list: 0 }, { category: req.params.id }] })
-            data = `${req.params.id} Products`
+            category = 'all'
         }
-        const cat = await catDetails.find({ list: 0 })
+        let currentPage = req.query.page || 0
+        if (req.query.next) {
+            currentPage++
+        }
+        if (req.query.prev) {
+            currentPage--
+        }
+        let skipCount = currentPage
+        let totalCount = 0
+        let Product
+        let data
+        if (req.params.id == 'allproducts' || req.query.category == 'all') {
+            category = 'all'
+            totalCount = await productDetails.find({ list: 0 }).countDocuments()
+            Product = await productDetails.find({ list: 0 }).skip(skipCount * 3).limit(3)
+            data = 'All Products'
+        } else {
+            category = req.params.id || req.query.category
+            totalCount = await productDetails.find({ $and: [{ list: 0 }, { category: category }] }).countDocuments()
+            Product = await productDetails.find({ $and: [{ list: 0 }, { category: category }] }).skip(skipCount * 3).limit(3)
+            data = category+'Products'
+        }
         console.log(Product)
+        const cat = await catDetails.find({ list: 0 })
+        let mulValue = currentPage * 3 + 3
+        console.log(mulValue + 'mulVALue')
+        let nextPage = 1
+        if (mulValue >= totalCount) nextPage = 0
+        let totalPageCount = Math.ceil(totalCount / 3)
+        let presentPage = currentPage + 1
         res.render('user-products', {
-            Product, data, userin, cat,
+            Product, cat, nextPage, currentPage, totalPageCount, presentPage, category, data
+
         })
     } catch (e) {
         console.log("error in the carProduct in userControler user side : " + e)
     }
 }
+
+
+// const catProduct = async (req, res) => {
+//     try {
+//         console.log(req.params.id)
+//         const userin = req.session.userName
+
+//         console.log(req.query.previous)
+//         console.log(req.query.next)
+
+//         let previousValue = req.query.previous || 0
+//         let nextValue = req.query.next || 0
+//         let skipValue = nextValue * 5 + '' || previousValue * 5 + ''
+//         console.log(skipValue)
+//         let category = 'all'
+//         if (req.params.id == 'allproducts' || category == 'all') {
+//             console.log('allproduct in if')
+//             Product = await productDetails.find({ list: 0 }).skip(skipValue).limit(5)
+//             nextValue++
+//             previousValue = nextValue - 1
+//             data = "All Products"
+//         } else {
+//             console.log('category in else')
+//             Product = await productDetails.find({ $and: [{ list: 0 }, { category: req.params.id }] })
+//             data = `${req.params.id} Products`
+//         }
+//         const cat = await catDetails.find({ list: 0 })
+//         console.log(Product)
+//         res.render('user-products', {
+//             Product, data, userin, cat,
+//             previousValue,
+//             nextValue
+//         })
+//     } catch (e) {
+//         console.log("error in the carProduct in userControler user side : " + e)
+//     }
+// }
 
 const wishlistProduct = async (req, res) => {
     try {

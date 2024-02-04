@@ -96,6 +96,7 @@ const otpPage = (req, res) => {
 
 //otp validation during the time of register a new user and saved to db
 var OTP
+var resendOTP
 const otpVerification = async (req, res) => {
     try {
         if (req.session.userAuth) {
@@ -107,7 +108,7 @@ const otpVerification = async (req, res) => {
             const diff = otptime - time
             console.log(diff)
             console.log(req.session.details)
-            if (OTP == req.body.otp) {
+            if (OTP == req.body.otp ||resendOTP == req.body.otp ) {
                 if (diff <= 300000) {
                     const { username, email, phone, password } = req.session.details
                     const hashedpass = await bcrypt.hash(password, 10)
@@ -203,6 +204,25 @@ const resetotpVerification = (req, res) => {
     }
 }
 
+const resendotp = (req, res) => {
+    try {
+        console.log(req.session.details)
+        let email = req.session.details.email
+        const otp = sndmail.sendmail(email)
+        otp.then((val) => {
+            resendOTP = val[0]
+            time = val[1]
+            console.log(OTP)
+            console.log(val[1])
+        }).catch((err) => {
+            console.log("ERRORR OCCUREDE IN REGISTERUSER : " + err)
+        })
+        res.redirect('/otp_verification')
+    } catch (e) {
+        console.log('error in the resendotp in userRegisterationController in user side:' + e)
+    }
+}
+
 module.exports = {
     user_register,
     registerUser,
@@ -210,5 +230,6 @@ module.exports = {
     resetotpVerification,
     otpVerification,
     otpPage,
-    resetotpv
+    resetotpv,
+    resendotp
 }

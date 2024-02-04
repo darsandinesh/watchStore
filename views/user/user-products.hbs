@@ -89,7 +89,7 @@
                                                         <i class="zmdi zmdi-minus"></i>
                                                         <i class="zmdi zmdi-plus"></i>
                                                     </span>
-                                                    <a class="cateItem" href="/catproducts/allproductse">All
+                                                    <a class="cateItem" href="/catproducts/allproducts">All
                                                         Products</a>
                                                 </div>
                                                 {{#each cat}}
@@ -351,42 +351,48 @@
                                             <div class="js-product-list-top ">
                                                 <div class="d-flex justify-content-around row">
                                                     <div class="showing col col-xs-12">
-                                                        <span>SHOWING 1-{{pagenation}} OF {{pagenation}} ITEM(S)</span>
+                                                        <span>SHOWING {{presentPage}}-{{totalPageCount}} OF {{totalPageCount}} ITEM(S)</span>
                                                     </div>
                                                     <div class="page-list col col-xs-12">
-
-                                                        {{!-- {{#if hasPrevPage}}
-                                                        <a href="/catproducts/{{allproducts}}?page={{prevPage}}">Previous</a>
-                                                        {{/if}}
-
-                                                        {{#each pages}}
-                                                        {{#if this.isCurrent}}
-                                                        <span>{{this.pageNumber}}</span>
-                                                        {{else}}
-                                                        <a href="/catproducts/{{allproducts}}?page={{this.pageNumber}}">{{this.pageNumber}}</a>
-                                                        {{/if}}
-                                                        {{/each}}
-
-                                                        {{#if hasNextPage}}
-                                                        <a href="?page={{nextPage}}">Next</a>
-                                                        {{/if}} --}}
-                                                        {{!-- <ul>
+                                                        <ul>
+                                                            {{#if currentPage}}
                                                             <li>
-                                                                <a rel="prev"
-                                                                    href="/catproducts/allproducts?page=1&limit=5&inc=1"
+                                                                <a rel="prev" href="/pagination?page={{currentPage}}&prev=-1&category={{category}}"
                                                                     class="previous disabled js-search-link">
                                                                     Previous
                                                                 </a>
                                                             </li>
+                                                            {{/if}}
+                                                            {{#if nextPage}}
                                                             <li>
-                                                                <a rel="next"
-                                                                    href="/catproducts/allproducts?page=1&limit=5$dec=1"
+                                                                <a rel="next" href="/pagination?page={{currentPage}}&next=1&category={{category}}"
                                                                     class="next disabled js-search-link">
                                                                     Next
                                                                 </a>
                                                             </li>
-                                                        </ul> --}}
+                                                            {{/if}}
 
+                                                            {{!-- <li class="current active">
+                                                                <a rel="nofollow" href="#"
+                                                                    class="disabled js-search-link">
+                                                                    1
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a rel="nofollow" href="#"
+                                                                    class="disabled js-search-link">
+                                                                    2
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a rel="nofollow" href="#"
+                                                                    class="disabled js-search-link">
+                                                                    3
+                                                                </a>
+                                                            </li> --}}
+
+
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>

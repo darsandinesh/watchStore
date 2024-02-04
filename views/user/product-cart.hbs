@@ -138,38 +138,43 @@
 
                                                                             </select> --}}
                                                                             <p class="input-group form-control"
-                                                                                id="countUpdate">{{this.quentity}}</p>
+                                                                                id={{this.product}}>{{this.quentity}}
+                                                                            </p>
 
                                                                             <span class="input-group-btn-vertical">
-                                                                                {{#ifNotEquals this.quentity '10'}}
+                                                                                {{!-- {{#ifNotEquals this.quentity '10'}} --}}
                                                                                 <button
                                                                                     class="btn btn-touchspin js-touchspin bootstrap-touchspin-up"
-                                                                                    type="button" {{!--
-                                                                                    onclick="quantityChange('{{this.product}}' ,'{{this.quentity}}',1)">
-                                                                                    --}}
-                                                                                    ><a href="/increaseQuantity/{{this.product}}">
+                                                                                    type="button"
+                                                                                    onclick="quantityChange('{{this.product}}' ,1,'{{this.price}}')">
+                                                                                    +
+                                                                                    {{!-- ><a
+                                                                                        href="/increaseQuantity/{{this.product}}">
                                                                                         +
-                                                                                    </a>
+                                                                                    </a> --}}
                                                                                 </button>
-                                                                                {{/ifNotEquals}}
-                                                                                {{#ifNotEquals this.quentity '1'}}
+                                                                                {{!-- {{/ifNotEquals}} --}}
+                                                                                {{!-- {{#ifNotEquals this.quentity '1'}} --}}
                                                                                 <button
                                                                                     class="btn btn-touchspin js-touchspin bootstrap-touchspin-down"
-                                                                                    type="button" {{!--
-                                                                                    onclick="quantityChange('{{this.product}}' ,'{{this.quentity}}',-1)">
-                                                                                    --}}
-                                                                                    ><a href="/decreaseQuantity/{{this.product}}">
+                                                                                    type="button"
+                                                                                    onclick="quantityChange('{{this.product}}',-1,'{{this.price}}')">
+                                                                                    -
+                                                                                    {{!-- ><a
+                                                                                        href="/decreaseQuantity/{{this.product}}">
                                                                                         -
-                                                                                    </a>
+                                                                                    </a> --}}
                                                                                 </button>
-                                                                                {{/ifNotEquals}}
+                                                                                {{!-- {{/ifNotEquals}} --}}
                                                                             </span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-5 col price">
                                                                         <div class="label">Total:</div>
                                                                         <div class="product-price total">
+                                                                            <p id="{{this.product}}+hai">
                                                                             Rs.{{multiply this.price this.quentity}}
+                                                                            </p>
                                                                         </div>
                                                                     </div>
                                                                     <div
@@ -226,7 +231,7 @@
                                                 <span class="label js-subtotal">
                                                     Total Price:
                                                 </span>
-                                                <span class="value">Rs.{{totalPrice}}</span>
+                                                <span class="value">Rs. <p id="totalAmount">{{totalPrice}}</p></span>
                                             </div>
                                             <div class="cart-summary-line" id="cart-subtotal-shipping">
                                                 <span class="label">
@@ -239,7 +244,7 @@
                                             </div>
                                             <div class="cart-summary-line cart-total">
                                                 <span class="label">Total:</span>
-                                                <span class="value">{{totalPrice}}(tax incl.)</span>
+                                                <span class="value"><p id="totalAmounts">{{totalPrice}}</p>(tax incl.)</span>
                                             </div>
                                         </div>
                                     </div>
@@ -970,31 +975,42 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <script>
-        function quantityChange(pro, qu, count) {
-            let quantity = document.getElementById('countUpdate').value;
-            console.log(quantity);
-            count = parseInt(count);
+        function quantityChange(pro, count, price) {
+            ///let quantity = document.getElementById('countUpdate').value;
+            //console.log(quantity);
+            //count = parseInt(count);
 
-            console.log('enter');
-            console.log(count);
+            //console.log('enter');
+            //console.log(count);
 
             $.ajax({
                 url: '/change-quentity',
                 data: {
                     name: pro,
                     count: count,
-                    quantity: quantity,
+                    price: price
                 },
                 method: 'post',
+                dataType: 'json',
                 success: (response) => {
 
                     //Update the content of an element with the ID 'quantity'
                     if (response) {
+                        console.log(response, 'response got')
+                        console.log(response.quantity, 'value kitti')
 
+                        //console.log(price)
                         console.log('success response came');
-                        let upCount = Number(quantity) + Number(count) + ''
-                        //document.getElementById('countUpdate').innerHTML = upCount;
-                        location.reload()
+                        document.getElementById(`${pro}`).innerHTML = response.quantity;
+                        document.getElementById(`${pro}+hai`).innerHTML = response.totalPrice;
+                        document.getElementById('totalAmount').innerHTML = response.totalAmount
+                        document.getElementById('totalAmounts').innerHTML = response.totalAmount
+                        //if (response.quantity == 10 || response.quantity == 1) {
+                        //    location.reload()
+                        //}
+
+                    } else {
+                        console.log('error in ajax for updating the quantity of the product')
                     }
                 }
             });

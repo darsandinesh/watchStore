@@ -82,81 +82,41 @@
                                         {{#if address}}
                                         <div class="checkout-personal-step">
                                             <h3 class="step-title h3 info">
-                                                {{!-- <span class="step-number"></span> --}}
-                                                Use Primary Address
+                                                Use Address
                                             </h3>
                                         </div>
 
-                                        <div class="content">
-                                            {{!-- <ul class="nav nav-inline">
-                                                <li class="nav-item">
-                                                    <a class="nav-link active" data-toggle="tab"
-                                                        href="#checkout-guest-form">
-                                                        Use Primary Address
-                                                    </a>
-                                                </li>
-                                            </ul> --}}
-                                            <div class="tab-content">
-                                                <div class="tab-pane fade in active show" id="checkout-guest-form"
-                                                    role="tabpanel">
-
-                                                    <form action="/to-payment" id="customer-form"
-                                                        class="js-customer-form" method="post">
-                                                        <div>
-                                                            {{!-- <input type="hidden" name="id_customer"
-                                                                value="Full Namee"> --}}
-                                                            <div class="form-group row">
-                                                                <input class="form-control" name="firstname" type="text"
-                                                                    placeholder="Full name" value="{{address.fullname}}"
-                                                                    readonly>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <input class="form-control" name="email" type="text"
-                                                                    placeholder="Full name" value="{{email}}" readonly>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <input class="form-control" name="phone" type="number"
-                                                                    placeholder="Phone" value="{{address.phone}}"
-                                                                    readonly>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <input class="form-control" name="address" type="text"
-                                                                    placeholder="Address" readonly
-                                                                    value="{{address.address.houseName}} {{address.address.city}} {{address.address.state}} {{address.address.pincode}} {{address.address.country}}">
-                                                                <input type="hidden" name="housename"
-                                                                    value="{{address.address.houseName}}">
-                                                                <input type="hidden" name="city"
-                                                                    value="{{address.address.city}}">
-                                                                <input type="hidden" name="state"
-                                                                    value="{{address.address.state}}">
-                                                                <input type="hidden" name="pincode"
-                                                                    value="{{address.address.pincode}}">
-                                                                <input type="hidden" name="country"
-                                                                    value="{{address.address.country}}">
-                                                            </div>
-                                                        </div>
-                                                        <button class="btn btn-primary" type="submit">Continue</button>
-                                                    </form>
-
-                                                </div>
-                                                {{!-- <div class="tab-pane fade" id="checkout-login-form"
-                                                    role="tabpanel">
-                                                    <div class="clearfix">
-                                                        <div class="row">
-                                                            <button class="continue btn btn-primary pull-xs-right"
-                                                                name="continue" data-link-action="sign-in" type="submit"
-                                                                value="1">
-                                                                Continue
-                                                            </button>
-                                                        </div>
+                                        <div class="row">
+                                            {{#each address}}
+                                            <div class="col-4">
+                                                <input type="radio" name="addressId" id="addressId"
+                                                    onclick="getId('{{this._id}}')">
+                                                <div class="card mb-3">
+                                                    <div class="card-body ">
+                                                        <h5 class="card-title">Address</h5>
+                                                        <h6 class="card-subtitle mb-2 text-body-secondary">
+                                                            <strong>Name</strong> : {{this.fullname}}
+                                                        </h6>
+                                                        <p class="card-text"><strong>Phone</strong> : {{this.phone}}</p>
+                                                        <p class="card-text"><strong>Address</strong> :
+                                                            {{this.address.houseName}} , {{this.address.city}},
+                                                            {{this.address.state}}
+                                                            <br> {{this.address.country}}
+                                                        </p>
+                                                        <p class="card-text"><strong>PIN Code</strong> :
+                                                            {{this.address.pincode}}</p>
                                                     </div>
-                                                </div> --}}
+                                                </div>
                                             </div>
-
+                                            {{/each}}
                                         </div>
-
                                         {{/if}}
                                         {{!---------------- ----------------------}}
+                                    </div>
+
+                                    <div class="col-md-9 check-info">
+                                        <br>
+                                        <br>
                                         <div class="checkout-personal-step">
                                             <h3 class="step-title h3">
                                                 {{!-- <span class="step-number">1</span> --}}
@@ -180,10 +140,12 @@
                                                                 class="js-customer-form" method="post">
                                                                 <div>
                                                                     {{!-- <input type="hidden" name="id_customer"
-                                                                        value=""> --}}
+                                                                        value="">
+                                                                    --}}
                                                                     <div class="form-group row">
                                                                         <input class="form-control" name="firstname"
-                                                                            type="text" placeholder="Full name">
+                                                                            type="text" placeholder="Full name"
+                                                                            id="name">
                                                                     </div>
                                                                     {{!-- <div class="form-group row">
                                                                         <input class="form-control" name="email"
@@ -191,27 +153,31 @@
                                                                     </div> --}}
                                                                     <div class="form-group row">
                                                                         <input class="form-control" name="phone"
-                                                                            type="number" placeholder="Phone">
+                                                                            type="number" placeholder="Phone"
+                                                                            id="phone">
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <input class="form-control" name="housename"
-                                                                            type="text" placeholder="House Name">
+                                                                            type="text" placeholder="House Name"
+                                                                            id="house">
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <input class="form-control" name="city"
-                                                                            type="text" placeholder="City">
+                                                                            type="text" placeholder="City" id="city">
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <input class="form-control" name="state"
-                                                                            type="text" placeholder="State">
+                                                                            type="text" placeholder="State" id="state">
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <input class="form-control" name="pincode"
-                                                                            type="number" placeholder="Pincode">
+                                                                            type="number" placeholder="Pincode"
+                                                                            id="pincode">
                                                                     </div>
                                                                     <div class="form-group row">
                                                                         <input class="form-control" name="country"
-                                                                            type="text" placeholder="Country">
+                                                                            type="text" placeholder="Country"
+                                                                            id="country">
                                                                     </div>
                                                                     <div class="form-check">
                                                                         <input class="form-check-input" type="radio"
@@ -1025,6 +991,41 @@
     </div>
 
     <!-- Vendor JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        function getId(data) {
+            console.log('1')
+            console.log(data)
+            console.log('2')
+            //const id = document.getElementById('addressId').value
+            //console.log(id)
+            $.ajax({
+                url: '/displayaddress',
+                data: {
+                    addressId: data
+                },
+                method: 'post',
+                dataType: 'json',
+                success: (response) => {
+                    if (response) {
+                        console.log(response.data.fullname)
+                        console.log(response)
+                        document.getElementById('name').value = response.data.fullname
+                        document.getElementById('phone').value = response.data.phone
+                        document.getElementById('house').value = response.data.address.houseName
+                        document.getElementById('city').value = response.data.address.city
+                        document.getElementById('state').value = response.data.address.state
+                        document.getElementById('pincode').value = response.data.address.pincode
+                        document.getElementById('country').value = response.data.address.country
+
+                    } else {
+                        console.log('somthing went wrong!!')
+                    }
+                }
+            })
+        }
+    </script>
     <script src="../user/libs/jquery/jquery.min.js"></script>
     <script src="../user/libs/popper/popper.min.js"></script>
     <script src="../user/libs/bootstrap/js/bootstrap.min.js"></script>

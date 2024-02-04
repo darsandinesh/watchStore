@@ -1,14 +1,11 @@
 const express = require('express')
 // const session = require('express-session')
-const path = require('path')
-const userDetails = require('../model/userModel')
-const productDetails = require('../model/productModel')
 const adminCon = require('../controller/admin_controller/adminController')
 const imagemanage = require('../controller/admin_controller/imageController')
 const productmanage = require('../controller/admin_controller/productController')
 const category = require('../controller/admin_controller/categoryController')
 const orderData = require('../controller/admin_controller/orderController')
-const imageUpload = require('../controller/admin_controller/imageController')
+const dashAdmin = require('../controller/admin_controller/dashboard')
 const router = express.Router()
 
 
@@ -17,7 +14,8 @@ router.get('/', adminCon.admin)
 
 router.post('/', adminCon.checkAdmin)
 
-router.get('/dashbord', adminCon.check, adminCon.dashbord)
+router.get('/dashbord', adminCon.check, dashAdmin.dashbord)
+router.get('/chart-data',adminCon.check,dashAdmin.chartData)
 
 
 
