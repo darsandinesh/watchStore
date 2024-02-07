@@ -34,7 +34,7 @@ router.get('/reset-password', user.reset_password_get)
 router.post('/reset-password', user.newpass)
 
 // router to resend the otp when time experies
-router.get('/resendotp',userRegisteration.resendotp)
+router.get('/resendotp', userRegisteration.resendotp)
 
 // logout 
 router.get('/signout', user.signout)
@@ -82,16 +82,16 @@ router.get('/decreaseQuantity/:id', user.checkUser, cartController.decrement)
 router.post('/checkout', user.checkUser, order.proceedtoCheckOut)
 
 // to fetch data from backend and diplay it in checkout page addreess
-router.post('/displayaddress',user.checkUser, order.displayaddress)
+router.post('/displayaddress', user.checkUser, order.displayaddress)
 // to payment page
 router.post('/to-payment', user.checkUser, order.toPayment)
 router.post('/onlinePayment', user.checkUser, onlinePayment.onlinePayment)
-router.post('/placeOrder',onlinePayment.call)
+router.post('/placeOrder', onlinePayment.call)
 // router.post('/createOrder',onlinePayment.ajaxCall)
 router.get('/api/payment/verify', user.checkUser, onlinePayment.razaroPayCall)
 router.get('/paymentSuccess', user.checkUser, order.codPayment)
 // online create order razaroPay
-router.post('/createOrder', user.checkUser,onlinePayment.createOrder)
+router.post('/createOrder', user.checkUser, onlinePayment.createOrder)
 router.get('/onlinePayment', user.checkUser, order.order123)
 
 router.get('/placedOrder', user.checkUser, order.placedOrders)
@@ -111,7 +111,7 @@ router.post('/changePassword', user.checkUser, profile.change)
 
 router.post('/newPassword', user.checkUser, profile.newPassword)
 
-router.post('/newAddress',user.checkUser,user.newAddress)
+router.post('/newAddress', user.checkUser, user.newAddress)
 
 
 // history of the order 
@@ -128,13 +128,22 @@ router.get('/returnProduct/:id', user.checkUser, order.returnPro)
 
 // address of the primary address of the user looged in
 router.get('/add-address', user.checkUser, profile.profile)
+router.get('/newAddressEdit', user.checkUser, profile.newAddressEdit)
+router.post('/newAddressEdit', user.checkUser,profile.newAddress)
 
 router.post('/add-address', user.checkUser, profile.addAddress)
+
+// remove address of the user 
+router.get('/removeAddress',user.checkUser,profile.removeAddress)
 
 //update address 
 router.get('/update-profile', user.checkUser, profile.updateProfile)
 
 router.post('/update-profile', user.checkUser, profile.updateProfileData)
+
+router.get('/error',(req,res)=>{
+    res.render('errorPage')
+})
 
 
 

@@ -87,7 +87,7 @@
                                             <img class="ml-5" height="50px" width="50px" src="../user/userpro.png">
 
                                             <h5 class="card-title ml-4 mt-3"
-                                                style="text-transform: uppercase;color: white;">{{userin}}
+                                                style="text-transform: uppercase;color: white;">{{username}}
                                             </h5>
                                         </div>
                                         <hr>
@@ -122,6 +122,9 @@
                                         <div class="card-body">
                                             <h5 class="card-title">User Details</h5>
                                             <ul class="list-group list-group-flush">
+                                                
+                                                <li class="list-group-item"><strong>Name:</strong> {{username}}
+                                                <li class="list-group-item"><strong>UserName:</strong> {{userin}}
                                                 <li class="list-group-item"><strong>Email:</strong> {{user.email}}
                                                 </li>
                                                 <li class="list-group-item"><strong>Phone:</strong> {{userData.phone}}
@@ -248,9 +251,9 @@
                                                         <br> {{this.address.country}}
                                                     </p>
                                                     <p class="card-text"><strong>PIN Code</strong> : {{this.address.pincode}}</p>
-                                                    <a href="#" class="card-link">Edit</a>                                                   
+                                                    <a href="/newAddressEdit?userid={{this._id}}" class="card-link">Edit</a>                                                   
                                                     <a >|</a>
-                                                    <a href="#" class="card-link">Remove</a>
+                                                    <a href="/removeAddress?userid={{this._id}}" class="card-link">Remove</a>
 
                                                 </div>
                                             </div>

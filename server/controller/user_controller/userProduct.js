@@ -107,7 +107,7 @@ const catProduct = async (req, res) => {
             category = req.params.id || req.query.category
             totalCount = await productDetails.find({ $and: [{ list: 0 }, { category: category }] }).countDocuments()
             Product = await productDetails.find({ $and: [{ list: 0 }, { category: category }] }).skip(skipCount * 3).limit(3)
-            data = category+'Products'
+            data = category + 'Products'
         }
         console.log(Product)
         const cat = await catDetails.find({ list: 0 })
@@ -191,26 +191,84 @@ const search = async (req, res) => {
 
 const lowtohigh = async (req, res) => {
     try {
-        console.log('lowtohigh')
+        const category = req.query.data || req.query.category
+        let currentPage = req.query.page || 0
+        if (req.query.next) {
+            currentPage++
+        }
+        if (req.query.prev) {
+            currentPage--
+        }
+        let skipCount = currentPage
+        let totalCount = 0
+        let Product
+        let data
+        if (category == "all") {
+            totalCount = await productDetails.find({ list: 0 }).countDocuments()
+            Product = await productDetails.find({ list: 0 }).skip(skipCount * 3).limit(3).sort({ price: 1 })
+            data = 'All Products'
+        } else {
+            totalCount = await productDetails.find({ $and: [{ list: 0 }, { category: category }] }).countDocuments()
+            Product = await productDetails.find({ $and: [{ list: 0 }, { category: category }] }).skip(skipCount * 3).limit(3).sort({ price: 1 })
+            data = category + 'Products'
+        }
         const userin = req.session.userName
-        const Product = await productDetails.find({ list: 0 }).sort({ price: 1 })
+        let mulValue = currentPage * 3 + 3
+        let nextPage = 1
+        if (mulValue >= totalCount) nextPage = 0
+        let totalPageCount = Math.ceil(totalCount / 3)
+        let presentPage = currentPage + 1
         const cat = await catDetails.find({ list: 0 })
-        console.log(cat)
-        res.render('user-products', { Product, userin, cat })
+        let sort = "lowhigh"
+        res.render('user-products', {
+            Product, userin, cat, category,
+            nextPage, currentPage, totalPageCount, presentPage, category, data, sort
+        })
     } catch (e) {
-        consol.log('error in the lowtohigh in userProduct in user side : ' + e)
+        console.log('error in the lowtohigh in userProduct in user side : ' + e)
     }
 }
 
 const hightolow = async (req, res) => {
     try {
         const userin = req.session.userName
-        const Product = await productDetails.find({ list: 0 }).sort({ price: -1 })
+        const category = req.query.data || req.query.category
+        let currentPage = req.query.page || 0
+        if (req.query.next) {
+            currentPage++
+        }
+        if (req.query.prev) {
+            currentPage--
+        }
+        let skipCount = currentPage
+        let totalCount = 0
+        let Product
+        let data
+        if (category == "all") {
+
+            totalCount = await productDetails.find({ list: 0 }).countDocuments()
+            Product = await productDetails.find({ list: 0 }).skip(skipCount * 3).limit(3).sort({ price: -1 })
+            data = 'All Products'
+            
+        } else {
+
+            totalCount = await productDetails.find({ $and: [{ list: 0 }, { category: category }] }).countDocuments()
+            Product = await productDetails.find({ $and: [{ list: 0 }, { category: category }] }).skip(skipCount * 3).limit(3).sort({ price: -1 })
+            data = category + 'Products'
+        }
         const cat = await catDetails.find({ list: 0 })
-        console.log(cat)
-        res.render('user-products', { Product, userin, cat })
+        let mulValue = currentPage * 3 + 3
+        let nextPage = 1
+        if (mulValue >= totalCount) nextPage = 0
+        let totalPageCount = Math.ceil(totalCount / 3)
+        let presentPage = currentPage + 1
+        let sort = "lowhigh"
+        res.render('user-products', {
+            Product, userin, cat, category,
+            nextPage, currentPage, totalPageCount, presentPage, category, data, sort
+        })
     } catch (e) {
-        consol.log('error in the hightolow in userProduct in user side : ' + e)
+        console.log('error in the hightolow in userProduct in user side : ' + e)
     }
 }
 

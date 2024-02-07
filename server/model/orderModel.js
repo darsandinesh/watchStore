@@ -23,6 +23,10 @@ const orderSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    paymentMentod:{
+        type:String,
+        required:true
+    },
     userCacel:{
         type:Number,
         required:true

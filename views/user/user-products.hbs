@@ -117,7 +117,7 @@
                                                         <i class="zmdi zmdi-minus"></i>
                                                         <i class="zmdi zmdi-plus"></i>
                                                     </span>
-                                                    <a class="cateItem" href="/highLow">high
+                                                    <a class="cateItem" href="/highLow?data={{category}}">high
                                                         to low</a>
                                                 </div>
 
@@ -128,7 +128,7 @@
                                                         <i class="zmdi zmdi-plus"></i>
                                                     </span>
 
-                                                    <a class="cateItem" href="/lowHigh">low to
+                                                    <a class="cateItem" href="/lowHigh?data={{category}}">low to
                                                         high
                                                     </a>
 
@@ -351,24 +351,43 @@
                                             <div class="js-product-list-top ">
                                                 <div class="d-flex justify-content-around row">
                                                     <div class="showing col col-xs-12">
-                                                        <span>SHOWING {{presentPage}}-{{totalPageCount}} OF {{totalPageCount}} ITEM(S)</span>
+                                                        <span>SHOWING {{presentPage}}-{{totalPageCount}} OF
+                                                            {{totalPageCount}} ITEM(S)</span>
                                                     </div>
                                                     <div class="page-list col col-xs-12">
                                                         <ul>
                                                             {{#if currentPage}}
                                                             <li>
-                                                                <a rel="prev" href="/pagination?page={{currentPage}}&prev=-1&category={{category}}"
+                                                                {{#if sort}}
+                                                                <a rel="prev"
+                                                                    href="/{{sort}}?page={{currentPage}}&prev=-1&category={{category}}"
                                                                     class="previous disabled js-search-link">
                                                                     Previous
                                                                 </a>
+                                                                {{else}}
+                                                                <a rel="prev"
+                                                                    href="/pagination?page={{currentPage}}&prev=-1&category={{category}}"
+                                                                    class="previous disabled js-search-link">
+                                                                    Previous
+                                                                </a>
+                                                                {{/if}}
                                                             </li>
                                                             {{/if}}
                                                             {{#if nextPage}}
                                                             <li>
-                                                                <a rel="next" href="/pagination?page={{currentPage}}&next=1&category={{category}}"
+                                                                {{#if sort}}
+                                                                <a rel="next"
+                                                                    href="/{{sort}}?page={{currentPage}}&next=1&category={{category}}"
                                                                     class="next disabled js-search-link">
                                                                     Next
                                                                 </a>
+                                                                {{else}}
+                                                                <a rel="next"
+                                                                    href="/pagination?page={{currentPage}}&next=1&category={{category}}"
+                                                                    class="next disabled js-search-link">
+                                                                    Next
+                                                                </a>
+                                                                {{/if}}
                                                             </li>
                                                             {{/if}}
 

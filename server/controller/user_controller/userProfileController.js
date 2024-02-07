@@ -21,6 +21,56 @@ const profile = async (req, res) => {
         console.log('error in the profile in userProfileController in the user side : ' + e)
     }
 }
+
+
+const removeAddress = async(req,res)=>{
+    try{
+        const userin = req.session.userName
+        await address.deleteOne({_id:req.query.userid})
+        res.redirect(`/useraccount/${userin}`)
+    }catch(e){
+        console.log('error in the removeAddress in userProfileController in user side : '+e)
+    }
+}
+const newAddressEdit = async (req, res) => {
+    try {
+        const userin = req.session.userName
+        const id = req.query.userid
+        const userProfile = await address.findOne({ _id: id })
+        const cartCount = await cart.find({ username: req.session.userName }).countDocuments()
+        const wishCount = await wish.find({ username: userin }).countDocuments()
+        res.render('user-Address-New', { cartCount, wishCount, userin, userProfile })
+    } catch (e) {
+        console.log('error in the profile in userProfileController in the user side : ' + e)
+    }
+}
+
+
+const newAddress = async (req, res) => {
+    try {
+        console.log(req.query.userid)
+        const userin = req.session.userName
+        console.log(req.body)
+        const data = await address.findOne({ _id: req.query.userid })
+        await address.updateOne({ _id: req.query.userid }, {
+            address: {
+                houseName: req.body.houseName,
+                city: req.body.city,
+                state: req.body.state,
+                country: req.body.country,
+                pincode: req.body.pincode
+            },
+            fullname: req.body.fullName,
+            phone: req.body.phone,
+
+        })
+        console.log(data)
+        res.redirect(`/useraccount/${userin}`)
+    } catch (e) {
+        console.log('error in the newAddress in userProfileController in user side:' + e)
+    }
+}
+
 const addAddress = async (req, res) => {
     try {
         console.log(req.session.userName)
@@ -157,6 +207,8 @@ const newPassword = async (req, res) => {
 
 
 
+
+
 module.exports = {
     addAddress,
     updateProfile,
@@ -165,4 +217,7 @@ module.exports = {
     change,
     newPassword,
     profile,
+    newAddressEdit,
+    newAddress,
+    removeAddress,
 }

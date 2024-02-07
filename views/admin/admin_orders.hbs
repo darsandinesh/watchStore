@@ -161,6 +161,15 @@
         </div>
       </div>
 
+      <div class="text-center p-3">
+        {{#if displayprev}}
+        <a href="/admin/orderpagination?prev=1&current={{current}}" class="btn btn-info mr-2">Previous</a>
+        {{/if}}
+        {{#if displaynxt}}
+        <a href="/admin/orderpagination?next=1&current={{current}}" class="btn btn-info">Next</a>
+        {{/if}}
+      </div>
+
       {{> admin_footer}}
     </div>
   </div>

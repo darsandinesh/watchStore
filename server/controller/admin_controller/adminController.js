@@ -3,7 +3,7 @@ const productDetails = require('../../model/productModel')
 const config = require('../../../firebase.config')
 const bcrypt = require('bcrypt')
 const editCat = require('../../model/categoryModel')
-const { connectStorageEmulator } = require('firebase/storage')
+const couponModel = require('../../model/couponModel')
 
 
 const check = (req, res, next) => {
@@ -150,15 +150,12 @@ const logout = async (req, res) => {
     }
 }
 
-
-
-
-
-
-
-const coupon = (req, res) => {
+const coupon = async (req, res) => {
     try {
-        res.render('admin_coupon')
+        const couponData = await couponModel.find({})
+        const couponFound = req.query.found
+        console.log(couponData)
+        res.render('admin_coupon',{couponData,couponFound})
     } catch (e) {
         console.log("error in the coupon controller in admin side :" + e)
     }

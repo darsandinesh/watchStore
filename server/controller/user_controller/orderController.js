@@ -26,8 +26,38 @@ const proceedtoCheckOut = async (req, res) => {
         if (userData) {
             email = userData[0].email
         }
+        const totalValue = await cart.aggregate([
+            {
+                $match: { username: req.session.userName }
+            },
+            {
+                $group: {
+                    _id: '$product',
+                    totalPrice: { $sum: '$price' },
+                    totalQuantity: { $sum: '$quentity' }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    amount: {
+                        $multiply: ['$totalPrice', '$totalQuantity']
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: '',
+                    sum: {
+                        $sum: '$amount'
+                    }
+                }
+            }
+        ])
+        console.log(totalValue[0].sum)
+        let totalPrice = totalValue[0].sum
         const address = await userPro.find({ username: req.session.userName })
-        let totalPrice = req.session.totalCartPrice
+        //let totalPrice = req.session.totalCartPrice
         res.render('user-check-out', { userin, cat, address, userData, email, cartCount, wishCount, totalPrice })
     } catch (e) {
         console.log('error in the proceedtoCheckOut in orderController in user sdie : ' + e)
@@ -38,6 +68,7 @@ const proceedtoCheckOut = async (req, res) => {
 const toPayment = async (req, res) => {
     try {
         req.session.address = req.body
+        const address = req.body
         console.log(req.body + "req.session.address")
         console.log(req.body.newAddress)
         const userin = req.session.userName
@@ -51,23 +82,48 @@ const toPayment = async (req, res) => {
         const proData = await productDetails.find({ name: catData.product })
         console.log(catDataCount)
         console.log('before type of')
-        // let totalPrice = 0
+        let totalPrice = 0
 
-        // console.log('if not entered')
-        // if (catDataCount != 0) {
-        //     console.log('if  entered')
-        //     console.log(catDataCount)
-        //     const totalValue = await cart.aggregate([
-        //         { $match: { username: req.session.userName } },
-        //         { $group: { _id: null, total: { $sum: `$price` } } }
-        //     ])
-        //     console.log(totalValue)
-        //     totalPrice = (totalValue[0].total)
-        // }
-        let totalPrice = req.session.totalCartPrice
+        console.log('if not entered')
+        if (catDataCount != 0) {
+            console.log('if  entered')
+            console.log(catDataCount)
+            const totalValue = await cart.aggregate([
+                {
+                    $match: { username: req.session.userName }
+                },
+                {
+                    $group: {
+                        _id: '$product',
+                        totalPrice: { $sum: '$price' },
+                        totalQuantity: { $sum: '$quentity' }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        amount: {
+                            $multiply: ['$totalPrice', '$totalQuantity']
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: '',
+                        sum: {
+                            $sum: '$amount'
+                        }
+                    }
+                }
+            ])
+            console.log(totalValue[0].sum)
+            totalPrice = totalValue[0].sum
+
+        }
+        // let totalPrice = req.session.totalCartPrice
 
         //-------------------------------------------------------------------
-        res.render('user-payment', { userin, wishCount, cartCount, totalPrice, catDataCount })
+        res.render('user-payment', { userin, wishCount, cartCount, totalPrice, catDataCount, catData, address })
     } catch (e) {
         console.log('error in the toPayment orderController in user side :' + e)
     }
@@ -107,6 +163,10 @@ const codPayment = async (req, res) => {
             specialChars: false,
             lowerCaseAlphabets: true
         });
+        let paymentMentod = "COD"
+        if (req.query.pay) {
+            paymentMentod = "Online"
+        }
         for (let i = 0; i < cartData.length; i++) {
 
             const shippingAddress = new order({
@@ -120,6 +180,7 @@ const codPayment = async (req, res) => {
                 product: cartData[i].product,
                 quentity: cartData[i].quentity,
                 price: cartData[i].quentity * cartData[i].price,
+                paymentMentod: paymentMentod,
                 address: {
                     houseName: req.session.address.housename,
                     city: req.session.address.city,
@@ -149,8 +210,8 @@ const codPayment = async (req, res) => {
     }
 }
 
-const order123 = (req,res)=>{
-    res.render('user-orderPlaced',{id:'dsasdkfh knasddfiasddfihi'})
+const order123 = (req, res) => {
+    res.render('user-orderPlaced', { id: 'dsasdkfh knasddfiasddfihi' })
 }
 
 const orderData = async (req, res) => {
@@ -236,17 +297,17 @@ const placedOrders = async (req, res) => {
     }
 }
 
-const displayaddress = async (req,res)=>{
-    try{
+const displayaddress = async (req, res) => {
+    try {
         console.log(req.body)
         const id = req.body.addressId
         console.log(id)
-        const data = await userPro.findOne({_id:id})
+        const data = await userPro.findOne({ _id: id })
         console.log(data)
-        res.json({data})
+        res.json({ data })
 
-    }catch(e){
-        console.log('error in the displayaddress function in the orderController in user side: '+e)
+    } catch (e) {
+        console.log('error in the displayaddress function in the orderController in user side: ' + e)
     }
 }
 

@@ -110,12 +110,14 @@ const userAccount = async (req, res) => {
   try {
     console.log(req.params.id)
     const userin = req.session.userName
-    const userData = await userPro.findOne({ username: userin })
+     
+    const userData = await userPro.findOne({ username: userin,primary:1 })
     const user = await userDetails.findOne({ username: userin })
     const useraddress = await userPro.find({username:userin,primary:0})
     console.log(useraddress)
+    const username =  userin
     const cat = await catDetails.find({ list: 0 })
-    res.render('user-account', { userData, user, userin, cat, useraddress})
+    res.render('user-account', { userData, user, userin, cat, useraddress,username})
   } catch (e) {
     console.log('error in the userAccount of userController in user side : ' + e)
   }

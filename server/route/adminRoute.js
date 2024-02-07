@@ -6,6 +6,7 @@ const productmanage = require('../controller/admin_controller/productController'
 const category = require('../controller/admin_controller/categoryController')
 const orderData = require('../controller/admin_controller/orderController')
 const dashAdmin = require('../controller/admin_controller/dashboard')
+const coupon = require('../controller/admin_controller/couponController')
 const router = express.Router()
 
 
@@ -15,7 +16,8 @@ router.get('/', adminCon.admin)
 router.post('/', adminCon.checkAdmin)
 
 router.get('/dashbord', adminCon.check, dashAdmin.dashbord)
-router.get('/chart-data',adminCon.check,dashAdmin.chartData)
+router.get('/chart-data', adminCon.check, dashAdmin.chartData)
+router.post('/salesReport', adminCon.check, orderData.salesReport)
 
 
 
@@ -72,15 +74,23 @@ router.get('/delete/:id', adminCon.check, productmanage.list_product)
 router.get('/orders', adminCon.check, orderData.orders)
 router.post('/updatestatus', adminCon.check, orderData.updateOrderStatus)
 router.get('/deleteOrder', adminCon.check, orderData.deleteOrder)
-router.get('/orderDetails',  orderData.details)
+router.get('/orderDetails', orderData.details)
 
 //search order in admin pannel
 router.post('/orders', adminCon.check, orderData.searchOrder)
 
 router.get('/coupon', adminCon.check, adminCon.coupon)
 
+router.post('/coupon', adminCon.check, coupon.addCoupon)
+
+router.get('/removeCoupon', adminCon.check, coupon.removeCoupon)
+
+router.post('/editCoupon', adminCon.check, coupon.editCoupon)
+
 
 router.get('/add_coupon', adminCon.check, adminCon.add_coupon)
+
+router.get('/orderpagination', adminCon.check, orderData.orderpagination)
 
 //zoom images 
 
