@@ -91,11 +91,7 @@
                                             </h5>
                                         </div>
                                         <hr>
-                                        <div class="card-body">
-                                            <a href="/orderhistory" style=" color: white;">Order History</a>
-
-                                        </div>
-                                        <div class="card-body">
+                                         <div class="card-body">
                                             {{#if userData}}
                                             <a href="/update-profile" style=" color: white;">Update Profile</a>
                                             {{else}}
@@ -103,6 +99,16 @@
                                             {{/if}}
 
                                         </div>
+                                        <div class="card-body" >
+                                            <a href="#" style=" color: white;">Wallet Amount : </a>
+                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="margin-left: 6%;">{{user.wallet}}</span>
+
+                                        </div>
+                                        <div class="card-body">
+                                            <a href="/orderhistory" style=" color: white;">Order History</a>
+
+                                        </div>
+                                       
                                         <div class="card-body">
                                             <a href="/changePassword" style=" color: white;">Change Password</a>
 

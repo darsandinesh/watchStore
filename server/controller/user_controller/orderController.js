@@ -7,6 +7,7 @@ const wish = require('../../model/wishlistModel')
 const order = require('../../model/orderModel')
 const orderid = require('otp-generator')
 const sndmail = require('./generateotp')
+const { ConnectionStates } = require('mongoose')
 
 
 const proceedtoCheckOut = async (req, res) => {
@@ -61,6 +62,7 @@ const proceedtoCheckOut = async (req, res) => {
         res.render('user-check-out', { userin, cat, address, userData, email, cartCount, wishCount, totalPrice })
     } catch (e) {
         console.log('error in the proceedtoCheckOut in orderController in user sdie : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -80,6 +82,7 @@ const toPayment = async (req, res) => {
         const catData = await cart.find({ username: req.session.userName })
         const catDataCount = await cart.find({ username: req.session.userName }).countDocuments()
         const proData = await productDetails.find({ name: catData.product })
+        const userData = await userDetails.find({username:userin})
         console.log(catDataCount)
         console.log('before type of')
         let totalPrice = 0
@@ -118,14 +121,11 @@ const toPayment = async (req, res) => {
             ])
             console.log(totalValue[0].sum)
             totalPrice = totalValue[0].sum
-
         }
-        // let totalPrice = req.session.totalCartPrice
-
-        //-------------------------------------------------------------------
-        res.render('user-payment', { userin, wishCount, cartCount, totalPrice, catDataCount, catData, address })
+        res.render('user-payment', { userin, wishCount, cartCount, totalPrice, catDataCount, catData, address,userData })
     } catch (e) {
         console.log('error in the toPayment orderController in user side :' + e)
+        res.redirect("/error")
     }
 }
 
@@ -207,6 +207,7 @@ const codPayment = async (req, res) => {
         res.render('user-orderPlaced', { id, date, userin, wishCount, cartCount, price, qunatity })
     } catch (e) {
         console.log('error in the codPayment of orderController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -226,6 +227,7 @@ const orderData = async (req, res) => {
         res.render('user-orderHistory', { dataOrder, userin, wishCount, cartCount })
     } catch (e) {
         console.log('error in the orderData of orderController in user side:' + e)
+        res.redirect("/error")
     }
 }
 
@@ -245,6 +247,7 @@ const cancelPro = async (req, res) => {
         res.redirect(`/historyOrder?orderId=${req.query.orderId}&product=${req.query.product}`)
     } catch (e) {
         console.log('error in the cancelPro in orderController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -254,6 +257,7 @@ const returnPro = async (req, res) => {
         res.redirect('/orderhistory')
     } catch (e) {
         console.log('error in thr returnPro in orderController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -270,6 +274,7 @@ const showDetailOrderHistory = async (req, res) => {
 
     } catch (e) {
         console.log('error in the showDetailOrderHistory in orderController in the userSide : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -283,8 +288,10 @@ const orderHistory = async (req, res) => {
         res.render('user-orderSinglrPage', { data, price })
     } catch (e) {
         console.log('error in the ordreHistory in orderController in the user side : ' + e)
+        res.redirect("/error")
     }
 }
+
 
 const placedOrders = async (req, res) => {
     try {
@@ -294,6 +301,7 @@ const placedOrders = async (req, res) => {
         res.render('user-orderPlacedPage', { data })
     } catch (e) {
         console.log('error in the placedOrders in orderControler in userSide : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -308,6 +316,18 @@ const displayaddress = async (req, res) => {
 
     } catch (e) {
         console.log('error in the displayaddress function in the orderController in user side: ' + e)
+        res.redirect("/error")
+    }
+}
+
+const returnreason = async(req,res)=>{
+    try{
+        console.log(req.body)
+        console.log(req.params.id) 
+    }catch(e){
+        console.log('error in the returnreason in ordercontroller in user side : '+e)
+        res.redirect("/error")
+        
     }
 }
 
@@ -323,5 +343,6 @@ module.exports = {
     orderHistory,
     placedOrders,
     order123,
-    displayaddress
+    displayaddress,
+    returnreason
 }

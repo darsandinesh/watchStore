@@ -23,11 +23,11 @@
   <!-- Favicon-->
   <link rel="shortcut icon" href="img/favicon.ico">
   <style>
-  .required:after {
-    content:" *";
-    color: red;
-  }
-</style>
+    .required:after {
+      content: " *";
+      color: red;
+    }
+  </style>
   {{!--
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> --}}
   <!-- Tweaks for older IEs--><!--[if lt IE 9]>
@@ -87,13 +87,13 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <label class="require" for="">Coupon Code </label>
-                  <input type="text" placeholder="Enter the name" name="coupon" class="form-control" required >
-                  <label class="require" for="">Expiry </label>
-                  <input type="date" placeholder="" name="expiry" class="form-control" required>
-                  <label class="require" for="">Discount Amount </label>
+                  <label class="required" for="">Coupon Code </label>
+                  <input type="text" placeholder="Enter the name" name="coupon" class="form-control" required>
+                  <label class="required" for="">Expiry </label>
+                  <input type="date" placeholder="enter the expiry date" name="expiry" class="form-control" required>
+                  <label class="required" for="">Discount Amount </label>
                   <input type="text" placeholder="Enter the name" name="discount" class="form-control" required>
-                  <label class="require" for="">Minimum Amount </label>
+                  <label class="required" for="">Minimum Amount </label>
                   <input type="text" placeholder="Enter the name" name="minAmount" class="form-control" required>
                 </div>
                 <div class="modal-footer">
@@ -144,7 +144,7 @@
                   </a>
 
                 </td> --}}
-                
+
                 <td>{{formatDate this.expiry}}</td>
                 <td>{{this.discount}}</td>
                 <td>{{this.minimumAmount}}</td>
@@ -164,18 +164,18 @@
                       <form action="/admin/editCoupon?name={{this.name}}" method="post">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Category</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Coupon</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <label class="require" class="form-control-label">Category</label>
+                            <label  class="form-control-label">Category</label>
                             <input type="text" value="{{this.name}}" class="form-control" name="coupon">
-                            <label class="require" class="form-control-label">Expiry Date</label>
+                            <label class="required" class="form-control-label">Expiry Date</label>
                             <input value="{{formatDate this.expiry}}" class="form-control" disabled>
                             <input type="date" value="{{formatDate this.expiry}}" class="form-control" name="expiry">
-                            <label class="require" class="form-control-label">Discount Amount</label>
-                            <input type="number" value="{{this.discount}}" class="form-control" name="discount">
-                            <label class="require" class="form-control-label">Minimum Amount</label>
+                            <label  class="form-control-label">Discount Amount</label>
+                            <input type="number" value="{{this.discount}}" class="form-control" name="discount" required>
+                            <label  class="form-control-label">Minimum Amount</label>
                             <input type="number" value="{{this.minimumAmount}}" class="form-control" name="minAmount">
                           </div>
                           <div class="modal-footer">

@@ -28,38 +28,39 @@ const createOrder = async (req, res) => {
         console.log('1')
         const userData = await cart.find({ username: req.body.username })
         console.log('2')
-        const totalValue = await cart.aggregate([
-            {
-                $match: { username: req.body.username }
-            },
-            {
-                $group: {
-                    _id: '$product',
-                    totalPrice: { $sum: '$price' },
-                    totalQuantity: { $sum: '$quentity' }
-                }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    amount: {
-                        $multiply: ['$totalPrice', '$totalQuantity']
-                    }
-                }
-            },
-            {
-                $group: {
-                    _id: '',
-                    sum: {
-                        $sum: '$amount'
-                    }
-                }
-            }
-        ])
-        const amount = totalValue[0].sum
+        // const totalValue = await cart.aggregate([
+        //     {
+        //         $match: { username: req.body.username }
+        //     },
+        //     {
+        //         $group: {
+        //             _id: '$product',
+        //             totalPrice: { $sum: '$price' },
+        //             totalQuantity: { $sum: '$quentity' }
+        //         }
+        //     },
+        //     {
+        //         $project: {
+        //             _id: 1,
+        //             amount: {
+        //                 $multiply: ['$totalPrice', '$totalQuantity']
+        //             }
+        //         }
+        //     },
+        //     {
+        //         $group: {
+        //             _id: '',
+        //             sum: {
+        //                 $sum: '$amount'
+        //             }
+        //         }
+        //     }
+        // ])
+        //const amount = totalValue[0].sum
         console.log('3')
+        console.log(req.body)
         const options = {
-            amount: amount * 100,
+            amount: req.body.amount * 100,
             currency: 'INR',
             receipt: 'razorUser@gmail.com'
         }
@@ -77,7 +78,7 @@ const createOrder = async (req, res) => {
                         success: true,
                         msg: 'Order Created',
                         order_id: order.id,
-                        amount: totalValue,
+                        amount: req.body.amount,
                         key_id: process.env.RAZORPAY_YOUR_KEY_ID,
                         product_name: req.body.name,
                         // description: req.body.description,
@@ -94,6 +95,7 @@ const createOrder = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
+        res.redirect("/error")
     }
 }
 
@@ -110,6 +112,7 @@ const onlinePayment = (req, res) => {
         });
     } catch (e) {
         console.log('error in thr onlinePayment function in the onlinePayment constroller in user side:' + e)
+        res.redirect("/error")
     }
 }
 
@@ -119,6 +122,7 @@ const razaroPayCall = () => {
         validatePaymentVerification({ "order_id": razorpayOrderId, "payment_id": razorpayPaymentId }, signature, secret);
     } catch (e) {
         console.log('error in the razaroPayCall in cosntroller in userside')
+        res.redirect("/error")
     }
 }
 
@@ -128,6 +132,7 @@ const call = (req, res) => {
         console.log(req.body)
     } catch (e) {
         console.log('call error in the onlinePaymetController : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -137,6 +142,7 @@ const ajaxCall = (req, res) => {
         console.log(req.body)
     } catch (e) {
         console.log('error in the ajaxCall in onlinePayment Controller in user side : ' + e)
+        res.redirect("/error")
     }
 }
 

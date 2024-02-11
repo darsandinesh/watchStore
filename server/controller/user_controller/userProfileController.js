@@ -19,6 +19,7 @@ const profile = async (req, res) => {
         res.render('user-Address', { cartCount, wishCount, userin })
     } catch (e) {
         console.log('error in the profile in userProfileController in the user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -30,6 +31,7 @@ const removeAddress = async(req,res)=>{
         res.redirect(`/useraccount/${userin}`)
     }catch(e){
         console.log('error in the removeAddress in userProfileController in user side : '+e)
+        res.redirect("/error")
     }
 }
 const newAddressEdit = async (req, res) => {
@@ -42,6 +44,7 @@ const newAddressEdit = async (req, res) => {
         res.render('user-Address-New', { cartCount, wishCount, userin, userProfile })
     } catch (e) {
         console.log('error in the profile in userProfileController in the user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -68,6 +71,7 @@ const newAddress = async (req, res) => {
         res.redirect(`/useraccount/${userin}`)
     } catch (e) {
         console.log('error in the newAddress in userProfileController in user side:' + e)
+        res.redirect("/error")
     }
 }
 
@@ -96,6 +100,7 @@ const addAddress = async (req, res) => {
         res.redirect(`/useraccount/${{ username }}`)
     } catch (e) {
         console.log('error in the addAddress in userProfileController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -112,6 +117,7 @@ const updateProfile = async (req, res) => {
         res.render('user-Address', { userProfile, userin, cat, cartCount, wishCount })
     } catch (e) {
         console.log('error in the updateAddress in userprofilecontoller in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -133,6 +139,7 @@ const updateProfileData = async (req, res) => {
         res.redirect(`/useraccount/${{ userin }}`)
     } catch (e) {
         console.log('error in the updateProfileData in userProfileController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -156,6 +163,7 @@ const changePass = async (req, res) => {
         res.render('changePass', { userin, val, cat, cartCount, wishCount })
     } catch (e) {
         console.log('error in the changePass in userController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -189,6 +197,7 @@ const change = async (req, res) => {
 
     } catch (e) {
         console.log('error in the change in userController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -202,6 +211,7 @@ const newPassword = async (req, res) => {
         res.redirect('/')
     } catch (e) {
         console.log('error in the newPassword in profileController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 

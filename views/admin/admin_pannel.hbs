@@ -167,7 +167,10 @@
           <div class="row">
             <div class="col-lg-4">
               <div class="bar-chart block no-margin-bottom">
-                {{!-- <canvas id="barChartExample1"></canvas> --}}
+                <canvas id="year"></canvas>
+              </div>
+              <div class="bar-chart block no-margin-bottom">
+                <canvas id="month"></canvas>
               </div>
             </div>
 
@@ -180,9 +183,9 @@
                 <canvas id="barChartyear"></canvas> --}}
 
                 {{!-- <canvas id="lineCahrt"></canvas> --}}
-                <button onclick="Chart('day')">Day</button>
+                {{!-- <button onclick="Chart('day')">Day</button>
                 <button onclick="Chart('month')">Month</button>
-                <button onclick="Chart('year')">Year</button>
+                <button onclick="Chart('year')">Year</button> --}}
               </div>
 
             </div>
@@ -368,81 +371,49 @@
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
   //pahe loadede chartjs
-
-
-
-  // month chartjs
-
   <script>
-    function Chart(val) {
-      console.log('function called  ');
-      console.log(val)
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('function called ');
 
-
-      fetch(`http://localhost:8888/admin/chart-data?val=${val}`)
+      fetch('http://localhost:8888/admin/chart-data')
         .then(response => response.json())
         .then(data => {
-          console.log(data, 'data after fetching');
-
-
+          console.log(data);
 
           // Separate data for daily, monthly, and yearly charts
           const dailyData = data.filter(entry => entry._id.day !== undefined);
           const monthlyData = data.filter(entry => entry._id.month !== undefined);
           const yearlyData = data.filter(entry => entry._id.year !== undefined);
-          //console.log('ahshdjfbisafbgih')
-          //console.log(dailyData, 'dailyData')
-          //console.log(monthlyData,'monthlyData')
 
           // Process the data and create the Chart.js chart for Daily chart
-          if (val == 'day') {
-            createChart('dailyChart', dailyData, 'Daily Orders', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)');
-          }
+          createChart('dailyChart', dailyData, 'Daily Orders', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)');
+
           // Process the data and create the Chart.js chart for Monthly chart
-          else if (val == 'month') {
-            createChart('monthlyChart', monthlyData, 'Monthly Orders', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
-          }
+          createChart('monthlyChart', monthlyData, 'Monthly Orders', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
+
           // Process the data and create the Chart.js chart for Yearly chart
-          else {
-            createChart('yearlyChart', yearlyData, 'Yearly Orders', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)');
-          }
+          createChart('yearlyChart', yearlyData, 'Yearly Orders', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)');
         })
         .catch(error => console.error('Error fetching chart data:', error));
 
       function createChart(canvasId, chartData, label, backgroundColor, borderColor) {
-        let dataChart
-        if (val == 'day') {
-          dataChart = chartData.map(entry => {
+        const labels = chartData.map(entry => {
+          if (entry._id.day !== undefined) {
             return `${entry._id.year}-${entry._id.month}-${entry._id.day}`;
-          });
-        }
-        if (val == 'month') {
-          dataChart = chartData.map(entry => {
+          } else if (entry._id.month !== undefined) {
             return `${entry._id.year}-${entry._id.month}`;
-          });
-        }
-        if (val == 'year') {
-          dataChart = chartData.map(entry => {
+          } else if (entry._id.year !== undefined) {
             return entry._id.year.toString();
-          });
-        }
-
-        //if (entry._id.day !== undefined) {
-        //  return `${entry._id.year}-${entry._id.month}-${entry._id.day}`;
-        //} else if (entry._id.month !== undefined) {
-        //  return `${entry._id.year}-${entry._id.month}`;
-        //} else if (entry._id.year !== undefined) {
-        //  return entry._id.year.toString();
-        //}
+          }
+        });
 
         const counts = chartData.map(entry => entry.count);
-        //console.log(counts, "counts in dashboard")
 
         const graph = document.getElementById('canvasId').getContext('2d');
         new Chart(graph, {
           type: 'bar',
           data: {
-            labels: dataChart,
+            labels: labels,
             datasets: [{
               label: label,
               data: counts,
@@ -452,11 +423,115 @@
             }]
           }
         });
-
       }
-    };
-
+    });
   </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('function called ');
+
+      fetch('http://localhost:8888/admin/chart-data-year')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+
+          // Separate data for daily, monthly, and yearly charts
+          //const dailyData = data.filter(entry => entry._id.day !== undefined);
+          //const monthlyData = data.filter(entry => entry._id.month !== undefined);
+          const yearlyData = data.filter(entry => entry._id.year !== undefined);
+
+          // Process the data and create the Chart.js chart for Daily chart
+          //createChart('dailyChart', dailyData, 'Daily Orders', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)');
+
+          // Process the data and create the Chart.js chart for Monthly chart
+          //createChart('monthlyChart', monthlyData, 'Monthly Orders', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
+
+          // Process the data and create the Chart.js chart for Yearly chart
+          createChart('yearlyChart', yearlyData, 'Yearly Orders', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)');
+        })
+        .catch(error => console.error('Error fetching chart data:', error));
+
+      function createChart(canvasId, chartData, label, backgroundColor, borderColor) {
+        const labels = chartData.map(entry => {
+          return entry._id.year.toString();
+        });
+
+        const counts = chartData.map(entry => entry.count);
+
+        const graph = document.getElementById('year').getContext('2d');
+        new Chart(graph, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: label,
+              data: counts,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+              borderWidth: 1
+            }]
+          }
+        });
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      console.log('function called ');
+
+      fetch('http://localhost:8888/admin/chart-data-month')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+
+          // Separate data for daily, monthly, and yearly charts
+          //const dailyData = data.filter(entry => entry._id.day !== undefined);
+          const monthlyData = data.filter(entry => entry._id.month !== undefined);
+          //const yearlyData = data.filter(entry => entry._id.year !== undefined);
+
+          // Process the data and create the Chart.js chart for Daily chart
+          //createChart('dailyChart', dailyData, 'Daily Orders', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)');
+
+          // Process the data and create the Chart.js chart for Monthly chart
+          createChart('monthlyChart', monthlyData, 'Monthly Orders', 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)');
+
+          // Process the data and create the Chart.js chart for Yearly chart
+          //createChart('yearlyChart', yearlyData, 'Yearly Orders', 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)');
+        })
+        .catch(error => console.error('Error fetching chart data:', error));
+
+      function createChart(canvasId, chartData, label, backgroundColor, borderColor) {
+        const labels = chartData.map(entry => {
+          return `${entry._id.year}-${entry._id.month}`;
+        });
+
+        const counts = chartData.map(entry => entry.count);
+
+        const graph = document.getElementById('month').getContext('2d');
+        new Chart(graph, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: label,
+              data: counts,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+              borderWidth: 1
+            }]
+          }
+        });
+      }
+    });
+  </script>
+
+
+
+  // month chartjs
+
+  
 
 </body>
 

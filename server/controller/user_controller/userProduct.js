@@ -33,6 +33,7 @@ const homeData = async (req, res) => {
         }
     } catch (e) {
         console.log("Error in the homeData in userproductCOntroller : " + e)
+        res.redirect("/error")
     }
 }
 
@@ -56,6 +57,7 @@ const productData = async (req, res) => {
         }
     } catch (e) {
         console.log("Error in user side productData controller : " + e)
+        res.redirect("/error")
     }
 }
 
@@ -73,7 +75,9 @@ const allproductData = async (req, res) => {
 
         res.render('user-products', { Product, data: "All Products", userin, cat, pagenation })
     } catch (e) {
+
         console.log("Error in user side womenproductData : " + e)
+        res.redirect("/error")
     }
 }
 
@@ -123,6 +127,7 @@ const catProduct = async (req, res) => {
         })
     } catch (e) {
         console.log("error in the carProduct in userControler user side : " + e)
+        res.redirect("/error")
     }
 }
 
@@ -170,6 +175,7 @@ const wishlistProduct = async (req, res) => {
         res.render('user-wish-list', { userin, cat })
     } catch (e) {
         console.log('error in the whishlistProduct of userProductController in user side ')
+        res.redirect("/error")
     }
 }
 
@@ -186,6 +192,7 @@ const search = async (req, res) => {
         res.render('user-searchData', { Product, cat, datas })
     } catch (e) {
         console.log('error in the search in userside userProducts in userController :' + e)
+        res.redirect("/error")
     }
 }
 
@@ -226,6 +233,7 @@ const lowtohigh = async (req, res) => {
         })
     } catch (e) {
         console.log('error in the lowtohigh in userProduct in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -269,6 +277,7 @@ const hightolow = async (req, res) => {
         })
     } catch (e) {
         console.log('error in the hightolow in userProduct in user side : ' + e)
+        res.redirect("/error")
     }
 }
 

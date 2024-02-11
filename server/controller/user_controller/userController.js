@@ -19,13 +19,14 @@ const home = async (req, res) => {
     const men = await productDetails.find({ category: "Men" }).limit(3)
     const cat = await catDetails.find({ list: 0 })
     const cartCount = await cart.find({ username: req.session.userName }).countDocuments()
-    const wishCount = await wish.find({username:userin}).countDocuments() 
+    const wishCount = await wish.find({ username: userin }).countDocuments()
     console.log('cartCount before')
     console.log(cartCount)
-    res.render('home', { allProducts, women, men, userin, cat, cartCount,wishCount })
+    res.render('home', { allProducts, women, men, userin, cat, cartCount, wishCount })
     // res.render('home',{userin})
   } catch (e) {
     console.log('error in the home usercontroller in user side : ' + e)
+    res.redirect("/error")
   }
 }
 
@@ -51,6 +52,7 @@ const checkUser = async (req, res, next) => {
 
   } catch (e) {
     console.log('Error in the checkUser user side : ' + e)
+    res.redirect("/error")
   }
 }
 
@@ -73,6 +75,7 @@ const login = async (req, res) => {
     }
   } catch (e) {
     console.log("error in the login route of user controller : " + e)
+    res.redirect("/error")
   }
 }
 
@@ -102,66 +105,56 @@ const validateUser = async (req, res) => {
 
   } else {
     res.redirect('/login?username=incorrect username')
+    res.redirect("/error")
   }
 
 }
+
 
 const userAccount = async (req, res) => {
   try {
     console.log(req.params.id)
     const userin = req.session.userName
-     
-    const userData = await userPro.findOne({ username: userin,primary:1 })
+
+    const userData = await userPro.findOne({ username: userin, primary: 1 })
     const user = await userDetails.findOne({ username: userin })
-    const useraddress = await userPro.find({username:userin,primary:0})
-    console.log(useraddress)
-    const username =  userin
+    const useraddress = await userPro.find({ username: userin, primary: 0 })
+    console.log(user)
+    const username = userin
     const cat = await catDetails.find({ list: 0 })
-    res.render('user-account', { userData, user, userin, cat, useraddress,username})
+    res.render('user-account', { userData, user, userin, cat, useraddress, username })
   } catch (e) {
     console.log('error in the userAccount of userController in user side : ' + e)
+    res.redirect("/error")
   }
 }
 
-const newAddress = async(req,res)=>{
-  try{
+const newAddress = async (req, res) => {
+  try {
     const userin = req.session.userName
     console.log(userin)
     console.log(req.body)
     const newAddress = new userPro({
-      username:userin,
-      fullname:req.body.fullname,
-      phone:req.body.phone,
-      address:{
-        houseName:req.body.house,
-        city:req.body.city,
-        state:req.body.state,
-        country:req.body.country,
-        pincode:req.body.pincode
+      username: userin,
+      fullname: req.body.fullname,
+      phone: req.body.phone,
+      address: {
+        houseName: req.body.house,
+        city: req.body.city,
+        state: req.body.state,
+        country: req.body.country,
+        pincode: req.body.pincode
       },
-      primary:0
+      primary: 0
     })
     await newAddress.save()
     res.redirect(`/useraccount/${userin}`)
-    
-  }catch(e){
-    console.log('error in the newAddress in userController in the user side:'+e)
+
+  } catch (e) {
+    console.log('error in the newAddress in userController in the user side:' + e)
+    res.redirect("/error")
   }
 }
-
-// const changePass = (req, res) => {
-//   try {
-//     const userin = req.session.userName
-//     res.redirect('/reset-password')
-//   } catch (e) {
-//     console.log('error in the changePass in userController in user side : ' + e)
-//   }
-// }
-
-
-
-
-
 
 // user-reset-password route user can reset the password
 const reset_password = async (req, res) => {
@@ -175,9 +168,9 @@ const reset_password = async (req, res) => {
     }
   } catch (e) {
     console.log("error in the reset-password controller ; " + e)
+    res.redirect("/error")
   }
 }
-
 
 //======================================================================= 
 const passresetverification = async (req, res) => {
@@ -191,6 +184,7 @@ const passresetverification = async (req, res) => {
     }
   } catch (e) {
     console.log("erroor in the passresetverification user controller : " + e)
+    res.redirect("/error")
   }
 }
 
@@ -205,6 +199,7 @@ const reset_password_get = (req, res) => {
     }
   } catch (e) {
     console.log("error in the reset_password controller : " + e)
+    res.redirect("/error")
   }
 }
 
@@ -225,6 +220,7 @@ const newpass = async (req, res) => {
     }
   } catch (e) {
     console.log("Error in the newpass in user side : " + e)
+    res.redirect("/error")
   }
 }
 
@@ -235,6 +231,7 @@ const signout = async (req, res) => {
     res.redirect('/')
   } catch (e) {
     console.log("error in the signout page of the user : " + e)
+    res.redirect("/error")
   }
 }
 
@@ -253,21 +250,14 @@ const zoom = async (req, res) => {
 
   } catch (e) {
     console.log("error in the zoom of user controller :" + e)
+    res.redirect("/error")
   }
 }
 
 
 // sortin based the user requiments
-const azSort = async (req, res) => {
-  try {
-    const data = req.params.id
-    console.log(data)
-    const Product = await productDetails.find({ category: data }).sort({ name: 1 })
-    data + "Products"
-    res.render("user-products", { Product, data })
-  } catch (e) {
-    console.log("Error in user controller azSort : " + e)
-  }
+const errorPage = (req, res) => {
+  res.render('errorPage')
 }
 
 
@@ -276,7 +266,6 @@ module.exports = {
   home,
   validateUser,
   newpass,
-  azSort,
   zoom,
   login,
   reset_password_get,
@@ -286,4 +275,5 @@ module.exports = {
   checkUser,
   userAccount,
   newAddress,
+  errorPage,
 }

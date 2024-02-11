@@ -83,12 +83,12 @@
                 <form method="post" enctype="multipart/form-data">
                   <div class="form-group">
                     <label class="form-control-label required">Name</label>
-                    <input type="text" placeholder="Name of the product" class="form-control" name="name">
+                    <input required type="text" placeholder="Name of the product" class="form-control" name="name">
                   </div>
                   <div class="form-group">
                     <label class="form-control-label required">Category</label>
                     <br>
-                    {{!-- <input type="text" placeholder="Category of the product" class="form-control" name="category">
+                    {{!-- <input required type="text" placeholder="Category of the product" class="form-control" name="category">
                     --}}
                     
                     <select class="form-select" aria-label="Default select example" name="category">
@@ -101,32 +101,32 @@
                   </div>
                   <div class="form-group">
                     <label class="form-control-label required">Description</label>
-                    <input type="text" placeholder="Description of the product" class="form-control" name="description">
+                    <input required type="text" placeholder="Description of the product" class="form-control" name="description">
                   </div>
                   {{!-- <div class="form-group">
                     <label class="form-control-label required">About</label>
-                    <input type="text" placeholder="About the product" class="form-control" name="about">
+                    <input required type="text" placeholder="About the product" class="form-control" name="about">
                   </div> --}}
                   <div class="form-group">
                     <label class="form-control-label required">About the product</label>
-                    <input type="text" placeholder="About of the product" class="form-control" name="about">
+                    <input required type="text" placeholder="About of the product" class="form-control" name="about">
                   </div>
                   <div class="form-group">
                     <label class="form-control-label required">Price</label>
-                    <input type="number" placeholder="Price of the product" class="form-control" name="price">
+                    <input required type="number" min="1" placeholder="Price of the product" class="form-control" name="price">
                   </div>
                   <div class="form-group">
                     <label class="form-control-label required">Stock</label>
-                    <input type="number" placeholder="Quantity of the product" class="form-control" name="stock">
+                    <input required type="number" min="1" placeholder="Quantity of the product" class="form-control" name="stock">
                   </div>
                   <div class="form-group">
-                    <label class="form-control-label required">Upload Front Image</label>
+                    <label class="form-control-label required" >Upload Front Image</label>
                     <br>
-                    <input type="file" name="images" multiple>
+                    <input required type="file" name="images" multiple>
                   </div>
                   <!-- Submit button -->
                   <div class="form-group text-center">
-                    <input type="submit" value="ADD" class="btn btn-primary">
+                    <input required type="submit" value="ADD" class="btn btn-primary">
                   </div>
                 </form>
                 {{!-- {{/if}} --}}

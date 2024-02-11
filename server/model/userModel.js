@@ -32,6 +32,12 @@ const userSchema = new mongoose.Schema({
     Order:{
         type:Object
         
+    },
+    coupon:{
+        type:Array
+    },
+    wallet:{
+        type:Number
     }
 
 })

@@ -17,6 +17,8 @@ router.post('/', adminCon.checkAdmin)
 
 router.get('/dashbord', adminCon.check, dashAdmin.dashbord)
 router.get('/chart-data', adminCon.check, dashAdmin.chartData)
+router.get('/chart-data-month', adminCon.check, dashAdmin.chartDataMonth)
+router.get('/chart-data-year', adminCon.check, dashAdmin.chartDataYear)
 router.post('/salesReport', adminCon.check, orderData.salesReport)
 
 
@@ -39,7 +41,7 @@ router.post('/products', adminCon.check, productmanage.searchProduct)
 
 router.get('/add_products', adminCon.check, productmanage.add_products)
 
-router.post('/add_products', adminCon.check, imagemanage.imgUpload)
+router.post('/add_products', imagemanage.imgUpload)
 
 // router.post('/edit_products/:id', adminCon.check,productmanage.edit_product)
 router.post('/edit_products/:id', adminCon.check, imagemanage.singleImage)
@@ -74,7 +76,7 @@ router.get('/delete/:id', adminCon.check, productmanage.list_product)
 router.get('/orders', adminCon.check, orderData.orders)
 router.post('/updatestatus', adminCon.check, orderData.updateOrderStatus)
 router.get('/deleteOrder', adminCon.check, orderData.deleteOrder)
-router.get('/orderDetails', orderData.details)
+router.get('/orderDetails',adminCon.check, orderData.details)
 
 //search order in admin pannel
 router.post('/orders', adminCon.check, orderData.searchOrder)

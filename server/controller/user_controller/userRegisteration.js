@@ -50,6 +50,7 @@ const registerUser = async (req, res) => {
 
     } catch (e) {
         console.log("error in registerUser userRegisteration controller user side : " + e)
+        res.redirect("/error")
     }
 
 
@@ -74,6 +75,7 @@ const user_register = async (req, res) => {
         }
     } catch (e) {
         console.log("error in the user-register of user side: " + e)
+        res.redirect("/error")
     }
 }
 
@@ -88,7 +90,9 @@ const otpPage = (req, res) => {
         }
     } catch (e) {
         console.log("error in the otpPage user controller : " + e)
+        res.redirect("/error")
     }
+
 }
 
 
@@ -134,6 +138,7 @@ const otpVerification = async (req, res) => {
         }
     } catch (e) {
         console.log('error in the otpVerification in userRegisteration controller user side : ' + e)
+        res.redirect("/error")
     }
 
 }
@@ -151,6 +156,7 @@ const reset_otp_verification = async (req, res) => {
         }
     } catch (e) {
         console.log("error in the reset_otp_verification of the user controller : " + e)
+        res.redirect("/error")
     }
 }
 
@@ -181,6 +187,7 @@ const resetotpv = async (req, res) => {
         }
     } catch (e) {
         console.log("Error in resetotp in user side : " + e)
+        res.redirect("/error")
     }
 }
 
@@ -201,6 +208,7 @@ const resetotpVerification = (req, res) => {
         }
     } catch (e) {
         console.log("Eorror in resetotpVerification in user side : " + e)
+        res.redirect("/error")
     }
 }
 
@@ -220,6 +228,7 @@ const resendotp = (req, res) => {
         res.redirect('/otp_verification')
     } catch (e) {
         console.log('error in the resendotp in userRegisterationController in user side:' + e)
+        res.redirect("/error")
     }
 }
 

@@ -3,20 +3,29 @@ const productDetails = require('../../model/productModel')
 const config = require('../../../firebase.config')
 const editCat = require('../../model/categoryModel')
 const imageCon = require('../../controller/admin_controller/imageController')
+const sharp = require('sharp')
+const pathModule = require('path');
 const bcrypt = require('bcrypt')
 
+const path = require('path');
+
+const fs = require('fs');
+
 const addProduct = async (data, file) => {
-    // console.log(data)
-    // console.log(file)
-    let imgpath = []
-    console.log(file)
-    // filePath.replace(/\\/g, '/');
+
+
     try {
+        let filepath = [];
         for (let i = 0; i < file.length; i++) {
-            imgpath[i] = file[i].path.replace(/\\/g, '/').replace('public/', '/')
+            let filePath = file[i].path.replace(/\\/g, '/').replace('public/', '/');
+            filepath.push(filePath)
+            console.log(filePath, 'ishdfiasd filePath filePath filePath filePath')
         }
-        const { name, category, description, price, stock, about } = data
-        console.log(imgpath)
+        console.log(filepath)
+
+        const { name, category, description, price, stock, about } = data;
+        console.log('Image Paths:', filepath);
+
         const productData = new productDetails({
             name: name,
             category: category,
@@ -26,46 +35,17 @@ const addProduct = async (data, file) => {
             stock: stock,
             list: 0,
             display: 0,
-            imagePath: imgpath,
-        })
+            imagePath: filepath,
+        });
 
-        await productData.save()
-
-
+        await productData.save();
+        console.log('Product saved successfully.');
     } catch (e) {
-        console.log("error in the productController admin side : " + e)
+        console.error('Error in the productController admin side:', e);
     }
-    // try {
-    //     const path = res
-    //     console.log(path)
-    //     const { name, category, description, price, stock } = req
-    //     console.log(name)
+};
 
-    //     // if both req.body and req.file exist
-    //     if (req && res) {
-    //         const productData = new productDetails({
-    //             name: name,
-    //             category: category,
-    //             description: description,
-    //             price: price,
-    //             stock: stock,
-    //             list: 0,
-    //             imagePath: path,
-    //         })
-    //         await productData.save()
-    //         // console.log("product added to the database suucess")
-    //         console.log('File successfully uploaded.');
-    //         // res.redirect('/admin/add_products?datasuccess=Product added successfully')
-    //         console.log("product added to the database suucess")
-    //         // res.redirect('/admin/add_products?datasuccess=Product added successfully')
-    //     } else {
-    //         // res.redirect('/admin/add_products?dataerror=Invalid product data')
-    //     }
-    // } catch (e) {
-    //     console.log("Product Details product Controller error : " + e)
-    //     // res.redirect('/admin/add_products?dataerror=Error adding product')
-    // }
-}
+
 
 const edit_product = async (body, file, id) => {
     try {
@@ -74,10 +54,10 @@ const edit_product = async (body, file, id) => {
         console.log('edit_product image check------------------')
         console.log(file)
         // await imageCon.singleImage(req.body)
-
+        let imagePath = []
         console.log('check for image is over+++++++++++')
         if (file.length != 0) {
-            let imagePath = []
+
             for (let i = 0; i < file.length; i++) {
 
                 imagePath[i] = file[i].path.replace(/\\/g, '/').replace('public/', '/')
@@ -100,7 +80,8 @@ const edit_product = async (body, file, id) => {
                     description: body.description,
                     about: body.about,
                     price: body.price,
-                    stock: body.stock
+                    stock: body.stock,
+                    imagePath: imagePath
                 }
             })
 

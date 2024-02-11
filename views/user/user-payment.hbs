@@ -42,6 +42,49 @@
 
     <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="../../user/img/favicon-watch.png">
+    <style>
+        .popup {
+            width: 400px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.1);
+            background-color: rgb(197, 217, 197);
+            align-items: center;
+            padding: 0 30px 30px;
+            color: #333;
+            text-align: center;
+            justify-content: center;
+            visibility: hidden;
+            transition: transform 0.4s, top 0.4s;
+        }
+
+        .popupOpen {
+            top: 30%;
+            transform: translate(-50%, -50%) scale(1);
+            visibility: visible;
+        }
+
+        .popup button {
+            width: 100%;
+            margin-top: 50px;
+            padding: 10px 0;
+            background-color: #6fd649;
+            color: #fff;
+            outline: none;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .applyCoupon {
+            visibility: visible;
+        }
+
+        .removeCoupon {
+            visibility: hidden;
+        }
+    </style>
 </head>
 
 <body class="product-checkout checkout-cart">
@@ -80,14 +123,42 @@
                                     <div class="container mt-5">
                                         <h2 class="mb-4">Shipping Details</h2>
                                         <hr>
+                                        <div style="display: flex;">
+                                            <div class="mb-4">
+                                                <h4>Shipping Address:</h4>
+                                                <p>{{address.housename}}, {{address.city}}, {{address.state}}
+                                                    {{address.zip}}
+                                                    <br>{{address.country}}
+                                                </p>
+                                            </div>
+                                            <div style="margin-left: 30%;">
 
-                                        <div class="mb-4">
-                                            <h4>Shipping Address:</h4>
-                                            <p>{{address.housename}}, {{address.city}}, {{address.state}}
-                                                {{address.zip}}
-                                                <br>{{address.country}}
-                                            </p>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Enter Coupon Code</span>
+                                                    <input type="text" aria-label="First name" class="form-control"
+                                                        name="coupon" id="couponCode">
+                                                    <button onclick="checkCoupon()" class="btn btn-warning applyCoupon"
+                                                        id="applyCoupons">Apply</button>
+                                                    <button onclick="removeCoupon()"
+                                                        class="btn btn-warning removeCoupon"
+                                                        id="removeCoupons">Remove</button>
+                                                    {{!-- <input type="text" aria-label="Last name"
+                                                        class="form-control"> --}}
+                                                </div>
+                                                <br>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Wallet Amount</span>
+                                                    <input type="text" aria-label="First name" class="form-control"
+                                                        name="coupon" id="couponCode" value="Rs. {{userData.[0].wallet}}" disabled>
+                                                    {{!-- <p>400</p> --}}
+                                                    <button onclick="checkCoupon()" class="btn btn-warning">Use</button>
+                                                    {{!-- <input type="text" aria-label="Last name"
+                                                        class="form-control"> --}}
+                                                </div>
+
+                                            </div>
                                         </div>
+
                                         <h4>Product Details</h4>
                                         <table class="table">
                                             <thead>
@@ -105,14 +176,42 @@
                                                     <td>{{this.quentity}}</td>
                                                     <td>{{this.price}}</td>
                                                 </tr>
+
                                                 {{/each}}
+
+                                                {{!-- <tr>
+                                                    <td></td>
+                                                    <td><strong>Total Price</strong></td>
+                                                    <td> <strong>
+                                                            <p id="totalAmount">{{totalPrice}}</p>
+                                                        </strong>
+                                                    </td>
+                                                </tr> --}}
+
                                             </tbody>
                                         </table>
                                         <hr>
+                                        <div style="padding-left: 60%;">
+
+                                            <h6 style="padding-left: 45%;" id="price">{{totalPrice}}</h6>
+                                            <h5 id="applied" style="display: none;">Coupon Applied</h5>
+                                            <h6 style="margin-top: -6%;padding-left: 8%;display: none;"
+                                                id="discountValue"></h6>
+                                            {{!-- <h5>Shipping Charges</h5>
+                                            <h6 style="margin-top: -6%;padding-left: 45%;">+10 Rs.</h6> --}}
+                                            <hr>
+                                            <h5>Price</h5>
+                                            <h6 style="margin-top: -6%;padding-left: 45%;" id="totalAmount">
+                                                {{totalPrice}}</h6>
+
+                                        </div>
+
                                         <div class="mt-3">
                                             {{!-- <h4>Total: $ {{formatCurrency (reduce items 'price' 0)}}</h4> --}}
-                                            <h4 style="margin-left: 70%;">Total : Rs. {{totalPrice}}</h4>
-                                            <hr>
+                                            {{!-- <h4 style="margin-left: 70%;" id="value">Total : Rs. {{totalPrice}}
+                                            </h4> --}}
+                                            {{!--
+                                            <hr> --}}
                                             <!-- Payment buttons -->
                                             <p id="cartotal" hidden>{{userin}}</p>
                                             <div class="mt-3">
@@ -121,6 +220,12 @@
                                                 <button class="btn btn-primary razaropay" onclick="">Online
                                                     Payment</button>
                                             </div>
+
+                                        </div>
+                                        <div class="popup" id="popup">
+                                            <h3>Coupon Code</h3>
+                                            <p id="couponmsg"></p>
+                                            <button type="button" onclick="popupClose()">OK</button>
 
                                         </div>
 
@@ -910,8 +1015,107 @@
 
     {{!-- onlinePayment intagraton --}}
 
+
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        let popup = document.getElementById('popup')
+        function popupClose() {
+            popup.classList.remove('popupOpen')
+            //window.location.reload()
+        }
+
+        function checkCoupon(event) {
+
+            //const coupon = $('#couponCode').val();
+            const coupon = document.getElementById('couponCode').value
+            const amount = document.getElementById('price').innerText
+            console.log(amount)
+            console.log(coupon)
+
+            // Make the AJAX request
+            $.ajax({
+                url: '/couponCheck',
+                type: 'POST',
+                data: {
+                    coupon: coupon,
+                    amount: amount
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        const applied = document.getElementById('applied')
+                        console.log(applied)
+                        const appliedamount = document.getElementById('discountValue')
+                        applied.style.display = 'inline'
+                        appliedamount.style.display = 'inline'
+                        document.getElementById('discountValue').innerText = -res.discount + "Rs."
+                        document.getElementById('totalAmount').innerText = res.amount
+                        const apply = document.getElementById('applyCoupons')
+                        const remove = document.getElementById('removeCoupons')
+                        remove.classList.remove('removeCoupon')
+                        console.log(apply)
+                        apply.classList.add('removeCoupon')
+                        document.getElementById('couponmsg').innerHTML = `Coupon Applied Successfully`
+                        popup.classList.add("popupOpen")
+                        //apply.style.display = 'none'
+                        console.log(res);
+
+                    } else {
+                        document.getElementById('couponmsg').innerHTML = `${res.msg}`
+                        //window.alert(`${res.msg}`);
+                        popup.classList.add("popupOpen")
+                    }
+                },
+                error: function () {
+                    alert('Error: Unable to communicate with the server');
+                }
+            });
+        }
+
+        function removeCoupon() {
+            const coupon = document.getElementById('couponCode').value
+            const amount = document.getElementById('price').innerText
+            console.log(amount)
+            console.log(coupon)
+            console.log('removeCoupon() calleds')
+            $.ajax({
+                url: '/removeCoupon',
+                method: 'post',
+                data: {
+                    coupon: coupon,
+                    amount: amount
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.success) {
+                        const applied = document.getElementById('applied')
+                        console.log(applied)
+                        const appliedamount = document.getElementById('discountValue')
+                        applied.style.display = 'none'
+                        appliedamount.style.display = 'none'
+                        document.getElementById('totalAmount').innerText = amount
+                        const apply = document.getElementById('applyCoupons')
+                        const remove = document.getElementById('removeCoupons')
+                        remove.classList.add('removeCoupon')
+                        console.log(apply)
+                        apply.classList.remove('removeCoupon')
+                        document.getElementById('couponmsg').innerHTML = `Coupon Removed Successfully`
+                        popup.classList.add("popupOpen")
+
+                    } else {
+                        alert('something went wrong!!!!!')
+                    }
+                }
+
+            })
+        }
+    </script>
+
+    // online payment
     <script>
 
         $(document).ready(function () {
@@ -921,20 +1125,22 @@
                 //var formData = $(this).serialize();
                 var username = document.getElementById('cartotal').innerHTML
                 console.log(username)
+                var amount = document.getElementById('totalAmount').innerHTML
+                console.log(amount)
 
                 $.ajax({
                     url: "/createOrder",
                     type: "POST",
                     data: {
                         username: username,
-
+                        amount: amount
                     },
                     success: function (res) {
                         if (res.success) {
                             console.log(res)
                             var options = {
                                 "key": "" + res.key_id + "",
-                                "amount": "" + res.amount + "",
+                                "amount": "" + amount + "",
                                 "currency": "INR",
                                 "name": "WatchStore",
                                 //"description": "sfojgasgoaga sfjasof arrigf eigh",

@@ -7,6 +7,7 @@ const cartController = require('../controller/user_controller/cartController')
 const profile = require('../controller/user_controller/userProfileController')
 const order = require('../controller/user_controller/orderController')
 const onlinePayment = require('../controller/user_controller/onlinePayment')
+const coupon = require('../controller/user_controller/couponController')
 const { route } = require('./adminRoute')
 const router = express.Router()
 
@@ -87,6 +88,12 @@ router.post('/displayaddress', user.checkUser, order.displayaddress)
 router.post('/to-payment', user.checkUser, order.toPayment)
 router.post('/onlinePayment', user.checkUser, onlinePayment.onlinePayment)
 router.post('/placeOrder', onlinePayment.call)
+
+// coupon management
+router.post('/couponCheck',user.checkUser,coupon.couponCheck)
+// coupon remove
+
+router.post('/removeCoupon',user.checkUser,coupon.removeCoupon)
 // router.post('/createOrder',onlinePayment.ajaxCall)
 router.get('/api/payment/verify', user.checkUser, onlinePayment.razaroPayCall)
 router.get('/paymentSuccess', user.checkUser, order.codPayment)
@@ -119,6 +126,9 @@ router.get('/orderhistory', user.checkUser, order.orderData)
 router.get('/orderHistoryPage/:id', user.checkUser, order.showDetailOrderHistory)
 router.get('/historyOrder', user.checkUser, order.orderHistory)
 
+//return reason
+router.post("/returnreason/:id",user.checkUser,order.returnreason)
+
 
 // cancell the order made by the user 
 router.get('/cancelProduct', user.checkUser, order.cancelPro)
@@ -141,9 +151,7 @@ router.get('/update-profile', user.checkUser, profile.updateProfile)
 
 router.post('/update-profile', user.checkUser, profile.updateProfileData)
 
-router.get('/error',(req,res)=>{
-    res.render('errorPage')
-})
+router.get('/error',user.errorPage)
 
 
 

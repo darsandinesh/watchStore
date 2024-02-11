@@ -1,11 +1,11 @@
 const multer = require('multer');
+const sharp = require('sharp')
+const fs = require('fs');
+const path = require('path');
 const product = require('./productController')
 
 // Multer configuration for handling multiple file uploads
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './public/uploads/');
-  },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname);
   }
@@ -17,15 +17,45 @@ const upload = multer({ storage: storage }).array('images', 5);
 
 // Route handler for form submission
 const imgUpload = (req, res) => {
-  // console.log(req.files)
-  // console.log(req.body)
-  upload(req, res, function (err) {
+  upload(req, res, async (err) => {
     if (err) {
-      console.log("Error: " + err.message)
-    } else {
-      product.addProduct(req.body, req.files)
-      res.redirect('/admin/add_products?datasuccess=Product added successfully')
+      console.log("Error: " + err.message);
+      return res.status(500).send('Error uploading files.');
     }
+
+    console.log(req.files, '---------------');
+    const files = req.files;
+    const uploadedImages = [];
+
+    for (const file of files) {
+      const resizedImageBuffer = await sharp(file.path)
+        .resize({ width: 300, height: 300 }) // Set your desired dimensions
+        .toBuffer();
+
+
+      const fileName = Date.now() + '-' + file.originalname; // Use a function to generate a unique filename
+      const filePath = path.join('./public/uploads/', fileName);
+      console.log(filePath, 'filePath kitti--------------')
+
+      // Write the resized image buffer to the file
+      fs.writeFileSync(filePath, resizedImageBuffer);
+
+      // Process or store the resized image buffer as needed
+      uploadedImages.push({
+        originalname: file.originalname,
+        mimetype: file.mimetype,
+        size: resizedImageBuffer.length,
+        buffer: resizedImageBuffer,
+        path: filePath
+      });
+    }
+
+    console.log(uploadedImages, 'uploadedImages-----------------uploadedImages');
+    // You can now further process or store the uploadedImages array
+    product.addProduct(req.body, uploadedImages)
+
+    // Respond to the client or redirect as needed
+    res.send('Files uploaded and processed successfully.');
   });
 };
 
@@ -37,11 +67,39 @@ const imgUpload = (req, res) => {
 
 const singleImage = (req, res) => {
   try {
-    upload(req, res, function (err) {
+    upload(req, res, async function (err) {
       if (err) {
         console.log("error in singleIMage : " + err)
       } else {
-        product.edit_product(req.body, req.files, req.params.id)
+        console.log(req.files, '---------------');
+        const files = req.files;
+        const uploadedImages = [];
+
+        for (const file of files) {
+          const resizedImageBuffer = await sharp(file.path)
+            .resize({ width: 300, height: 300 }) // Set your desired dimensions
+            .toBuffer();
+
+
+          const fileName = Date.now() + '-' + file.originalname; // Use a function to generate a unique filename
+          const filePath = path.join('./public/uploads/', fileName);
+          console.log(filePath, 'filePath kitti--------------')
+
+          // Write the resized image buffer to the file
+          fs.writeFileSync(filePath, resizedImageBuffer);
+
+          // Process or store the resized image buffer as needed
+          uploadedImages.push({
+            originalname: file.originalname,
+            mimetype: file.mimetype,
+            size: resizedImageBuffer.length,
+            buffer: resizedImageBuffer,
+            path: filePath
+          });
+        }
+
+        console.log(uploadedImages, 'uploadedImages-----------------uploadedImages');
+        product.edit_product(req.body, uploadedImages, req.params.id)
         res.redirect('/admin/products')
       }
     })

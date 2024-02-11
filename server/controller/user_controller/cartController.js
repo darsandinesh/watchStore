@@ -62,6 +62,7 @@ const viewCart = async (req, res) => {
         res.render('product-cart', { catData, userin, catDataCount, totalPrice, cat })
     } catch (e) {
         console.log('error in the viewCart in cartController user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -100,6 +101,7 @@ const addtoCart = async (req, res) => {
         res.redirect('/cart')
     } catch (e) {
         console.log('error in the addtoCart in cartController user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -166,6 +168,7 @@ const changeQuantity = async (req, res) => {
 
     } catch (e) {
         console.log('error in the changeQuantity in cartController in user side: ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -180,6 +183,7 @@ const increment = async (req, res) => {
         res.redirect('/cart')
     } catch (e) {
         console.log('error in the increment in cartController in userSide' + e)
+        res.redirect("/error")
     }
 }
 // decremet the quentity of the product in the cart
@@ -192,6 +196,7 @@ const decrement = async (req, res) => {
         res.redirect('/cart')
     } catch (e) {
         console.log('error in the decrement in cartController in userSide' + e)
+        res.redirect("/error")
     }
 }
 
@@ -202,6 +207,7 @@ const deleteCart = async (req, res) => {
         res.redirect('/cart')
     } catch (e) {
         console.log('error in the deleteCart in cartController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -216,6 +222,7 @@ const viewWish = async (req, res) => {
         res.render('user-wish-list', { wishData, userin, cat })
     } catch (e) {
         console.log('error in the viewCart in cartController user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -246,6 +253,7 @@ const addtoWishList = async (req, res) => {
         res.redirect('/wishlist')
     } catch (e) {
         console.log('error in the addtoCart in cartController user side : ' + e)
+        res.redirect("/error")
     }
 }
 
@@ -256,6 +264,7 @@ const removeWishlist = async (req, res) => {
         res.redirect('/wishlist')
     } catch (e) {
         console.log('error in the removeWishlist in cartController in user side : ' + e)
+        res.redirect("/error")
     }
 }
 

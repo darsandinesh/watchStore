@@ -69,6 +69,12 @@ const orderSchema = new mongoose.Schema({
             required:true
         },
     },
+    return:{
+        type:String
+    },
+    cancel:{
+        type:String
+    }
 })
 
 module.exports = mongoose.model('orderDetails',orderSchema)

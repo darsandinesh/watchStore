@@ -64,4 +64,5 @@ hbs.registerHelper('ifNotEquals', function (arg1, arg2, options) {
 app.use('/', userRoute)
 app.use('/admin', adminRoute)
 
-app.listen(8888, () => console.log(`server started at portnumber : ${process.env.PORT}`))
+app.listen(8888, () => console.log(`
+server started at portnumber : http://localhost:${process.env.PORT}`))

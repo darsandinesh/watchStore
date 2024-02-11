@@ -32,9 +32,7 @@ const dashbord = async (req, res) => {
 const chartData = async (req, res) => {
     try {
         console.log('/chart-data calle')
-        let Aggregation
-        if (req.query.val == 'day') {
-            Aggregation = await orderData.aggregate([
+            const Aggregation = await orderData.aggregate([
                 {
                     $match: {
                         orderDate: { $exists: true }
@@ -58,9 +56,18 @@ const chartData = async (req, res) => {
                     }
                 }
             ]);
-        }
-        if (req.query.val == 'month') {
-            Aggregation = await orderData.aggregate([
+        res.json(Aggregation);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
+const chartDataMonth = async (req, res) => {
+    try {
+        console.log('/chart-data calle')
+            const Aggregation = await orderData.aggregate([
                 {
                     $match: {
                         orderDate: { $exists: true }
@@ -82,9 +89,18 @@ const chartData = async (req, res) => {
                     }
                 }
             ]);
-        }
-        if (req.query.val == 'year') {
-            Aggregation = await orderData.aggregate([
+        res.json(Aggregation);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
+const chartDataYear = async (req, res) => {
+    try {
+        console.log('/chart-data calle')
+            const Aggregation = await orderData.aggregate([
                 {
                     $match: {
                         orderDate: { $exists: true }
@@ -104,16 +120,6 @@ const chartData = async (req, res) => {
                     }
                 }
             ]);
-        }
-        // console.log(dayAggregation,'dayAggregation')
-        // console.log(monthAggregation,'monthAggregation')
-        // console.log(yearAggregation,'yearAggregation')
-        // const responseData = {
-        //     dayAggregation: dayAggregation,
-        //     monthAggregation: monthAggregation,
-        //     yearAggregation: yearAggregation
-        //   };
-        console.log(Aggregation)
         res.json(Aggregation);
     } catch (error) {
         console.error(error);
@@ -121,7 +127,11 @@ const chartData = async (req, res) => {
     }
 }
 
+
+
 module.exports = {
     dashbord,
-    chartData
+    chartData,
+    chartDataMonth,
+    chartDataYear
 }
