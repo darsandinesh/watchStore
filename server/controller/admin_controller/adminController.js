@@ -8,9 +8,9 @@ const couponModel = require('../../model/couponModel')
 
 const check = (req, res, next) => {
     try {
-        if(req.session.adminAuth){
+        if (req.session.adminAuth) {
             next()
-        }else{
+        } else {
             res.redirect('/admin')
         }
     } catch (e) {
@@ -155,7 +155,7 @@ const coupon = async (req, res) => {
         const couponData = await couponModel.find({})
         const couponFound = req.query.found
         console.log(couponData)
-        res.render('admin_coupon',{couponData,couponFound})
+        res.render('admin_coupon', { couponData, couponFound })
     } catch (e) {
         console.log("error in the coupon controller in admin side :" + e)
     }
@@ -174,6 +174,14 @@ const list_product = (req, res) => {
 
 }
 
+const offers = (req, res) => {
+    try {
+        res.render('admin_offers')
+    } catch (e) {
+        console.log('error in the offers in the adminController in the admin side : ' + e)
+    }
+}
+
 
 module.exports = {
     user,
@@ -188,4 +196,5 @@ module.exports = {
     add_coupon,
     list_product,
     check,
+    offers,
 }

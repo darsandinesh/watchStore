@@ -28,35 +28,6 @@ const createOrder = async (req, res) => {
         console.log('1')
         const userData = await cart.find({ username: req.body.username })
         console.log('2')
-        // const totalValue = await cart.aggregate([
-        //     {
-        //         $match: { username: req.body.username }
-        //     },
-        //     {
-        //         $group: {
-        //             _id: '$product',
-        //             totalPrice: { $sum: '$price' },
-        //             totalQuantity: { $sum: '$quentity' }
-        //         }
-        //     },
-        //     {
-        //         $project: {
-        //             _id: 1,
-        //             amount: {
-        //                 $multiply: ['$totalPrice', '$totalQuantity']
-        //             }
-        //         }
-        //     },
-        //     {
-        //         $group: {
-        //             _id: '',
-        //             sum: {
-        //                 $sum: '$amount'
-        //             }
-        //         }
-        //     }
-        // ])
-        //const amount = totalValue[0].sum
         console.log('3')
         console.log(req.body)
         const options = {
@@ -78,7 +49,7 @@ const createOrder = async (req, res) => {
                         success: true,
                         msg: 'Order Created',
                         order_id: order.id,
-                        amount: req.body.amount,
+                        amount: req.session.amountToPay,
                         key_id: process.env.RAZORPAY_YOUR_KEY_ID,
                         product_name: req.body.name,
                         // description: req.body.description,

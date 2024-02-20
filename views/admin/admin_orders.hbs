@@ -50,6 +50,7 @@
         <li><a href="/admin/category"> <i class="icon-padnote"></i>Category </a></li>
         <li class="active"><a href="/admin/orders"> <i class="icon-padnote"></i>Orders </a></li>
         <li><a href="/admin/coupon"> <i class="icon-padnote"></i>Coupon </a></li>
+        <li><a href="/admin/offers"> <i class="icon-padnote"></i>Offers </a></li>
       </ul>
     </nav>
     <!-- Sidebar Navigation end-->
@@ -129,9 +130,13 @@
                       <option value="Delivered Successfully" style="color: green;">Delivered Successfully</option>
                     </select>
                     {{else}}
+                    {{#if this.returnStatus}}
+                    <p style="color: red;">Product Returned</p>
+                    {{else}}
                     <select class="form-select" aria-label="Default select example" style="color: green;" name="status">
                       <option value="Delivered Successfully" style="color: green;">Delivered Successfully</option>
                     </select>
+                    {{/if}}
                     {{/ifEquals}}
                     {{/ifEquals}}
                   </td>

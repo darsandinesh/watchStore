@@ -244,7 +244,7 @@ const orderpagination = async (req, res) => {
         let displayprev = 1
         if (current <= 0) displayprev = 0
         let displaynxt = 1
-        if (current >= count-1) displaynxt = 0
+        if (current >= count - 1) displaynxt = 0
         const dataOrder = await orderData.find({}).skip(current * 5).limit(5).sort({ '_id': -1 })
         res.render('admin_orders', { dataOrder, current, displayprev, displaynxt })
 
@@ -253,6 +253,31 @@ const orderpagination = async (req, res) => {
     }
 }
 
+const returnDetails = async (req, res) => {
+    try {
+        console.log(req.query)
+        await orderData.updateOne({ orderId: req.query.id, product: req.query.product },{returnStatus:1})
+        const user = await orderData.findOne({ orderId: req.query.id, product: req.query.product })
+
+        console.log(user,'11111111111111111111111111111111111111111111111')
+        let amount = user.price * user.quentity
+        console.log(amount)
+        await userDetails.updateOne({username:user.username},{$set:{wallet:amount}},{upsert:true})
+        res.redirect(`/admin/orderDetails?orderId=${req.query.id}&product=${req.query.product}`)
+    } catch (e) {
+        console.log('error in the returnDetails in the ordetrController in the admin side : ' + e)
+    }
+}
+
+const returnFail = async (req,res)=>{
+    try{
+        console.log(req.query,'222222222222222222222222222222222222222222222222')
+        await orderData.updateOne({ orderId: req.query.id, product: req.query.product },{returnStatus:2})
+        res.redirect(`/admin/orderDetails?orderId=${req.query.id}&product=${req.query.product}`)
+    }catch(e){
+        console.log('error in the returnFail of orderController in admin side : ' + e)
+    }
+}
 
 module.exports = {
     updateOrderStatus,
@@ -262,4 +287,6 @@ module.exports = {
     details,
     salesReport,
     orderpagination,
+    returnDetails,
+    returnFail
 }

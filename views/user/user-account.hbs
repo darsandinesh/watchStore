@@ -91,7 +91,7 @@
                                             </h5>
                                         </div>
                                         <hr>
-                                         <div class="card-body">
+                                        <div class="card-body">
                                             {{#if userData}}
                                             <a href="/update-profile" style=" color: white;">Update Profile</a>
                                             {{else}}
@@ -99,16 +99,18 @@
                                             {{/if}}
 
                                         </div>
-                                        <div class="card-body" >
+                                        <div class="card-body">
                                             <a href="#" style=" color: white;">Wallet Amount : </a>
-                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="margin-left: 6%;">{{user.wallet}}</span>
+                                            <span
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+                                                style="margin-left: 6%;">{{user.wallet}}</span>
 
                                         </div>
                                         <div class="card-body">
                                             <a href="/orderhistory" style=" color: white;">Order History</a>
 
                                         </div>
-                                       
+
                                         <div class="card-body">
                                             <a href="/changePassword" style=" color: white;">Change Password</a>
 
@@ -128,7 +130,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">User Details</h5>
                                             <ul class="list-group list-group-flush">
-                                                
+
                                                 <li class="list-group-item"><strong>Name:</strong> {{username}}
                                                 <li class="list-group-item"><strong>UserName:</strong> {{userin}}
                                                 <li class="list-group-item"><strong>Email:</strong> {{user.email}}
@@ -164,76 +166,92 @@
                                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
-                                                                     <form action="/newAddress?username:{{userin}}" method="post">
-                                                                    <div class="modal-header">
-                                                                        <h1 class="modal-title fs-5"
-                                                                            id="exampleModalLabel">New Address</h1>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                       
+                                                                    <form action="/newAddress?username:{{userin}}"
+                                                                        method="post">
+                                                                        <div class="modal-header">
+                                                                            <h1 class="modal-title fs-5"
+                                                                                id="exampleModalLabel">New Address</h1>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+
                                                                             <div class="form-group">
                                                                                 <label for="fullName">Full Name:</label>
                                                                                 <input type="text" class="form-control"
-                                                                                    id="fullName" name="fullname" required
-                                                                                    placeholder="Enter your full name">
+                                                                                    id="userFullName" name="fullname"
+                                                                                    required
+                                                                                    placeholder="Enter your full name"
+                                                                                    onkeyup="validateName()">
+                                                                                <span id="nameError"></span>
                                                                             </div>
 
                                                                             <div class="form-group">
                                                                                 <label for="fullName">Phone:</label>
                                                                                 <input type="text" class="form-control"
-                                                                                    id="fullName" name="phone" required
-                                                                                    placeholder="Enter your full name">
+                                                                                    id="phone" name="phone" required
+                                                                                    placeholder="Enter your full name"
+                                                                                    onkeyup="validatePhone()">
+                                                                                <span id="phoneError"></span>
                                                                             </div>
 
                                                                             <div class="form-group">
-                                                                                <label for="addressLine1">House Name:</label>
+                                                                                <label for="addressLine1">House
+                                                                                    Name:</label>
                                                                                 <input type="text" class="form-control"
-                                                                                    id="addressLine1" name="house" required
-                                                                                    placeholder="Enter your House Name">
+                                                                                    id="house" name="house" required
+                                                                                    placeholder="Enter your House Name"
+                                                                                    onkeyup="validateHouse()">
+                                                                                <span id="houseError"></span>
                                                                             </div>
 
                                                                             <div class="form-group">
                                                                                 <label for="addressLine1">City:</label>
                                                                                 <input type="text" class="form-control"
-                                                                                    id="addressLine1" name="city" required
-                                                                                    placeholder="Enter your City">
+                                                                                    id="city" name="city" required
+                                                                                    placeholder="Enter your City"
+                                                                                    onkeyup="validateCity()">
+                                                                                <span id="cityError"></span>
                                                                             </div>
                                                                             <div class="form-group">
                                                                                 <label for="addressLine1">State:</label>
                                                                                 <input type="text" class="form-control"
-                                                                                    id="addressLine1" name="state" required
-                                                                                    placeholder="Enter your State">
+                                                                                    id="state" name="state" required
+                                                                                    placeholder="Enter your State"
+                                                                                    onkeyup="validateState()">
+                                                                                <span id="stateError"></span>
                                                                             </div>
                                                                             <div class="form-group">
-                                                                                <label for="addressLine1">Country:</label>
+                                                                                <label
+                                                                                    for="addressLine1">Country:</label>
                                                                                 <input type="text" class="form-control"
-                                                                                    id="addressLine1" name="country" required
-                                                                                    placeholder="Enter your Country">
+                                                                                    id="country" name="country" required
+                                                                                    placeholder="Enter your Country"
+                                                                                    onkeyup="validateCountry()">
+                                                                                <span id="countryError"></span>
                                                                             </div>
-
-                                                                            
-
-                                                                        
-
                                                                             <div class="form-group">
-                                                                                <label for="zipCode" required>PIN Code:</label>
-                                                                                <input type="number" class="form-control"
-                                                                                    id="zipCode" name="pincode" required
-                                                                                    placeholder="Enter your PIN code">
+                                                                                <label for="zipCode" required>PIN
+                                                                                    Code:</label>
+                                                                                <input type="number"
+                                                                                    class="form-control" id="pincode"
+                                                                                    name="pincode" required
+                                                                                    placeholder="Enter your PIN code"
+                                                                                    onkeyup="validatePincode()">
+                                                                                <span id="pincodeError"></span>
                                                                             </div>
-                                                                        
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit"
-                                                                            class="btn btn-primary">Save
-                                                                            changes</button>
-                                                                    </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Close</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Save
+                                                                                changes</button>
+                                                                        </div>
                                                                     </form>
+                                                                    <span id="">Fill all the fileds</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -250,16 +268,22 @@
                                                 <div class="card-body">
 
                                                     <h5 class="card-title">Address</h5>
-                                                    <h6 class="card-subtitle mb-2 text-body-secondary"><strong>Name</strong> : {{this.fullname}}
+                                                    <h6 class="card-subtitle mb-2 text-body-secondary">
+                                                        <strong>Name</strong> : {{this.fullname}}
                                                     </h6>
                                                     <p class="card-text"><strong>Phone</strong> : {{this.phone}}</p>
-                                                    <p class="card-text"><strong>Address</strong> : {{this.address.houseName}} , {{this.address.city}}, {{this.address.state}}
+                                                    <p class="card-text"><strong>Address</strong> :
+                                                        {{this.address.houseName}} , {{this.address.city}},
+                                                        {{this.address.state}}
                                                         <br> {{this.address.country}}
                                                     </p>
-                                                    <p class="card-text"><strong>PIN Code</strong> : {{this.address.pincode}}</p>
-                                                    <a href="/newAddressEdit?userid={{this._id}}" class="card-link">Edit</a>                                                   
-                                                    <a >|</a>
-                                                    <a href="/removeAddress?userid={{this._id}}" class="card-link">Remove</a>
+                                                    <p class="card-text"><strong>PIN Code</strong> :
+                                                        {{this.address.pincode}}</p>
+                                                    <a href="/newAddressEdit?userid={{this._id}}"
+                                                        class="card-link">Edit</a>
+                                                    <a>|</a>
+                                                    <a href="/removeAddress?userid={{this._id}}"
+                                                        class="card-link">Remove</a>
 
                                                 </div>
                                             </div>
@@ -967,6 +991,99 @@
             </div>
         </div>
 
+
+        <script>
+            const nameError = document.getElementById('nameError')
+            const phoneError = document.getElementById('phoneError')
+            const houseError = document.getElementById('houseError')
+            const cityError = document.getElementById('cityError')
+            const stateError = document.getElementById('stateError')
+            const countryError = document.getElementById('countryError')
+            const pincodeError = document.getElementById('pincodeError')
+
+            function validateName(){
+                const name = document.getElementById('userFullName').value
+                console.log(name)
+                if (name.length == 0) {
+                    nameError.innerHTML = 'Enter the name'
+                    nameError.style.color = 'red'
+                    return false
+                } else if (!name.match(/^[A-Za-z]+$/)) {
+                    nameError.innerHTML = 'Only alphabets are allowed';
+                    nameError.style.color = 'red';
+                    return false;
+                }
+                nameError.innerHTML = ''
+                return true
+            }
+            function validatePhone() {
+                const phone = document.getElementById('phone').value
+                if (phone.length == 0) {
+                    phoneError.innerHTML = 'Enter the name'
+                    phoneError.style.color = 'red'
+                    return false
+                }
+                phoneError.innerHTML = ''
+                return true
+            }
+            function validateHouse() {
+                const house = document.getElementById('house').value
+                if (house.length == 0) {
+                    houseError.innerHTML = 'Enter the name'
+                    houseError.style.color = 'red'
+                    return false
+                }
+                houseError.innerHTML = ''
+                return true
+            }
+            function validateCity() {
+                const city = document.getElementById('city').value
+                if (city.length == 0) {
+                    cityError.innerHTML = 'Enter the name'
+                    cityError.style.color = 'red'
+                    return false
+                }
+                cityError.innerHTML = ''
+                return true
+            }
+            function validateState() {
+                const state = document.getElementById('state').value
+                if (state.length == 0) {
+                    stateError.innerHTML = 'Enter the name'
+                    stateError.style.color = 'red'
+                    return false
+                }
+                stateError.innerHTML = ''
+                return true
+            }
+            function validateCountry() {
+                const country = document.getElementById('country').value
+                if (county.length == 0) {
+                    countryError.innerHTML = 'Enter the name'
+                    countryError.style.color = 'red'
+                    return false
+                }
+                countryError.innerHTML = ''
+                return true
+            }
+            function validatePincode() {
+                console.log('validatePincode function is called!!')
+                const pincode = document.getElementById('pincode').value
+                if (pincode.length == 0) {
+                    pincodeError.innerHTML = 'Enter the name'
+                    pincodeError.style.color = 'red'
+                    return false
+                } else if (!name.match(/^[0-9]/{ 6})) {
+                    phoneError.innerHTML = 'Enter numbers only'
+                    phoneError.style.color = 'red'
+                    return false
+                }
+                pincodeError.innerHTML = ''
+                return true
+            }
+
+
+        </script>
         <!-- Vendor JS -->
         <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="../user/libs/jquery/jquery.min.js"></script>

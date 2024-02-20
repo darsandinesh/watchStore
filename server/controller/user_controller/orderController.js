@@ -55,6 +55,7 @@ const proceedtoCheckOut = async (req, res) => {
                 }
             }
         ])
+        req.session.amountToPay = totalValue[0].sum
         console.log(totalValue[0].sum)
         let totalPrice = totalValue[0].sum
         const address = await userPro.find({ username: req.session.userName })
@@ -82,7 +83,7 @@ const toPayment = async (req, res) => {
         const catData = await cart.find({ username: req.session.userName })
         const catDataCount = await cart.find({ username: req.session.userName }).countDocuments()
         const proData = await productDetails.find({ name: catData.product })
-        const userData = await userDetails.find({username:userin})
+        const userData = await userDetails.find({ username: userin })
         console.log(catDataCount)
         console.log('before type of')
         let totalPrice = 0
@@ -122,7 +123,7 @@ const toPayment = async (req, res) => {
             console.log(totalValue[0].sum)
             totalPrice = totalValue[0].sum
         }
-        res.render('user-payment', { userin, wishCount, cartCount, totalPrice, catDataCount, catData, address,userData })
+        res.render('user-payment', { userin, wishCount, cartCount, totalPrice, catDataCount, catData, address, userData })
     } catch (e) {
         console.log('error in the toPayment orderController in user side :' + e)
         res.redirect("/error")
@@ -167,6 +168,18 @@ const codPayment = async (req, res) => {
         if (req.query.pay) {
             paymentMentod = "Online"
         }
+        let amount = 0
+        if (req.session.wallet) {
+            amount += req.session.wallet
+            await userDetails.updateOne(
+                { username: req.session.userName },
+                { $inc: { wallet: -req.session.wallet } }
+              );              
+        }
+        if (req.session.coupon) {
+            amount += req.session.coupon
+
+        }
         for (let i = 0; i < cartData.length; i++) {
 
             const shippingAddress = new order({
@@ -181,6 +194,7 @@ const codPayment = async (req, res) => {
                 quentity: cartData[i].quentity,
                 price: cartData[i].quentity * cartData[i].price,
                 paymentMentod: paymentMentod,
+                amountSaved: amount,
                 address: {
                     houseName: req.session.address.housename,
                     city: req.session.address.city,
@@ -268,8 +282,8 @@ const showDetailOrderHistory = async (req, res) => {
         const data = await order.find({ orderId: req.params.id })
         const img = await productDetails.findOne({ name: data.product })
         const cartCount = await cart.find({ username: userin }).count()
-        console.log(cartCount)
-        console.log(data)
+        //console.log(cartCount)
+        console.log(data[0], 'orderdata is notksnfgighasbfj--------------------------------------')
         res.render('user-orderSinglrPage', { data, img, userin, cartCount })
 
     } catch (e) {
@@ -284,7 +298,7 @@ const orderHistory = async (req, res) => {
         console.log(req.query.product)
         const data = await order.find({ $and: [{ orderId: req.query.orderId }, { product: req.query.product }] })
         const price = await productDetails.find({ name: req.query.product })
-        console.log(price)
+        console.log(data, '==============================================================')
         res.render('user-orderSinglrPage', { data, price })
     } catch (e) {
         console.log('error in the ordreHistory in orderController in the user side : ' + e)
@@ -320,14 +334,17 @@ const displayaddress = async (req, res) => {
     }
 }
 
-const returnreason = async(req,res)=>{
-    try{
+const returnreason = async (req, res) => {
+    try {
         console.log(req.body)
-        console.log(req.params.id) 
-    }catch(e){
-        console.log('error in the returnreason in ordercontroller in user side : '+e)
+        console.log(req.params.id)
+        const val = await order.updateOne({ orderId: req.params.id, product: req.query.product }, { returnStatus: 0, returnreason: req.body.reason }, { upsert: true })
+        console.log(val)
+        res.redirect(`/orderHistoryPage/${req.params.id}?product=${req.query.product}`)
+    } catch (e) {
+        console.log('error in the returnreason in ordercontroller in user side : ' + e)
         res.redirect("/error")
-        
+
     }
 }
 

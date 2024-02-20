@@ -69,11 +69,17 @@ const orderSchema = new mongoose.Schema({
             required:true
         },
     },
-    return:{
+    returnreason:{
         type:String
     },
     cancel:{
         type:String
+    },
+    returnStatus:{
+        type:Number
+    },
+    amountSaved:{
+        type:Number
     }
 })
 

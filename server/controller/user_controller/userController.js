@@ -85,28 +85,33 @@ const login = async (req, res) => {
 
 // validation of the user befor entering the account ie. login validation
 const validateUser = async (req, res) => {
-  console.log("validateUser")
-  console.log(req.body.password)
-  const userFound = await userDetails.findOne({ username: req.body.username })
-  console.log(userFound)
-  if (userFound) {
-    if (userFound.status == 0) {
-      const checkpass = await bcrypt.compare(req.body.password, userFound.password)
-      if (checkpass) {
-        req.session.userAuth = true
-        req.session.userName = req.body.username
-        res.redirect('/home')
+  try {
+    console.log("validateUser")
+    console.log(req.body.password)
+    const userFound = await userDetails.findOne({ username: req.body.username })
+    console.log(userFound)
+    if (userFound) {
+      if (userFound.status == 0) {
+        const checkpass = await bcrypt.compare(req.body.password, userFound.password)
+        if (checkpass) {
+          req.session.userAuth = true
+          req.session.userName = req.body.username
+          res.redirect('/home')
+        } else {
+          res.redirect('/login?pass=incorrect password')
+        }
       } else {
-        res.redirect('/login?pass=incorrect password')
+        res.redirect('/login?block= Entry for you have been denied')
       }
-    } else {
-      res.redirect('/login?block= Entry for you have been denied')
-    }
 
-  } else {
-    res.redirect('/login?username=incorrect username')
+    } else {
+      res.redirect('/login?username=incorrect username')
+
+    }
+  } catch (e) {
     res.redirect("/error")
   }
+
 
 }
 

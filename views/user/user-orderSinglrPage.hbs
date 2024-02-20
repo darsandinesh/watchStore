@@ -214,43 +214,62 @@
                                 {{!-- <ul class="list-group" style="display: flex;"> --}}
                                     {{#ifEquals data.[0].status 'Delivered Successfully'}}
                                     <ul class="list-group">
+
+                                        {{#if data.[0].returnStatus}}
+                                        {{#ifEquals data.[0].returnStatus 2}}
+                                        <li class="list-group-item" style="color: red;">Return: Rejected</li>
+                                        {{else}}
+                                        <li class="list-group-item" style="color: green;">Return: Accepted</li>
+                                        {{/ifEquals}}
+                                        {{else}}
+
+                                        {{#if data.[0].returnreason}}
+                                        <li class="list-group-item" style="color: red;">Return: Pending</li>
+                                        {{else}}
                                         <li class="list-group-item" style="color: green;">Delivered Successfully</li>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal">
+                                            Return
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <form
+                                                    action="/returnreason/{{data.[0].orderId}}?product={{data.[0].product}}"
+                                                    method="post">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Return
+                                                                Product</h1>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <label class="form-control-label">Reason</label>
+                                                            <input type="text" class="form-control" name="reason">
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-warning">Save
+                                                                changes</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        {{/if}}
+
+                                        {{/if}}
+
                                     </ul>
 
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                        Return
-                                    </button>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModal" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <form action="/returnreason/{{data.[0].orderId}}" method="post">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                            Return Product
-                                                        </h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
 
-                                                    <div class="modal-body">
-                                                        <label class="form-control-label">Reason</label>
-                                                        <input type="text" class="form-control" name="reason">
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-warning">Save
-                                                            changes</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
 
 
                                     {{else}}

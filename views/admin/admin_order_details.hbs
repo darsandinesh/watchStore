@@ -43,6 +43,7 @@
         <li><a href="/admin/category"> <i class="icon-padnote"></i>Category </a></li>
         <li class="active"><a href="/admin/orders"> <i class="icon-padnote"></i>Orders </a></li>
         <li><a href="/admin/coupon"> <i class="icon-padnote"></i>Coupon </a></li>
+        <li><a href="/admin/offers"> <i class="icon-padnote"></i>Offers </a></li>
       </ul>
     </nav>
     <!-- Sidebar Navigation end-->
@@ -78,6 +79,7 @@
                 <h2>{{data.product}}</h2>
                 <br>
                 <p>OrderId : {{data.orderId}}</p>
+                <p>Usernane : {{data.username}}</p>
                 <p>Quantity: {{data.quentity}}</p>
                 <p>Price : {{data.price}}</p>
                 <p>Address : {{data.address.houseName}}, {{data.address.city}}, {{data.address.state}},
@@ -88,7 +90,26 @@
                 {{#ifEquals data.status 'CANCELED'}}
                 <p style="color: red;">Status : {{data.status}}</p>
                 {{else ifEquals data.status 'Delivered Successfully'}}
+                {{#if data.returnStatus}}
+                {{#ifEquals data.returnStatus 2}}
+                <p style="color: red;">Return request rejected</p>
+                {{else}}
+                <p style="color: green;">Returned Successfully</p>
+                {{/ifEquals}}
+                {{else if data.returnreason}}
+                {{#if data.returnStatus}}
+
+                {{else}}
+                <p style="color: aquamarine;">Return reason :  {{data.returnreason}}</p>
+                <a href="/admin/returnFail?id={{data.orderId}}&product={{data.product}}" class="btn btn-danger" onclick="return confirm('Do you want to reject the return?')">Reject</a>
+                <a href="/admin/returnsuccess?id={{data.orderId}}&product={{data.product}}" class="btn btn-success"
+                onclick="return confirm('Do you want to accept the return?')">Accepte</a>
+                {{/if}}
+                {{else}}
                 <p style="color: green;">Status : {{data.status}}</p>
+                
+                
+                {{/if}}
                 {{else}}
                 <p>Status : {{data.status}}</p>
                 Cancel : <a href="/admin/deleteOrder?orderId={{data.orderId}}&product={{data.product}}"

@@ -77,6 +77,10 @@ router.get('/orders', adminCon.check, orderData.orders)
 router.post('/updatestatus', adminCon.check, orderData.updateOrderStatus)
 router.get('/deleteOrder', adminCon.check, orderData.deleteOrder)
 router.get('/orderDetails',adminCon.check, orderData.details)
+// return request accepted 
+router.get('/returnsuccess',adminCon.check, orderData.returnDetails)
+// rejected the return request of the user 
+router.get('/returnFail',adminCon.check,orderData.returnFail)
 
 //search order in admin pannel
 router.post('/orders', adminCon.check, orderData.searchOrder)
@@ -94,7 +98,8 @@ router.get('/add_coupon', adminCon.check, adminCon.add_coupon)
 
 router.get('/orderpagination', adminCon.check, orderData.orderpagination)
 
-//zoom images 
+//offers
+router.get('/offers',adminCon.check,adminCon.offers)
 
 
 

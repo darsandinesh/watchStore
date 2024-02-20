@@ -89,11 +89,15 @@ router.post('/to-payment', user.checkUser, order.toPayment)
 router.post('/onlinePayment', user.checkUser, onlinePayment.onlinePayment)
 router.post('/placeOrder', onlinePayment.call)
 
+//wallet amount apply
+router.post('/applyWallet', user.checkUser, coupon.applyWallet)
+router.post('/removeWallet', user.checkUser, coupon.removeWallet)
+
 // coupon management
-router.post('/couponCheck',user.checkUser,coupon.couponCheck)
+router.post('/couponCheck', user.checkUser, coupon.couponCheck)
 // coupon remove
 
-router.post('/removeCoupon',user.checkUser,coupon.removeCoupon)
+router.post('/removeCoupon', user.checkUser, coupon.removeCoupon)
 // router.post('/createOrder',onlinePayment.ajaxCall)
 router.get('/api/payment/verify', user.checkUser, onlinePayment.razaroPayCall)
 router.get('/paymentSuccess', user.checkUser, order.codPayment)
@@ -120,14 +124,13 @@ router.post('/newPassword', user.checkUser, profile.newPassword)
 
 router.post('/newAddress', user.checkUser, user.newAddress)
 
-
 // history of the order 
 router.get('/orderhistory', user.checkUser, order.orderData)
 router.get('/orderHistoryPage/:id', user.checkUser, order.showDetailOrderHistory)
 router.get('/historyOrder', user.checkUser, order.orderHistory)
 
 //return reason
-router.post("/returnreason/:id",user.checkUser,order.returnreason)
+router.post("/returnreason/:id", user.checkUser, order.returnreason)
 
 
 // cancell the order made by the user 
@@ -139,33 +142,19 @@ router.get('/returnProduct/:id', user.checkUser, order.returnPro)
 // address of the primary address of the user looged in
 router.get('/add-address', user.checkUser, profile.profile)
 router.get('/newAddressEdit', user.checkUser, profile.newAddressEdit)
-router.post('/newAddressEdit', user.checkUser,profile.newAddress)
+router.post('/newAddressEdit', user.checkUser, profile.newAddress)
 
 router.post('/add-address', user.checkUser, profile.addAddress)
 
 // remove address of the user 
-router.get('/removeAddress',user.checkUser,profile.removeAddress)
+router.get('/removeAddress', user.checkUser, profile.removeAddress)
 
 //update address 
 router.get('/update-profile', user.checkUser, profile.updateProfile)
 
 router.post('/update-profile', user.checkUser, profile.updateProfileData)
 
-router.get('/error',user.errorPage)
-
-
-
-
-
-
-
-
-
-
-// router.get('/AZ-sort/:id', user.azSort)
-router.get('/zoom/:path', (req, res) => {
-    console.log(req.params.path)
-})
-
+// error page loaded!!!!!
+router.get('/error', user.errorPage)
 
 module.exports = router

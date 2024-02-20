@@ -58,6 +58,7 @@
         <li><a href="/admin/category"> <i class="icon-padnote"></i>Category </a></li>
         <li><a href="/admin/orders"> <i class="icon-padnote"></i>Orders </a></li>
         <li class="active"><a href="/admin/coupon"> <i class="icon-padnote"></i>Coupon </a></li>
+        <li><a href="/admin/offers"> <i class="icon-padnote"></i>Offers </a></li>
       </ul>
     </nav>
     <!-- Sidebar Navigation end-->
@@ -92,9 +93,9 @@
                   <label class="required" for="">Expiry </label>
                   <input type="date" placeholder="enter the expiry date" name="expiry" class="form-control" required>
                   <label class="required" for="">Discount Amount </label>
-                  <input type="text" placeholder="Enter the name" name="discount" class="form-control" required>
+                  <input type="text" placeholder="Enter the name" name="discount" class="form-control" required min="1">
                   <label class="required" for="">Minimum Amount </label>
-                  <input type="text" placeholder="Enter the name" name="minAmount" class="form-control" required>
+                  <input type="text" placeholder="Enter the name" name="minAmount" class="form-control" required min="1">
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -170,13 +171,14 @@
                           <div class="modal-body">
                             <label  class="form-control-label">Category</label>
                             <input type="text" value="{{this.name}}" class="form-control" name="coupon">
+                            <input type="text" value="{{this.name}}" class="form-control" name="oldcoupon" hidden>
                             <label class="required" class="form-control-label">Expiry Date</label>
-                            <input value="{{formatDate this.expiry}}" class="form-control" disabled>
+                            <input value="{{formatDate this.expiry}}" class="form-control" disabled >
                             <input type="date" value="{{formatDate this.expiry}}" class="form-control" name="expiry">
                             <label  class="form-control-label">Discount Amount</label>
-                            <input type="number" value="{{this.discount}}" class="form-control" name="discount" required>
+                            <input type="number" value="{{this.discount}}" class="form-control" name="discount" required min="1">
                             <label  class="form-control-label">Minimum Amount</label>
-                            <input type="number" value="{{this.minimumAmount}}" class="form-control" name="minAmount">
+                            <input type="number" value="{{this.minimumAmount}}" class="form-control" name="minAmount" min="1" required>
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -199,10 +201,10 @@
         </div>
       </div>
 
-      <div class="text-center">
+      {{!-- <div class="text-center">
         <a href="#" class="btn btn-info mr-2">Previous</a>
         <a href="#" class="btn btn-info">Next</a>
-      </div>
+      </div> --}}
       {{> admin_footer}}
     </div>
   </div>

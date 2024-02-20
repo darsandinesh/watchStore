@@ -42,6 +42,11 @@
 
         <!-- favicon -->
     <link rel="icon" type="image/x-icon" href="../../user/img/favicon-watch.png">
+    <style>
+        .form-group span {
+            color: red;
+        }
+    </style>
 </head>
 
 <body class="user-register blog">
@@ -88,21 +93,23 @@
                                             <div class="form-group">
                                                 <div>
                                                     <input class="form-control" name="username" type="text"
-                                                        placeholder="username" required value="{{username}}"> 
+                                                        placeholder="username" required value="{{username}}" id="username" onkeyup="validateUsername()"> 
+                                                        <span id="usernameErr"></span>
                                                 </div>
-                                                {{!-- <span> {{uname}} </span> --}}
                                             </div>
                                             <div class="form-group">
                                                 <div>
                                                     <input class="form-control" name="phone" type="text"
-                                                        placeholder="phone number" required value="{{phone}}">
+                                                        placeholder="phone number" required value="{{phone}}" id="phone" onkeyup="validatephone()" max="10">
+                                                        <span id="phoneErr"></span>
                                                 </div>
                                                 <span > {{ephone}} </span>
                                             </div>
                                             <div class="form-group">
                                                 <div>
                                                     <input class="form-control" name="email" type="email"
-                                                        placeholder="Email" required value="{{email}}">
+                                                        placeholder="Email" required value="{{email}}" id="email" onkeyup="validateemail()">
+                                                        <span id="emailErr"></span>
                                                 </div>
                                                 <span> {{uemail}} </span>
                                             </div>
@@ -111,8 +118,10 @@
                                                     <div class="input-group js-parent-focus">
                                                         <input class="form-control js-child-focus js-visible-password"
                                                             name="password" type="password" placeholder="Password"
-                                                            required value="{{password}}">
+                                                            required value="{{password}}" id="pass" onkeyup="validatepassword()">
+                                                            
                                                     </div>
+                                                    <span id="passwordErr"></span>
                                                 </div>
                                                 <span> {{pass}} </span>
                                             </div>
@@ -120,20 +129,24 @@
                                                 <div>
                                                     <div class="input-group js-parent-focus">
                                                         <input class="form-control js-child-focus js-visible-password"
-                                                            name="confirmpassword" type="password" placeholder="Password"
-                                                            required value="{{password}}">
+                                                            name="confirmpassword" type="password" placeholder="Confirm Password"
+                                                            required value="{{password}}" id="conpass" onkeyup="validateconpassword()">
+                                                            
                                                     </div>
+                                                    <span id="conpasswordErr"></span>
                                                 </div>
                                                 <span> {{pass}} </span>
                                             </div>
+                                            
                                         </div>
                                         <div class="clearfix">
                                             <div>
                                                 <button class="btn btn-primary" data-link-action="sign-in"
-                                                    type="submit">
+                                                    type="submit" onclick="return validateForm()">
                                                     Create Account
                                                 </button>
                                             </div>
+                                            <span id="submitError"></span>
                                         </div>
                                     </form>
                                 </div>
@@ -841,6 +854,109 @@
             const rege = document.getElementById('rege')
             rege.style.display = "none"
         },5000)
+
+        const nameError = document.getElementById('usernameErr')
+        const phoneError = document.getElementById('phoneErr')
+        const emailError = document.getElementById('emailErr')
+        const passError = document.getElementById('passwordErr')
+        const conpassError = document.getElementById('conpasswordErr')
+
+
+        function validateUsername(){
+            name = document.getElementById('username').value
+            if(name.length == 0 ) {
+                nameError.innerHTML = 'Enter the username'
+                nameError.style.color = 'red'
+                return false
+            }
+            if(!name.match(/^[a-zA-Z0-9_]{3,20}/)){
+                nameError.innerHTML = 'minimun 3 characters'
+                nameError.style.color = 'red'
+                return false
+            }
+            nameError.innerHTML = ''
+            return true
+        }
+        function validatephone(){
+            const phone = document.getElementById('phone').value
+            if(phone.length == 0 ) {
+                phoneError.innerHTML = 'Enter the phoneNumber'
+                document.getElementById('phoneError').style.borderColor = 'red'
+                return false
+            }
+            if(!phone.match(/^\d{10}/)){
+                phoneError.innerHTML = 'Enter a vaild number'
+                document.getElementById('phoneError').style.borderColor = 'red'
+                return false
+            }
+            if(phone.length >10){
+                phoneError.innerHTML = 'Length of the number is more than 10'
+                document.getElementById('phoneError').style.borderColor = 'red'
+                return false
+            }
+            phoneError.innerHTML = ''
+            return true
+
+        }
+        function validateemail(){
+            const email = document.getElementById('email').value
+            if(email.length == 0 ) {
+                emailError.innerHTML = 'Enter the emailAddress'
+                emailError.style.color = 'red'
+                return false
+            }
+            if(!email.match(/^[A-Za-z\._\-[0-9]*[@][A-Za-z]*[\.][a-z]{2,4}$/)){
+                emailError.innerHTML = 'Enter a vaild emailaddress'
+                emailError.style.color = 'red'
+                return false
+            }
+            emailError.innerHTML = ''
+            return true
+
+        }
+        function validatepassword(){
+            const pass = document.getElementById('pass').value
+            if(pass.length == 0 ) {
+                passError.innerHTML = 'Enter the password'
+                passError.style.color = 'red'
+                return false
+            }
+            if(!pass.match(/^[A-Za-z0-9]{8,}/)){
+                passError.innerHTML = 'minimum 8 characters'
+                passError.style.color = 'red'
+                return false
+            }
+            passError.innerHTML = ''
+            return true
+
+        }
+        function validateconpassword(){
+            const pass = document.getElementById('pass').value
+            const conpass = document.getElementById('conpass').value
+            if(pass.length == 0){
+                conpassError.innerHTML = 'Enter the password first'
+                conpassError.style.color = 'red'
+                return false
+            }
+            if(pass != conpass){
+                conpassError.innerHTML = 'password not match, enter correct password'
+                conpassError.style.color = 'red'
+                return false
+            }
+            conpassError.innerHTML = ''
+            return true
+        }
+
+        function validateForm(){
+            if(!validateUsername() || !validateemail() || !validatepassword() || !validatephone() || !validateconpassword()){
+                submitError.style.display = 'block'
+                submitError.innerHTML = 'Correct the mistake in the form'
+                setTimeout(()=>{
+                    submitError.style.display = 'none'
+                },4000)
+                return false
+            }
+        }
     </script>
 
 
