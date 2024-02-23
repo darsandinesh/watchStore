@@ -52,7 +52,7 @@
         <li class="active"><a href="/admin/category"> <i class="icon-padnote"></i>Category </a></li>
         <li><a href="/admin/orders"> <i class="icon-padnote"></i>Orders </a></li>
         <li><a href="/admin/coupon"> <i class="icon-padnote"></i>Coupon </a></li>
-        <li><a href="/admin/offers"> <i class="icon-padnote"></i>Offers </a></li>
+        {{!-- <li><a href="/admin/offers"> <i class="icon-padnote"></i>Offers </a></li> --}}
       </ul>
     </nav>
     <!-- Sidebar Navigation end-->
@@ -82,8 +82,14 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <label for="">Enter </label>
-                  <input type="text" placeholder="Enter the name" name="category" class="form-control">
+                  <div class="form-group">
+                    <label for="">Enter </label>
+                    <input type="text" placeholder="Enter the name" name="category" class="form-control">
+                  </div>
+                  {{!-- <div class="form-group">
+                    <label for="">offer </label>
+                    <input type="text" placeholder="Enter the offer percentage" name="offer" class="form-control">
+                  </div> --}}
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -111,7 +117,7 @@
                 {{!-- <th scope="col">Count</th> --}}
                 <th>Status</th>
                 <th>Edit</th>
-                {{!-- <th>Delete</th> --}}
+                <th>Offer</th>
               </tr>
             </thead>
             {{#each listData}}
@@ -150,8 +156,15 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <label class="form-control-label">Category</label>
-                            <input type="text" value="{{this.name}}" class="form-control" name="name">
+                            <div class="form-group">
+                              <label class="form-control-label">Category</label>
+                              <input type="text" value="{{this.name}}" class="form-control" name="name">
+                              <input type="text" value="{{this.name}}" class="form-control" name="oldname" hidden>
+                            </div>
+                            <div class="form-group">
+                              <label class="form-control-label">offer</label>
+                              <input type="text" value="{{this.offer}}" class="form-control" name="offer">
+                            </div>
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -162,6 +175,13 @@
                     </div>
                   </div>
 
+                </td>
+                <td>
+                  {{#if this.offer}}
+                  <button class="btn btn-success" disabled >Applied</button>
+                  {{else}}
+                  <button class="btn btn-danger" disabled >No offers</button>
+                  {{/if}}
                 </td>
                 {{!-- <td><a href="/admin/deletecat/{{this.name}}" class="btn btn-danger"
                     onclick="return confirm(' Are you sure, You want to delete the product')">Delete</a></td> --}}

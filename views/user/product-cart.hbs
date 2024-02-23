@@ -104,7 +104,13 @@
                                                                         data-id_customization="0">{{this.product}}</a>
                                                                 </div>
                                                                 <div class="product-line-info product-price">
-                                                                    <span class="value">Rs.{{this.price}}</span>
+                                                                    {{#if this.offer}}
+                                                                    <del><span class="value">Rs.{{this.price}}</span></del>
+                                                                    <span class="value">Rs.{{this.offerPrice}}</span>
+                                                                    {{else}}
+                                                                    <span class="value">Rs.{{this.offerPrice}}</span>
+                                                                    {{/if}}
+
                                                                 </div>
                                                                 {{!-- <div class="product-line-info">
                                                                     <span class="label-atrr">Size:</span>
@@ -142,11 +148,12 @@
                                                                             </p>
 
                                                                             <span class="input-group-btn-vertical">
-                                                                                {{!-- {{#ifNotEquals this.quentity '10'}} --}}
+                                                                                {{!-- {{#ifNotEquals this.quentity
+                                                                                '10'}} --}}
                                                                                 <button
                                                                                     class="btn btn-touchspin js-touchspin bootstrap-touchspin-up"
                                                                                     type="button"
-                                                                                    onclick="quantityChange('{{this.product}}' ,1,'{{this.price}}')">
+                                                                                    onclick="quantityChange('{{this.product}}' ,1,'{{this.offerPrice}}')">
                                                                                     +
                                                                                     {{!-- ><a
                                                                                         href="/increaseQuantity/{{this.product}}">
@@ -154,11 +161,12 @@
                                                                                     </a> --}}
                                                                                 </button>
                                                                                 {{!-- {{/ifNotEquals}} --}}
-                                                                                {{!-- {{#ifNotEquals this.quentity '1'}} --}}
+                                                                                {{!-- {{#ifNotEquals this.quentity '1'}}
+                                                                                --}}
                                                                                 <button
                                                                                     class="btn btn-touchspin js-touchspin bootstrap-touchspin-down"
                                                                                     type="button"
-                                                                                    onclick="quantityChange('{{this.product}}',-1,'{{this.price}}')">
+                                                                                    onclick="quantityChange('{{this.product}}',-1,'{{this.offerPrice}}')">
                                                                                     -
                                                                                     {{!-- ><a
                                                                                         href="/decreaseQuantity/{{this.product}}">
@@ -173,7 +181,8 @@
                                                                         <div class="label">Total:</div>
                                                                         <div class="product-price total">
                                                                             <p id="{{this.product}}+hai">
-                                                                            Rs.{{multiply this.price this.quentity}}
+                                                                                Rs.{{multiply this.offerPrice
+                                                                                this.quentity}}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -244,7 +253,9 @@
                                             </div>
                                             <div class="cart-summary-line cart-total">
                                                 <span class="label">Total:</span>
-                                                <span class="value"><p id="totalAmounts">{{totalPrice}}</p>(tax incl.)</span>
+                                                <span class="value">
+                                                    <p id="totalAmounts">{{totalPrice}}</p>(tax incl.)
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

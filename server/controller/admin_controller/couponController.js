@@ -30,6 +30,7 @@ const addCoupon = async (req, res) => {
 
 
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the addCoupon in couponController in admin side: ' + e)
     }
 }
@@ -39,6 +40,7 @@ const removeCoupon = async (req, res) => {
         await couponModel.deleteOne({ name: req.query.name })
         res.redirect('/admin/coupon?found=Coupon Removed')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the removeCoupon in couponController in admin side:' + e)
     }
 }
@@ -66,6 +68,7 @@ const editCoupon = async (req, res) => {
         }
 
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the editCoupon in couponController in admin side : ' + e)
     }
 }

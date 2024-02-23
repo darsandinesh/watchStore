@@ -34,6 +34,9 @@ router.post('/user-reset-password', userRegisteration.resetotpv)
 router.get('/reset-password', user.reset_password_get)
 router.post('/reset-password', user.newpass)
 
+//reset password
+router.post('/verifyOldPassword',user.checkUser,user.verifyOldPassword)
+
 // router to resend the otp when time experies
 router.get('/resendotp', userRegisteration.resendotp)
 

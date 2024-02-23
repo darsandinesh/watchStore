@@ -188,15 +188,18 @@
 
                                                                 <div
                                                                     class="product-miniature first-item js-product-miniature item-one">
-                                                                    <div class="thumbnail-container w-75"> <a
+                                                                    <div class="thumbnail-container "> <a
                                                                             href="/productDetails/{{this.name}}">
-                                                                            <img class="img-fluid image-cover h-25"
+                                                                            <img class="img-fluid image-cover"
                                                                                 src="{{this.imagePath.[0]}}" alt="img">
                                                                             <img class="img-fluid image-secondary"
                                                                                 src="{{this.imagePath.[1]}}" alt="img">
                                                                         </a>
-                                                                        {{!-- <div class="product-flags discount">-30%
-                                                                        </div> --}}
+                                                                        {{#if this.offer}}
+                                                                        <div class="product-flags discount">
+                                                                            -{{this.offer}}%
+                                                                        </div>
+                                                                        {{/if}}
                                                                         {{!-- <div class="highlighted-informations">
                                                                             <div class="variant-links">
                                                                                 <a href="#" class="color beige"
@@ -225,8 +228,14 @@
                                                                             </div>
                                                                             <div class="product-group-price">
                                                                                 <div class="product-price-and-shipping">
+                                                                                    {{#if this.offer}}
+                                                                                    <span
+                                                                                        class="price"><del>{{this.price}}</del>&nbsp;{{this.discountAmount}}Rs.
+                                                                                    </span>
+                                                                                    {{else}}
                                                                                     <span
                                                                                         class="price">Rs.{{this.price}}</span>
+                                                                                    {{/if}}
                                                                                     {{!-- <del
                                                                                         class="regular-price">£28.68</del>
                                                                                     --}}
@@ -333,7 +342,7 @@
                                                                     <div
                                                                         class="product-miniature js-product-miniature item-one first-item">
                                                                         <div class="thumbnail-container">
-                                                                            <a href="/productDetails/{{this.name}}" >
+                                                                            <a href="/productDetails/{{this.name}}">
                                                                                 <img class="img-fluid image-cover"
                                                                                     src="{{this.imagePath.[0]}}"
                                                                                     alt="img">
@@ -341,6 +350,11 @@
                                                                                     src="{{this.imagePath.[1]}}"
                                                                                     alt="img">
                                                                             </a>
+                                                                            {{#if this.offer}}
+                                                                            <div class="product-flags discount">
+                                                                                -{{this.offer}}%
+                                                                            </div>
+                                                                            {{/if}}
                                                                             {{!-- <div class="highlighted-informations">
                                                                                 <div class="variant-links">
                                                                                     <a href="#" class="color beige"
@@ -355,14 +369,22 @@
                                                                         <div class="product-description">
                                                                             <div class="product-groups">
                                                                                 <div class="product-title">
+
                                                                                     <a
                                                                                         href="/productDetails/{{this.name}}">{{this.name}}</a>
+
                                                                                 </div>
                                                                                 <div class="product-group-price">
                                                                                     <div
                                                                                         class="product-price-and-shipping">
+                                                                                        {{#if this.offer}}
+                                                                                        <span
+                                                                                            class="price"><del>{{this.price}}</del>&nbsp;{{this.discountAmount}}Rs.
+                                                                                        </span>
+                                                                                        {{else}}
                                                                                         <span
                                                                                             class="price">Rs.{{this.price}}</span>
+                                                                                        {{/if}}
                                                                                         {{!-- <del
                                                                                             class="regular-price">£28.68</del>
                                                                                         --}}
@@ -790,16 +812,19 @@
 
                                                                 <div
                                                                     class="product-miniature first-item js-product-miniature item-one">
-                                                                    <div class="thumbnail-container "
-                                                                        style="height: 350px">
+                                                                    <div class="thumbnail-container ">
                                                                         <a href="/productDetails/{{this.name}}">
                                                                             <img class="img-fluid image-cover "
                                                                                 src="{{this.imagePath.[0]}}" alt="img">
                                                                             <img class="img-fluid image-secondary"
                                                                                 src="{{this.imagePath.[1]}}" alt="img">
                                                                         </a>
-                                                                        {{!-- <div class="product-flags discount">-30%
-                                                                        </div> --}}
+                                                                        {{#if this.offer}}
+                                                                        <div class="product-flags discount">
+                                                                            -{{this.offer}}%
+                                                                        </div>
+                                                                        {{/if}}
+
                                                                         {{!-- <div class="highlighted-informations">
                                                                             <div class="variant-links">
                                                                                 <a href="#" class="color beige"
@@ -828,8 +853,14 @@
                                                                             </div>
                                                                             <div class="product-group-price">
                                                                                 <div class="product-price-and-shipping">
+                                                                                    {{#if this.offer}}
+                                                                                    <span class="price">
+                                                                                        <del>{{this.price}}</del>&nbsp;{{this.discountAmount}}Rs.
+                                                                                    </span>
+                                                                                    {{else}}
                                                                                     <span
                                                                                         class="price">Rs.{{this.price}}</span>
+                                                                                    {{/if}}
                                                                                     {{!-- <del
                                                                                         class="regular-price">£28.68</del>
                                                                                     --}}

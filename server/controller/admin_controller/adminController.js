@@ -14,6 +14,7 @@ const check = (req, res, next) => {
             res.redirect('/admin')
         }
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the check in adminController in admin side : ' + e)
     }
 }
@@ -29,6 +30,7 @@ const admin = (req, res) => {
             res.render('admin_login', { user, pass })
         }
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("error in the admin contreoller : " + e)
     }
 }
@@ -50,6 +52,7 @@ const checkAdmin = async (req, res) => {
             res.redirect('/admin?invaliduser=Invalid username')
         }
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("Error in the checkAdmin of admin controller : " + e)
     }
 }
@@ -57,9 +60,10 @@ const checkAdmin = async (req, res) => {
 const user = async (req, res) => {
     try {
         const userData = await userDetails.find({ isAdmin: 0 }).sort({ '_id': -1 })
-        // console.log(userData)
+        console.log(userDatahai)
         res.render('admin_userDetails', { userData })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("catch of user in admin : " + e)
     }
 
@@ -76,6 +80,7 @@ const block = async (req, res) => {
         await userDetails.updateOne({ username: name }, { $set: { status: val } })
         res.redirect('/admin/userDetails')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("catch of block in admin : " + e)
     }
 
@@ -89,6 +94,7 @@ const searchUser = async (req, res) => {
         const userData = await userDetails.find({ $and: [{ username: { $regex: regex } }, { isAdmin: 0 }] })
         res.render('admin_userDetails', { userData, nameSearch })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("catch of searchUser in admin : " + e)
     }
 
@@ -107,6 +113,7 @@ const list = async (req, res) => {
         await productDetails.updateMany({ category: name }, { $set: { list: val } })
         res.redirect(`/admin/category?val=${val}`)
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("catch of list in admin : " + e)
     }
 
@@ -119,6 +126,7 @@ const deleteproduct = async (req, res) => {
         await productDetails.deleteOne({ name: name })
         res.redirect('/admin/products?product=Deleted successfully')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("Error in the asmin controller , deleteproduct : " + e)
     }
 }
@@ -143,10 +151,10 @@ const logout = async (req, res) => {
         // req.session.adminAuth = false
 
         res.redirect('/admin')
-    } catch (e) {
-        {
-            console.log("error in logout in admin controller!!! : " + e)
-        }
+    }
+    catch (e) {
+        res.redirect('/admin/errorPage')
+        console.log("error in logout in admin controller!!! : " + e)
     }
 }
 
@@ -157,6 +165,7 @@ const coupon = async (req, res) => {
         console.log(couponData)
         res.render('admin_coupon', { couponData, couponFound })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("error in the coupon controller in admin side :" + e)
     }
 }
@@ -166,6 +175,7 @@ const add_coupon = (req, res) => {
     try {
         res.render('admin_add_coupon')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("error in the add_coupon controller in admin side :" + e)
     }
 }
@@ -178,7 +188,16 @@ const offers = (req, res) => {
     try {
         res.render('admin_offers')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the offers in the adminController in the admin side : ' + e)
+    }
+}
+
+const errorPage = (req, res) => {
+    try {
+        res.render('adminErrorPage')
+    } catch (e) {
+        console.log('error in the error in the adminController in admin side : ' + e)
     }
 }
 
@@ -197,4 +216,5 @@ module.exports = {
     list_product,
     check,
     offers,
+    errorPage,
 }

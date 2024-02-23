@@ -12,20 +12,37 @@ const path = require('path');
 const fs = require('fs');
 
 const addProduct = async (data, file) => {
-
-
     try {
         let filepath = [];
         for (let i = 0; i < file.length; i++) {
             let filePath = file[i].path.replace(/\\/g, '/').replace('public/', '/');
             filepath.push(filePath)
-            console.log(filePath, 'ishdfiasd filePath filePath filePath filePath')
         }
-        console.log(filepath)
-
         const { name, category, description, price, stock, about } = data;
-        console.log('Image Paths:', filepath);
-
+        let amount = 0
+        if (data.offer == '') {
+            const catdata = await editCat.find({ name: category })
+            if (catdata[0].offer == '') {
+                amount = Number(data.discount)
+            } else {
+                let sum = Number(data.price) * Number(catdata[0].offer)
+                let value = sum / 100
+                amount = Number(data.price) - value
+            }
+        } else {
+            const catdata = await editCat.find({ name: category })
+            if (catdata[0].offer == '') {
+                amount = Number(data.discount)
+            } else {
+                if (catdata[0].offer > data.offer) {
+                    let sum = Number(data.price) * Number(catdata[0].offer)
+                    let value = sum / 100
+                    amount = Number(data.price) - value
+                } else {
+                    amount = Number(data.discount)
+                }
+            }
+        }
         const productData = new productDetails({
             name: name,
             category: category,
@@ -36,6 +53,8 @@ const addProduct = async (data, file) => {
             list: 0,
             display: 0,
             imagePath: filepath,
+            offer: data.offer,
+            discountAmount: amount
         });
 
         await productData.save();
@@ -50,12 +69,11 @@ const addProduct = async (data, file) => {
 const edit_product = async (body, file, id) => {
     try {
         console.log(body)
-        // console.log(req.params.id)
         console.log('edit_product image check------------------')
         console.log(file)
-        // await imageCon.singleImage(req.body)
         let imagePath = []
         console.log('check for image is over+++++++++++')
+        console.log(file, 'file file file file file file')
         if (file.length != 0) {
 
             for (let i = 0; i < file.length; i++) {
@@ -69,27 +87,60 @@ const edit_product = async (body, file, id) => {
             }
         }
 
-        // console.log(await productDetails.find({name:id}))
         console.log(body)
+        const catdata = await editCat.find({ name: body.category })
+        console.log(catdata,'-----------1-1--1-1-1-1-1--11-1---1--1-1-1---1--1-1----11--1')
+        let offerPrice
+        if (body.offer != '') {
+            
+            if (body.offer > catdata[0].offer) {
+                let sum = Number(body.price) * Number(body.offer)
+                let dis = sum / 100
+                offerPrice = Number(body.price) - Math.floor(dis)
+                console.log(body.offer, 'if')
+            } else {
+                let sum = Number(body.price) * Number(catdata[0].offer)
+                let value = sum / 100
+                offerPrice = Number(body.price) - value
+            }
+
+        } else {
+            if (catdata[0].offer == '') {
+                console.log('offer is null')
+                offerPrice = Number(body.price)
+            } else {
+                console.log('offer is not null')
+                let sum = Number(body.price) * Number(catdata[0].offer)
+                let value = sum / 100
+                offerPrice = Number(body.price) - value
+                console.log(offerPrice,'offferprice - -- -- --')
+            }
+        }
 
         if (body) {
-            await productDetails.updateOne({ name: id }, {
-                $set: {
-                    name: body.name,
-                    category: body.category,
-                    description: body.description,
-                    about: body.about,
-                    price: body.price,
-                    stock: body.stock,
-                    imagePath: imagePath
-                }
-            })
+            await productDetails.updateOne({ name: id },
+                {
+                    $set: {
+                        name: body.name,
+                        category: body.category,
+                        description: body.description,
+                        about: body.about,
+                        price: body.price,
+                        stock: body.stock,
+                        discountAmount: offerPrice,
+                        offer: body.offer,
+                    }
+                },
+                {
+                    upsert: true
+                })
 
-            // res.redirect('/admin/products')
+            //res.redirect('/admin/products')
         } else {
             console.log('data not retrived from edit_product route ')
         }
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the edit_product of productController in admin : ' + e)
     }
 }
@@ -104,6 +155,7 @@ const list_product = async (req, res) => {
         await productDetails.updateMany({ name: req.params.id }, { $set: { display: val } })
         res.redirect('/admin/products')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("error in the list_product productController admin side : " + e)
     }
 }
@@ -119,9 +171,11 @@ const productData = async (req, res) => {
         if (products) {
             res.render('admin_product', { products, product, update, cat })
         } else {
+
             console.log("Error in admin productData product not found : ")
         }
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("Error in addmin productData : " + e)
     }
 }
@@ -139,6 +193,7 @@ const updateProduct = async (req, res) => {
         console.log(updatedata)
         res.redirect('/admin/products?update=product updated successfully')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("Error in thr updateProduct of adminController : " + e)
     }
 }
@@ -152,6 +207,7 @@ const add_products = async (req, res) => {
         console.log('add_product router enter chythuu')
         res.render('admin_add_products', { success, dataerror, cat })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("error in the add_products of admin cnotroller :" + e)
     }
 }
@@ -166,6 +222,7 @@ const searchProduct = async (req, res) => {
         console.log(products)
         res.render('admin_product', { products, nameSearch })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("catch of searchProduct in admin : " + e)
     }
 

@@ -259,6 +259,19 @@ const zoom = async (req, res) => {
   }
 }
 
+const verifyOldPassword = (req, res) => {
+  try {
+    console.log(req.body)
+    if (req.body.pass == '123') {
+      res.json({ success: true })
+    } else {
+      res.json({ success: false })
+    }
+  } catch (e) {
+    console.log('error in the verifyOldPassword in the userController in the user side : ' + e)
+    res.redirect('/error')
+  }
+}
 
 // sortin based the user requiments
 const errorPage = (req, res) => {
@@ -281,4 +294,5 @@ module.exports = {
   userAccount,
   newAddress,
   errorPage,
+  verifyOldPassword
 }

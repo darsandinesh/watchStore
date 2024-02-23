@@ -34,7 +34,7 @@ const proceedtoCheckOut = async (req, res) => {
             {
                 $group: {
                     _id: '$product',
-                    totalPrice: { $sum: '$price' },
+                    totalPrice: { $sum: '$discountAmount' },
                     totalQuantity: { $sum: '$quentity' }
                 }
             },
@@ -99,7 +99,7 @@ const toPayment = async (req, res) => {
                 {
                     $group: {
                         _id: '$product',
-                        totalPrice: { $sum: '$price' },
+                        totalPrice: { $sum: '$discountAmount' },
                         totalQuantity: { $sum: '$quentity' }
                     }
                 },
@@ -157,7 +157,6 @@ const codPayment = async (req, res) => {
 
             await newAddress.save()
         }
-
         const id = orderid.generate(15, {
             digits: true,
             upperCaseAlphabets: true,

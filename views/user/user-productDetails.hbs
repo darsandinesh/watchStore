@@ -159,24 +159,21 @@
                                                                                                 </div>
                                                                                                 <div id="modal-item2"
                                                                                                     class="tab-pane fade">
-                                                                                                    <a
-                                                                                                        href="">
+                                                                                                    <a href="">
                                                                                                         <img src="{{imagePath.[1]}}"
                                                                                                             alt="img">
                                                                                                     </a>
                                                                                                 </div>
                                                                                                 <div id="modal-item3"
                                                                                                     class="tab-pane fade">
-                                                                                                    <a
-                                                                                                        href="">
+                                                                                                    <a href="">
                                                                                                         <img src="{{imagePath.[2]}}"
                                                                                                             alt="img">
                                                                                                     </a>
                                                                                                 </div>
                                                                                                 <div id="modal-item4"
                                                                                                     class="tab-pane fade">
-                                                                                                    <a
-                                                                                                        href="">
+                                                                                                    <a href="">
                                                                                                         <img src="{{imagePath.[3]}}"
                                                                                                             alt="img">
                                                                                                     </a>
@@ -233,7 +230,12 @@
                                                     <div class="detail-description">
                                                         {{#if stock}}
                                                         <div class="price-del">
-                                                            <span class="price">Rs.{{this.price}}</span>
+                                                            {{#if offer}}
+                                                            <span class="price"><del>{{price}}</del>&nbsp;{{discountAmount}}Rs.
+                                                            </span>
+                                                            {{else}}
+                                                            <span class="price">Rs.{{price}}</span>
+                                                            {{/if}}
                                                             <span class="float-right">
                                                                 <span class="availb">Availability: </span>
                                                                 <span class="check">
@@ -244,7 +246,12 @@
                                                         </div>
                                                         {{else}}
                                                         <div class="price-del">
-                                                            <span class="price">Rs.{{this.price}}</span>
+                                                            {{#if offer}}
+                                                            <span class="price"><del>{{price}}</del>&nbsp;{{discountAmount}}Rs.
+                                                            </span>
+                                                            {{else}}
+                                                            <span class="price">Rs.{{price}}</span>
+                                                            {{/if}}
                                                             <span class="float-right">
                                                                 <span class="availb">Availability: </span>
                                                                 <span class="check">

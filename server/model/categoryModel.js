@@ -10,6 +10,9 @@ const categorySchema = new mongoose.Schema({
     list:{
         type:Number,
         required:true
+    },
+    offer:{
+        type:Number
     }
 })
 

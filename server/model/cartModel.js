@@ -22,6 +22,12 @@ const cartSchema = new mongoose.Schema({
     quentity:{
         type:Number,
         required:1
+    },
+    offerPrice:{
+        type:Number
+    },
+    offer:{
+        type:Number
     }
     
 })

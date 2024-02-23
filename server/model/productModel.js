@@ -38,6 +38,15 @@ const productSchema = new mongoose.Schema({
     display:{
         type:Number,
         required:true
+    },
+    offer:{
+        type:Number
+    },
+    discountAmount:{
+        type:Number
+    },
+    catOffer:{
+        type:Number
     }
 })
 

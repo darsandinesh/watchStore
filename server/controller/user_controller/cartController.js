@@ -28,7 +28,7 @@ const viewCart = async (req, res) => {
                 {
                     $group: {
                         _id: '$product',
-                        totalPrice: { $sum: '$price' },
+                        totalPrice: { $sum: '$offerPrice' },
                         totalQuantity: { $sum: '$quentity' }
                     }
                 },
@@ -56,6 +56,7 @@ const viewCart = async (req, res) => {
             //     totalPrice += totalValue[i].amount
             // }
         }
+        console.log(catData,'cartdataaaaaaaaaaaaa--------------')
         req.session.totalCartPrice = totalPrice
         const userin = req.session.userName
         const cat = await catDetails.find({ list: 0 })
@@ -89,7 +90,9 @@ const addtoCart = async (req, res) => {
                 product: cartPro.name,
                 image: cartPro.imagePath[0],
                 price: cartPro.price,
-                quentity: 1
+                quentity: 1,
+                offerPrice:cartPro.discountAmount,
+                offer:cartPro.offer
             })
             console.log('asfjgafs')
             console.log('++++++++++')
@@ -133,7 +136,7 @@ const changeQuantity = async (req, res) => {
             {
                 $group: {
                     _id: '$product',
-                    totalPrice: { $sum: '$price' },
+                    totalPrice: { $sum: '$offerPrice' },
                     totalQuantity: { $sum: '$quentity' }
                 }
             },

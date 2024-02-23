@@ -50,8 +50,8 @@ const productData = async (req, res) => {
         const userin = req.session.userName
         // console.log(details)
         if (details) {
-            const { name, description, category, price, imagePath, stock, about } = details
-            res.render('user-productDetails', { name, description, category, price, imagePath, relatedProduct, userin, cat, stock, about })
+            const { name, description, category, price, imagePath, stock, about ,offer,discountAmount} = details
+            res.render('user-productDetails', { name, description, category, price, imagePath, relatedProduct, userin, cat, stock, about,offer,discountAmount })
         } else {
             console.log("userController - productData can't read data from db")
         }

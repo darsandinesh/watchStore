@@ -17,6 +17,7 @@ const orders = async (req, res) => {
         let displaynxt = 1
         res.render('admin_orders', { dataOrder, current, displayprev, displaynxt })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("error in the oreders controller in admin side :" + e)
     }
 }
@@ -27,6 +28,7 @@ const deleteOrder = async (req, res) => {
         await orderData.updateOne({ $and: [{ orderId: req.query.orderId }, { product: req.query.product }] }, { $set: { adminCancell: 1, status: 'CANCELED' } })
         res.redirect('/admin/orders')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the deleteOrder in orderController in admin controller : ' + e)
     }
 }
@@ -48,6 +50,7 @@ const updateOrderStatus = async (req, res) => {
 
         res.redirect('/admin/orders')
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the updateOrderStatus in orderController in admin side: ' + e)
     }
 }
@@ -60,6 +63,7 @@ const searchOrder = async (req, res) => {
         const dataOrder = await orderData.find({ product: { $regex: regex } })
         res.render('admin_orders', { dataOrder })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the searchOrder in orderController in admin side : ' + e)
     }
 }
@@ -76,6 +80,7 @@ const details = async (req, res) => {
         console.log('aidhgsai')
         res.render('admin_order_details', { data })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the details in orderController in adminSide : ' + e)
     }
 }
@@ -222,7 +227,7 @@ const salesReport = async (req, res) => {
         res.status(200).end(pdfBuffer);
     } catch (err) {
         console.log(err);
-        res.redirect('/admin/error')
+        res.redirect('/admin/errorPage')
     }
 }
 
@@ -249,6 +254,7 @@ const orderpagination = async (req, res) => {
         res.render('admin_orders', { dataOrder, current, displayprev, displaynxt })
 
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the orderpagination in orderController in admin side:' + e)
     }
 }
@@ -265,6 +271,7 @@ const returnDetails = async (req, res) => {
         await userDetails.updateOne({username:user.username},{$set:{wallet:amount}},{upsert:true})
         res.redirect(`/admin/orderDetails?orderId=${req.query.id}&product=${req.query.product}`)
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log('error in the returnDetails in the ordetrController in the admin side : ' + e)
     }
 }
@@ -275,6 +282,7 @@ const returnFail = async (req,res)=>{
         await orderData.updateOne({ orderId: req.query.id, product: req.query.product },{returnStatus:2})
         res.redirect(`/admin/orderDetails?orderId=${req.query.id}&product=${req.query.product}`)
     }catch(e){
+        res.redirect('/admin/errorPage')
         console.log('error in the returnFail of orderController in admin side : ' + e)
     }
 }

@@ -101,6 +101,8 @@ router.get('/orderpagination', adminCon.check, orderData.orderpagination)
 //offers
 router.get('/offers',adminCon.check,adminCon.offers)
 
+// error page 
+router.get('/errorPage' , adminCon.errorPage)
 
 
 router.get('/logout', adminCon.logout)

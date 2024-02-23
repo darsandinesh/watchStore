@@ -152,50 +152,66 @@ const changePass = async (req, res) => {
         const val = req.query.val
         const cat = await catDetails.find({ list: 0 })
         const userData = await userDetails.findOne({ username: userin })
-        const otpData = sndmail.sendmail(userData.email)
+        //const otpData = sndmail.sendmail(userData.email)
         const cartCount = await cart.find({ username: req.session.userName }).countDocuments()
         const wishCount = await wish.find({ username: userin }).countDocuments()
-        otpData.then((val) => {
-            console.log(val)
-            otp = val[0]
-        })
-        console.log(otp)
-        res.render('changePass', { userin, val, cat, cartCount, wishCount })
+        // otpData.then((val) => {
+        //     console.log(val)
+        //     otp = val[0]
+        // })
+        //console.log(otp)
+        const error = req.query.error 
+        res.render('changePass', { userin, val, cat, cartCount, wishCount,error })
     } catch (e) {
         console.log('error in the changePass in userController in user side : ' + e)
         res.redirect("/error")
     }
 }
 
-const change = async (req, res) => {
-    try {
-        console.log('change enterd')
-        const userin = req.session.userName
-        console.log(userin)
-        const userData = await userDetails.find({ username: userin })
-        const cartCount = await cart.find({ username: req.session.userName }).countDocuments()
-        const wishCount = await wish.find({ username: userin }).countDocuments()
-        console.log(userData)
-        let userotp = req.body.otp
-        console.log('befor otp')
-        console.log(typeof (otp))
-        console.log(typeof (userotp))
-        console.log('after otp')
-        if (otp == userotp) {
-            res.render('newpassword', { userin, cartCount, wishCount })
-        } else {
-            res.redirect('/changePassword?val=incorrect otp')
-        }
-        // console.log(req.body)
-        // if (req.body.email == userData.email) {
-        //   const otp = sndmail.sendmail()
-        //   console.log(otp)
-        //   res.render('changePassOtp', { userin })
-        // } else {
-        //   res.redirect('/changePassword?val=Enter the correct email address')
-        // }
+// const change = async (req, res) => {
+//     try {
+//         console.log('change enterd')
+//         const userin = req.session.userName
+//         console.log(userin)
+//         const userData = await userDetails.find({ username: userin })
+//         const cartCount = await cart.find({ username: req.session.userName }).countDocuments()
+//         const wishCount = await wish.find({ username: userin }).countDocuments()
+//         console.log(userData)
+//         let userotp = req.body.otp
+//         console.log('befor otp')
+//         console.log(typeof (otp))
+//         console.log(typeof (userotp))
+//         console.log('after otp')
+//         if (otp == userotp) {
+//             res.render('newpassword', { userin, cartCount, wishCount })
+//         } else {
+//             res.redirect('/changePassword?val=incorrect otp')
+//         }
+//     } catch (e) {
+//         console.log('error in the change in userController in user side : ' + e)
+//         res.redirect("/error")
+//     }
+// }
 
-    } catch (e) {
+const change = async (req,res)=>{
+    try{
+        console.log(req.body);
+        const userin = req.session.userName
+        const userData = await userDetails.findOne({username:req.session.userName})
+        const compare = await bcrypt.compare(req.body.password,userData.password)
+        console.log(compare , userData)
+        console.log('change function called')
+        if(compare){
+            const hashedpass = await bcrypt.hash(req.body.newpassword, 10)
+            await userDetails.updateOne({ username: userin }, { $set: { password: hashedpass } })
+            await req.session.destroy()
+            res.redirect('/')
+        }else{
+            res.redirect('/changePassword?error=Enter your correct password')
+        }
+        
+
+    }catch(e){
         console.log('error in the change in userController in user side : ' + e)
         res.redirect("/error")
     }

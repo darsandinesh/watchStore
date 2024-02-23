@@ -89,7 +89,7 @@
                   <div class="form-group">
                     <label class="form-control-label required">Name</label>
                     <input required type="text" placeholder="Name of the product" class="form-control" name="name"
-                    id="productName" onkeyup="ValidateName()">
+                      id="productName" onkeyup="ValidateName()">
                     <span id="name-error"></span>
                   </div>
                   <div class="form-group">
@@ -114,14 +114,28 @@
                   <div class="form-group">
                     <label class="form-control-label required">About the product</label>
                     <input required type="text" placeholder="About of the product" class="form-control" name="about"
-                    id="about" onkeyup="ValidateAbout()">
+                      id="about" onkeyup="ValidateAbout()">
                     <span id="about-error"></span>
                   </div>
                   <div class="form-group">
                     <label class="form-control-label required">Price</label>
                     <input required type="number" min="1" placeholder="Price of the product" class="form-control"
-                      name="price">
+                      name="price" id="orginalPrice">
                   </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Offer</label>
+                    <input type="number" min="1" placeholder="Price of the product" class="form-control" id="offerValue"
+                      onkeyup="discountPrice()" max="99" name="offer">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label ">Discount Price</label>
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1" style="color: white;">INR</span>
+                      <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                        aria-describedby="basic-addon1" readonly id="discountAmount" name="discount">
+                    </div>
+                  </div>
+
                   <div class="form-group">
                     <label class="form-control-label required">Stock</label>
                     <input required type="number" min="1" placeholder="Quantity of the product" class="form-control"
@@ -156,65 +170,76 @@
   </script>
 
   <script>
+
+    function discountPrice() {
+      const offer = document.getElementById('offerValue').value
+      const price = document.getElementById('orginalPrice').value
+      console.log(offer, 'offer', price, 'price')
+      let sum = offer * price
+      let dis = sum / 100
+      let offerPrice = Math.floor(price - dis)
+      document.getElementById('discountAmount').value = offerPrice
+    }
+
     const nameError = document.getElementById('name-error')
     const desError = document.getElementById('des-error')
     const aboutError = document.getElementById('about-error')
 
-    function ValidateName(){
+    function ValidateName() {
       const name = document.getElementById('productName').value
-      if(name.length == 0){
+      if (name.length == 0) {
         nameError.innerHTML = 'Product name is required'
         nameError.style.color = 'red'
         return false
       }
-      if(!name.match(/^[A-Z][a-z]*$/)){
+      if (!name.match(/^[A-Z][a-z]*$/)) {
         nameError.innerHTML = 'Write full name of the product'
         nameError.style.color = 'red'
         return false
-      }else{
+      } else {
         nameError.innerHTML = 'Valid'
-      nameError.style.color = 'green'
-      return true
+        nameError.style.color = 'green'
+        return true
       }
-      
+
     }
 
-    function Validatedescription(){
+    function Validatedescription() {
       const name = document.getElementById('description').value
-      if(name.length == 0){
+      if (name.length == 0) {
         desError.innerHTML = 'Product name is required'
         desError.style.color = 'red'
         return false
       }
-      if(!name.match(/^[A-Za-z0-9\s.,'"!?()-]*$/)){
+      if (!name.match(/^[A-Za-z0-9\s.,'"!?()-]*$/)) {
         desError.innerHTML = 'Write full name of the product'
         desError.style.color = 'red'
         return false
-      }else{
+      } else {
         desError.innerHTML = 'Valid'
-      desError.style.color = 'green'
-      return true
+        desError.style.color = 'green'
+        return true
       }
-      
+
     }
 
-    function ValidateAbout(){
+    function ValidateAbout() {
       const name = document.getElementById('about').value
-      if(name.length == 0){
+      if (name.length == 0) {
         aboutError.innerHTML = 'Product name is required'
         aboutError.style.color = 'red'
         return false
       }
-      if(!name.match(/^[A-Z][a-z]*$/)){
+      if (!name.match(/^[A-Z][a-z]*$/)) {
         aboutError.innerHTML = 'Write full name of the product'
         aboutError.style.color = 'red'
         return false
-      }else{
+      } else {
         aboutError.innerHTML = 'Valid'
-      aboutError.style.color = 'green'
-      return true
+        aboutError.style.color = 'green'
+        return true
       }
-      
+
     }
   </script>
 

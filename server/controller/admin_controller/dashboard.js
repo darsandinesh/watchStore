@@ -22,6 +22,7 @@ const dashbord = async (req, res) => {
 
         res.render('admin_pannel', { userCount, productCount, orderCount, orderStatusP, orderStatusC, orderStatusD, orderStatusO, codPay, online })
     } catch (e) {
+        res.redirect('/admin/errorPage')
         console.log("error in the dashbord of admin controller :" + e)
     }
 }
@@ -58,8 +59,9 @@ const chartData = async (req, res) => {
             ]);
         res.json(Aggregation);
     } catch (error) {
+        res.redirect('/admin/errorPage')
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+       // res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
@@ -91,8 +93,9 @@ const chartDataMonth = async (req, res) => {
             ]);
         res.json(Aggregation);
     } catch (error) {
+        res.redirect('/admin/errorPage')
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+       // res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
@@ -122,8 +125,9 @@ const chartDataYear = async (req, res) => {
             ]);
         res.json(Aggregation);
     } catch (error) {
+        res.redirect('/admin/errorPage')
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+       // res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 

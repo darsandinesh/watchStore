@@ -50,7 +50,7 @@
         <li><a href="/admin/category"> <i class="icon-padnote"></i>Category </a></li>
         <li><a href="/admin/orders"> <i class="icon-padnote"></i>Orders </a></li>
         <li><a href="/admin/coupon"> <i class="icon-padnote"></i>Coupon </a></li>
-        <li><a href="/admin/offers"> <i class="icon-padnote"></i>Offers </a></li>
+        {{!-- <li><a href="/admin/offers"> <i class="icon-padnote"></i>Offers </a></li> --}}
       </ul>
     </nav>
     <!-- Sidebar Navigation end-->
@@ -103,7 +103,12 @@
               <tr>
                 <th>{{this.name}}</th>
                 <td>{{this.category}}</td>
-                <td>{{this.price}}</td>
+                {{#ifEquals this.price this.discountAmount}}
+                <td>{{this.price}}Rs.</td>
+                {{else}}
+                <td><del>{{this.price}}</del>&nbsp;{{this.discountAmount}}Rs.</td>
+                {{/ifEquals}}
+
                 <td>{{this.stock}}</td>
                 <td>
                   <img style="width: auto;height: 50px;" src="{{this.imagePath.[1]}}" alt="Product Image">
@@ -164,8 +169,25 @@
                             </div>
                             <div class="form-group">
                               <label class="form-control-label">Price</label>
-                              <input type="number" value="{{this.price}}" class="form-control" name="price" min="1">
+                              <input type="number" value="{{this.price}}" class="form-control" name="price" min="1"
+                                id="orginalPrice">
                             </div>
+                            <div class="form-group">
+                              <label class="form-control-label">Offer</label>
+                              <input type="number" value="{{this.offer}}" class="form-control" name="offer" min="1"
+                                max="99">
+                              {{!-- <input type="number" value="{{this.offer}}" class="form-control" name="offer"
+                                min="1" id="offerValue" onkeyup="discountPrice({{this.price}},this.value)" max="99">
+                              --}}
+                            </div>
+                            {{!-- <div class="form-group">
+                              <label class="form-control-label ">Discount Price</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1" style="color: white;">INR</span>
+                                <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                                  aria-describedby="basic-addon1" readonly id="discountAmount">
+                              </div>
+                            </div> --}}
                             <div class="form-group">
                               <label class="form-control-label">Stock</label>
                               <input type="number" value="{{this.stock}}" class="form-control" name="stock" min="1">
@@ -174,30 +196,38 @@
                               <label class="form-control-label">Product Images</label>
                             </div>
                             <div class="form-group">
-                              <img src="{{this.imagePath.[0]}}" alt="img of product" style="height: 50px;width:50px" class="ml-5 ">
+                              <img src="{{this.imagePath.[0]}}" alt="img of product" style="height: 50px;width:50px"
+                                class="ml-5 ">
                               <input type="file" name="images">
                             </div>
                             <div class="form-group">
-                              <img src="{{this.imagePath.[1]}}" alt="img of product" style="height: 50px;width:50px" class="ml-5 ">
+                              <img src="{{this.imagePath.[1]}}" alt="img of product" style="height: 50px;width:50px"
+                                class="ml-5 ">
                               <input type="file" name="images">
                             </div>
                             <div class="form-group">
-                              <img src="{{this.imagePath.[2]}}" alt="img of product" style="height: 50px;width:50px" class="ml-5 ">
+                              <img src="{{this.imagePath.[2]}}" alt="img of product" style="height: 50px;width:50px"
+                                class="ml-5 ">
                               <input type="file" name="images">
                             </div>
                             <div class="form-group">
-                              <img src="{{this.imagePath.[3]}}" alt="img of product" style="height: 50px;width:50px" class="ml-5 ">
+                              <img src="{{this.imagePath.[3]}}" alt="img of product" style="height: 50px;width:50px"
+                                class="ml-5 ">
                               <input type="file" name="images">
                             </div>
                             {{!-- <div class="form-group contanier">
                               <label class="form-control-label">Product Images</label>
                               <div class="row ">
-                                <img src="{{this.imagePath.[0]}}" alt="img of product" style="height: 50px;width:50px" class="ml-5 ">
-                                <img src="{{this.imagePath.[1]}}" alt="img of product" style="height: 50px;width:50px" class="ml-5">
-                                <img src="{{this.imagePath.[2]}}" alt="img of product" style="height: 50px;width:50px" class="ml-5">
-                                <img src="{{this.imagePath.[3]}}" alt="img of product" style="height: 50px;width:50px" class="ml-5">
+                                <img src="{{this.imagePath.[0]}}" alt="img of product" style="height: 50px;width:50px"
+                                  class="ml-5 ">
+                                <img src="{{this.imagePath.[1]}}" alt="img of product" style="height: 50px;width:50px"
+                                  class="ml-5">
+                                <img src="{{this.imagePath.[2]}}" alt="img of product" style="height: 50px;width:50px"
+                                  class="ml-5">
+                                <img src="{{this.imagePath.[3]}}" alt="img of product" style="height: 50px;width:50px"
+                                  class="ml-5">
                               </div>
-                             
+
                             </div> --}}
                           </div>
                           <div class="modal-footer">
@@ -240,6 +270,16 @@
   <!-- JavaScript files-->
 
   <script>
+
+    function discountPrice(price, val) {
+      let sum = Number(val) * price
+      let dis = sum / 100
+      let offerPrice = price - Math.floor(dis)
+      document.getElementById('discountAmount').value = offerPrice
+      document.getElementById('valuewrite').innerHTML = offerPrice
+      console.log(document.getElementById('discountAmount').value, 'fsakjsdbgkajbgiaebrigbieargkaefgfi')
+    }
+
     function refreshPage() {
       window.location.reload();
     }
