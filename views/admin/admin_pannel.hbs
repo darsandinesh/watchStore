@@ -376,7 +376,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       console.log('function called ');
 
-      fetch('http://localhost:8888/admin/chart-data')
+      fetch('/admin/chart-data')
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -432,7 +432,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       console.log('function called ');
 
-      fetch('http://localhost:8888/admin/chart-data-year')
+      fetch('/admin/chart-data-year')
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -482,7 +482,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       console.log('function called ');
 
-      fetch('http://localhost:8888/admin/chart-data-month')
+      fetch('/admin/chart-data-month')
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -526,13 +526,7 @@
         });
       }
     });
-  </script>
-
-
-
-  // month chartjs
-
-  
+  </script>  
 
 </body>
 

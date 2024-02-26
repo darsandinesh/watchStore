@@ -183,7 +183,7 @@
                                                                                     id="userFullName" name="fullname"
                                                                                     required
                                                                                     placeholder="Enter your full name"
-                                                                                    onkeyup="validateName()">
+                                                                                    onkeyup="validateName(this)">
                                                                                 <span id="nameError"></span>
                                                                             </div>
 
@@ -191,7 +191,7 @@
                                                                                 <label for="fullName">Phone:</label>
                                                                                 <input type="text" class="form-control"
                                                                                     id="phone" name="phone" required
-                                                                                    placeholder="Enter your full name"
+                                                                                    placeholder="Enter your number"
                                                                                     onkeyup="validatePhone()">
                                                                                 <span id="phoneError"></span>
                                                                             </div>
@@ -455,7 +455,8 @@
             const countryError = document.getElementById('countryError')
             const pincodeError = document.getElementById('pincodeError')
 
-            function validateName(){
+            function validateName(name){
+                console.log(name.value,'value of the validateName functions is here')
                 const name = document.getElementById('userFullName').value
                 console.log(name)
                 if (name.length == 0) {
