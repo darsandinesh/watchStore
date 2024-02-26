@@ -227,7 +227,8 @@
                                                                     <div class="product-group-price">
                                                                         <div class="product-price-and-shipping">
                                                                             {{#if this.offer}}
-                                                                            <span class="price"><del>{{this.price}}</del>&nbsp;{{this.discountAmount}}Rs.
+                                                                            <span
+                                                                                class="price"><del>{{this.price}}</del>&nbsp;{{this.discountAmount}}Rs.
                                                                             </span>
                                                                             {{else}}
                                                                             <span class="price">Rs.{{this.price}}</span>
@@ -270,6 +271,7 @@
                                                 <div class="row">
                                                     {{#each Product}}
                                                     {{#if this.display}}
+                                                    
                                                     {{else}}
                                                     <div class="item col-md-12">
                                                         <div class="product-miniature item-one first-item">
@@ -312,11 +314,13 @@
                                                                             <div class="product-group-price">
                                                                                 <div class="product-price-and-shipping">
                                                                                     {{#if this.offer}}
-                                                                            <span class="price"><del>{{this.price}}</del>&nbsp;{{this.discountAmount}}Rs.
-                                                                            </span>
-                                                                            {{else}}
-                                                                            <span class="price">Rs.{{this.price}}</span>
-                                                                            {{/if}}
+                                                                                    <span
+                                                                                        class="price"><del>{{this.price}}</del>&nbsp;{{this.discountAmount}}Rs.
+                                                                                    </span>
+                                                                                    {{else}}
+                                                                                    <span
+                                                                                        class="price">Rs.{{this.price}}</span>
+                                                                                    {{/if}}
                                                                                 </div>
                                                                             </div>
                                                                             <div class="discription">
@@ -453,7 +457,7 @@
     </div>
 
     <!-- menu mobie left -->
-   <div class="mobile-top-menu d-md-none">
+    <div class="mobile-top-menu d-md-none">
         <button type="button" class="close" aria-label="Close">
             <i class="zmdi zmdi-close"></i>
         </button>
