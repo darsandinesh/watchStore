@@ -60,7 +60,7 @@ const checkAdmin = async (req, res) => {
 const user = async (req, res) => {
     try {
         const userData = await userDetails.find({ isAdmin: 0 }).sort({ '_id': -1 })
-        console.log(userDatahai)
+        console.log(userData)
         res.render('admin_userDetails', { userData })
     } catch (e) {
         res.redirect('/admin/errorPage')

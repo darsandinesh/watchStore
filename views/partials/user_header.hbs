@@ -10,8 +10,8 @@
 
             <!-- logo -->
             <div class="mobile-logo">
-                <a href="index-2.html">
-                    <img class="logo-mobile img-fluid" src="../user/img/home/logo-mobie.png" alt="Prestashop_Furnitica">
+                <a href="/">
+                    <img class="logo-mobile img-fluid" src="../user/img/home/logo.jpg" alt="Prestashop_Furnitica" style="height: 40px;width: 180px;">
                 </a>
             </div>
 
@@ -24,62 +24,13 @@
         <!-- search -->
         <div id="mobile_search" class="d-flex">
             <div id="mobile_search_content">
-                <form method="get" action="#">
-                    <input type="text" name="s" value="" placeholder="Search">
+                <form action="/searchProduct">
+                    <input type="text" name="search" value="{{datas}}" placeholder="Search..."
+                        class="ui-autocomplete-input" autocomplete="off">
                     <button type="submit">
                         <i class="fa fa-search"></i>
                     </button>
                 </form>
-            </div>
-            <div class="desktop_cart">
-                <div class="blockcart block-cart cart-preview tiva-toggle">
-                    <div class="header-cart tiva-toggle-btn">
-                        <span class="cart-products-count">1</span>
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    </div>
-                    <div class="dropdown-content">
-                        <div class="cart-content">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="product-image">
-                                            <a href="product-detail.html">
-                                                <img src="../user/img/product/5.jpg" alt="Product">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <div class="product-name">
-                                                <a href="product-detail.html">Organic Strawberry Fruits</a>
-                                            </div>
-                                            <div>
-                                                2 x
-                                                <span class="product-price">£28.98</span>
-                                            </div>
-                                        </td>
-                                        <td class="action">
-                                            <a class="remove" href="#">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr class="total">
-                                        <td colspan="2">Total:</td>
-                                        <td>£92.96</td>
-                                    </tr>
-
-                                    <tr>
-                                        <td colspan="3" class="d-flex justify-content-center">
-                                            <div class="cart-button">
-                                                <a href="product-cart.html" title="View Cart">View Cart</a>
-                                                <a href="/cart" title="Checkout">Checkout</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -220,16 +171,16 @@
 
                 <!-- search-->
                 <div id="search_widget" class="col-sm-6 col-md-5 align-items-center justify-content-end d-flex">
-                    <form  action="/searchProduct">
-                        <input type="text" name="search" value="{{datas}}" placeholder="Search..." class="ui-autocomplete-input"
-                            autocomplete="off">
+                    <form action="/searchProduct">
+                        <input type="text" name="search" value="{{datas}}" placeholder="Search..."
+                            class="ui-autocomplete-input" autocomplete="off">
                         <button type="submit">
                             <i class="fa fa-search"></i>
                         </button>
                     </form>
 
                     <!-- acount  -->
-                    <div id="block_myaccount_infos" class="hidden-sm-down dropdown">
+                    {{!-- <div id="block_myaccount_infos" class="hidden-sm-down dropdown">
                         <div class="myaccount-title">
                             <a href="#acount" data-toggle="collapse" class="acount">
                                 <i class="fa fa-user" aria-hidden="true"></i>
@@ -277,19 +228,6 @@
                                             {{/if}}
                                         </span>
                                     </a>
-                                    {{!-- ----------------------------------------
-                                    <a href="/wishlist" title="My Wishlists">
-                                        <i class="fa fa-heart"></i>
-                                        My Wishlists
-                                        <span>
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                                            {{#if wishCount}}
-                                            {{wishCount}}
-                                            {{else}}
-                                            0
-                                            {{/if}}
-                                        </span>
-                                    </a> --}}
                                 </div>
                                 <div>
                                     <a href="/orderhistory" title="Log out">
@@ -318,49 +256,9 @@
                                     </a>
                                 </div>
                                 {{/if}}
-                                {{!-- <div id="desktop_currency_selector"
-                                    class="currency-selector groups-selector hidden-sm-down">
-                                    <ul class="list-inline">
-                                        <li>
-                                            <a title="Euro" rel="nofollow" href="#">EUR</a>
-                                        </li>
-                                        <li class="current list-inline-item">
-                                            <a title="British Pound Sterling" rel="nofollow" href="#">GBP</a>
-                                        </li>
-                                    </ul>
-                                </div> --}}
-                                {{!-- <div id="desktop_language_selector"
-                                    class="language-selector groups-selector hidden-sm-down">
-                                    <ul class="list-inline">
-                                        <li class="list-inline-item current">
-                                            <a href="#">
-                                                <img class="img-fluid" src="../user/img/home/home1-flas.jpg"
-                                                    alt="English" width="16" height="11">
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="#">
-                                                <img class="img-fluid" src="../user/img/home/home1-flas2.jpg"
-                                                    alt="Italiano" width="16" height="11">
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="#">
-                                                <img class="img-fluid" src="../user/img/home/home1-flas3.jpg"
-                                                    alt="Français" width="16" height="11">
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="#">
-                                                <img class="img-fluid" src="../user/img/home/home1-flas4.jpg"
-                                                    alt="Español" width="16" height="11">
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div> --}}
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     {{!-- <div class="desktop_cart">
                         <div class="blockcart block-cart cart-preview tiva-toggle">
                             <div class="header-cart tiva-toggle-btn">
