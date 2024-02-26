@@ -82,6 +82,7 @@
                             <th scope="col">Price</th>
                             <th scope="col">Date</th>
                             <th scope="col">Details</th>
+                            <th scope="col">Download Invoice</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,9 +91,14 @@
                             <th scope="row"><img src="{{this.img}}" alt="Product Image" style="height: 80px;"></th>
                             <td>{{this.product}}</td>
                             <td>{{this.quentity}}</td>
+                            {{#if amountPaid}}
+                            <td>{{this.amountPaid}}</td>
+                            {{else}}
                             <td>{{this.price}}</td>
+                            {{/if}}
                             <td>{{formatDate this.orderDate}}</td>
-                            <td><a href="/historyOrder?orderId={{this.orderId}}&product={{this.product}}" class="btn btn-primary">Details</a></td>
+                            <td><a href="/historyOrder?orderId={{this.orderId}}&product={{this.product}}" class="btn btn-dark">Details</a></td>
+                            <td><a href="/invoice?orderId={{this.orderId}}&product={{this.product}}"" class="btn btn-success">Download</a></td>
                         </tr>
                         {{/each}}
                         <!-- Add more rows as needed -->

@@ -168,30 +168,6 @@ const changePass = async (req, res) => {
     }
 }
 
-// const change = async (req, res) => {
-//     try {
-//         console.log('change enterd')
-//         const userin = req.session.userName
-//         console.log(userin)
-//         const userData = await userDetails.find({ username: userin })
-//         const cartCount = await cart.find({ username: req.session.userName }).countDocuments()
-//         const wishCount = await wish.find({ username: userin }).countDocuments()
-//         console.log(userData)
-//         let userotp = req.body.otp
-//         console.log('befor otp')
-//         console.log(typeof (otp))
-//         console.log(typeof (userotp))
-//         console.log('after otp')
-//         if (otp == userotp) {
-//             res.render('newpassword', { userin, cartCount, wishCount })
-//         } else {
-//             res.redirect('/changePassword?val=incorrect otp')
-//         }
-//     } catch (e) {
-//         console.log('error in the change in userController in user side : ' + e)
-//         res.redirect("/error")
-//     }
-// }
 
 const change = async (req,res)=>{
     try{

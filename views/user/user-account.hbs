@@ -167,7 +167,7 @@
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <form action="/newAddress?username:{{userin}}"
-                                                                        method="post">
+                                                                        method="post" id="modelForm">
                                                                         <div class="modal-header">
                                                                             <h1 class="modal-title fs-5"
                                                                                 id="exampleModalLabel">New Address</h1>
@@ -251,7 +251,7 @@
                                                                                 changes</button>
                                                                         </div>
                                                                     </form>
-                                                                    <span id="">Fill all the fileds</span>
+                                                                    {{!-- <span id="">Fill all the fileds</span> --}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -283,7 +283,7 @@
                                                         class="card-link">Edit</a>
                                                     <a>|</a>
                                                     <a href="/removeAddress?userid={{this._id}}"
-                                                        class="card-link">Remove</a>
+                                                        class="card-link" onclick="return confirm('Do you want to delete the address')">Remove</a>
 
                                                 </div>
                                             </div>
@@ -310,129 +310,129 @@
 
         <!-- menu mobie left -->
         <div class="mobile-top-menu d-md-none">
-        <button type="button" class="close" aria-label="Close">
-            <i class="zmdi zmdi-close"></i>
-        </button>
-        <div class="tiva-verticalmenu block" data-count_showmore="17">
-            <div class="box-content block-content">
-                <div class="verticalmenu" role="navigation">
-                    <ul class="menu level1">
-                        <li class="hasicon">
-                            <i class="fa fa-home" aria-hidden="true"></i>
-                            <a href="/" title="Home" style="margin-left: 10%;">
-                                Home</a>
-                        </li>
-                        <li class="item  parent">
-                            <a href="#" class="hasicon" title="SIDE TABLE">
-                                <img src="../user/img/home/table-lamp.png" alt="img">Category</a>
-                            <span class="arrow collapsed" data-toggle="collapse" data-target="#SIDE-TABLE"
-                                aria-expanded="false" role="status">
-                                <i class="zmdi zmdi-minus"></i>
-                                <i class="zmdi zmdi-plus"></i>
-                            </span>
-                            <div class="subCategory collapse" id="SIDE-TABLE" aria-expanded="true" role="status">
-                                <div class="menu-items">
-                                    <ul>
-                                        <li>
-                                            <a href="/allproducts">All Products </a>
-                                        </li>
-                                        {{#each cat}}
-                                        <li>
-                                            <a href="/catproducts/{{this.name}}">{{this.name}}</a>
-
-                                        </li>
-                                        {{/each}}
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- menu mobie right -->
-    <div id="mobile-pagemenu" class="mobile-boxpage d-flex hidden-md-up active d-md-none">
-        <div class="content-boxpage col">
-            <div class="box-header d-flex justify-content-between align-items-center">
-                <div class="title-box">Menu</div>
-                <div class="close-box">Close</div>
-            </div>
-            <div class="box-content">
-                <nav>
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div id="megamenu" class="clearfix">
+            <button type="button" class="close" aria-label="Close">
+                <i class="zmdi zmdi-close"></i>
+            </button>
+            <div class="tiva-verticalmenu block" data-count_showmore="17">
+                <div class="box-content block-content">
+                    <div class="verticalmenu" role="navigation">
                         <ul class="menu level1">
-                            <li class="item home-page has-sub">
-                                <a href="/" title="Home">
-                                    <i class="fa fa-home" aria-hidden="true"></i>Home</a>
+                            <li class="hasicon">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <a href="/" title="Home" style="margin-left: 10%;">
+                                    Home</a>
                             </li>
-                            <li class="item has-sub">
-                                <span class="arrow collapsed" data-toggle="collapse" data-target="#blog"
+                            <li class="item  parent">
+                                <a href="#" class="hasicon" title="SIDE TABLE">
+                                    <img src="../user/img/home/table-lamp.png" alt="img">Category</a>
+                                <span class="arrow collapsed" data-toggle="collapse" data-target="#SIDE-TABLE"
                                     aria-expanded="false" role="status">
                                     <i class="zmdi zmdi-minus"></i>
                                     <i class="zmdi zmdi-plus"></i>
                                 </span>
-                                <a href="#" title="Blog">
-                                    <i class="fa fa-address-book" aria-hidden="true"></i>Account</a>
+                                <div class="subCategory collapse" id="SIDE-TABLE" aria-expanded="true" role="status">
+                                    <div class="menu-items">
+                                        <ul>
+                                            <li>
+                                                <a href="/allproducts">All Products </a>
+                                            </li>
+                                            {{#each cat}}
+                                            <li>
+                                                <a href="/catproducts/{{this.name}}">{{this.name}}</a>
 
-                                <div class="subCategory collapse" id="blog" aria-expanded="true" role="status">
-                                    <ul>
-                                        {{#if userin}}
-                                        <li class="item">
-                                            <a href="/useraccount/{{userin}}" title="Blog List (Sidebar Left)">
-                                                {{userin}}
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="/cart" title="Blog List (Sidebar Left) 2">Cart
-                                                <span
-                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                                                    {{#if cartCount}}
-                                                    {{cartCount}}
-                                                    {{else}}
-                                                    0
-                                                    {{/if}}
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="/wishlist" title="Category Blog (Right column)">Wishlists
-                                                <span
-                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
-                                                    {{#if wishCount}}
-                                                    {{wishCount}}
-                                                    {{else}}
-                                                    0
-                                                    {{/if}}
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="/orderhistory" title="Blog List (No Sidebar)">Order History</a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="/signout" title="Blog Grid (No Sidebar)">Log out</a>
-                                        </li>
-                                        {{else}}
-                                        <li class="item">
-                                            <a href="/login" title="Blog Detail">Log In</a>
-                                        </li>
-                                        <li class="item">
-                                            <a href="/user-register" title="Blog Detail">Register Account</a>
-                                        </li>
-                                        {{/if}}
-                                    </ul>
+                                            </li>
+                                            {{/each}}
+                                        </ul>
+                                    </div>
                                 </div>
                             </li>
-
                         </ul>
                     </div>
-                </nav>
+                </div>
             </div>
         </div>
-    </div>
+
+        <!-- menu mobie right -->
+        <div id="mobile-pagemenu" class="mobile-boxpage d-flex hidden-md-up active d-md-none">
+            <div class="content-boxpage col">
+                <div class="box-header d-flex justify-content-between align-items-center">
+                    <div class="title-box">Menu</div>
+                    <div class="close-box">Close</div>
+                </div>
+                <div class="box-content">
+                    <nav>
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div id="megamenu" class="clearfix">
+                            <ul class="menu level1">
+                                <li class="item home-page has-sub">
+                                    <a href="/" title="Home">
+                                        <i class="fa fa-home" aria-hidden="true"></i>Home</a>
+                                </li>
+                                <li class="item has-sub">
+                                    <span class="arrow collapsed" data-toggle="collapse" data-target="#blog"
+                                        aria-expanded="false" role="status">
+                                        <i class="zmdi zmdi-minus"></i>
+                                        <i class="zmdi zmdi-plus"></i>
+                                    </span>
+                                    <a href="#" title="Blog">
+                                        <i class="fa fa-address-book" aria-hidden="true"></i>Account</a>
+
+                                    <div class="subCategory collapse" id="blog" aria-expanded="true" role="status">
+                                        <ul>
+                                            {{#if userin}}
+                                            <li class="item">
+                                                <a href="/useraccount/{{userin}}" title="Blog List (Sidebar Left)">
+                                                    {{userin}}
+                                                </a>
+                                            </li>
+                                            <li class="item">
+                                                <a href="/cart" title="Blog List (Sidebar Left) 2">Cart
+                                                    <span
+                                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                                        {{#if cartCount}}
+                                                        {{cartCount}}
+                                                        {{else}}
+                                                        0
+                                                        {{/if}}
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="item">
+                                                <a href="/wishlist" title="Category Blog (Right column)">Wishlists
+                                                    <span
+                                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                                        {{#if wishCount}}
+                                                        {{wishCount}}
+                                                        {{else}}
+                                                        0
+                                                        {{/if}}
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="item">
+                                                <a href="/orderhistory" title="Blog List (No Sidebar)">Order History</a>
+                                            </li>
+                                            <li class="item">
+                                                <a href="/signout" title="Blog Grid (No Sidebar)">Log out</a>
+                                            </li>
+                                            {{else}}
+                                            <li class="item">
+                                                <a href="/login" title="Blog Detail">Log In</a>
+                                            </li>
+                                            <li class="item">
+                                                <a href="/user-register" title="Blog Detail">Register Account</a>
+                                            </li>
+                                            {{/if}}
+                                        </ul>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
 
         <!-- Page Loader -->
         <div id="page-preloader">
@@ -445,6 +445,8 @@
             </div>
         </div>
 
+        
+
 
         <script>
             const nameError = document.getElementById('nameError')
@@ -455,8 +457,8 @@
             const countryError = document.getElementById('countryError')
             const pincodeError = document.getElementById('pincodeError')
 
-            function validateName(name){
-                console.log(name.value,'value of the validateName functions is here')
+            function validateName(name) {
+                console.log(name.value, 'value of the validateName functions is here')
                 const name = document.getElementById('userFullName').value
                 console.log(name)
                 if (name.length == 0) {

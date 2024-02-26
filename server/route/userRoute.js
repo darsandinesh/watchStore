@@ -157,6 +157,9 @@ router.get('/update-profile', user.checkUser, profile.updateProfile)
 
 router.post('/update-profile', user.checkUser, profile.updateProfileData)
 
+// download invoice of the product
+router.get('/invoice',user.checkUser,order.invoice)
+
 // error page loaded!!!!!
 router.get('/error', user.errorPage)
 

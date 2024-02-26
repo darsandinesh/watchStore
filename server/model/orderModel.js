@@ -78,7 +78,7 @@ const orderSchema = new mongoose.Schema({
     returnStatus:{
         type:Number
     },
-    amountSaved:{
+    amountPaid:{
         type:Number
     }
 })

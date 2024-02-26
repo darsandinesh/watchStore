@@ -30,8 +30,9 @@ const createOrder = async (req, res) => {
         console.log('2')
         console.log('3')
         console.log(req.body)
+        let amount =req.session.amountToPay
         const options = {
-            amount: req.body.amount * 100,
+            amount: amount * 100,
             currency: 'INR',
             receipt: 'razorUser@gmail.com'
         }
