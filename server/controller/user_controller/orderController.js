@@ -429,7 +429,7 @@ const invoice = async (req, res) => {
                             <p class="py-1">${formattedDate}</p>
                             <p class="py-1 pl-10">${orders[0].paymentMentod}</p>
                             <div class="pb-2 py-1">
-                                <p class="font-bold text-xl">₹${amount - discount}</p>
+                                <p class="font-bold text-xl">₹${orders[0].amountPaid}</p>
                             </div>
                         </div>
                     </div>
@@ -455,7 +455,7 @@ const invoice = async (req, res) => {
             
             <!--Total Amount-->
             <div class=" pt-20 pr-10 text-right">
-                <p class="text-gray-400">Total: <span class="pl-24 text-black">₹${amount - discount}</span></p>
+                <p class="text-gray-400">Total: <span class="pl-24 text-black">₹${orders[0].amountPaid}</span></p>
             </div>
     
             <!--Notes and Other info-->
@@ -484,7 +484,7 @@ const invoice = async (req, res) => {
             <div class=" table-cell w-6/12 text-left font-bold py-1 px-4">${order.product}</div>
             <div class=" table-cell w-[10%] text-center">${order.quentity}</div>
             <div class=" table-cell w-2/12 text-center">₹${order.price}</div>
-            <div class=" table-cell w-2/12 text-center">₹${discount}</div>
+            <div class=" table-cell w-2/12 text-center">₹${order.price - order.amountPaid}</div>
             <div class=" table-cell w-2/12 text-center">₹${order.price * order.quentity}</div>
         </div>
         `

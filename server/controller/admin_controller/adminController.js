@@ -24,7 +24,6 @@ const admin = (req, res) => {
         if (req.session.adminAuth) {
             res.redirect('/admin/dashbord')
         } else {
-            console.log('admin login page render')
             const user = req.query.invaliduser
             const pass = req.query.invalidpass
             res.render('admin_login', { user, pass })
@@ -39,7 +38,6 @@ const admin = (req, res) => {
 const checkAdmin = async (req, res) => {
     try {
         const adminFound = await userDetails.findOne({ username: req.body.loginUsername })
-        console.log(adminFound)
         if (adminFound.isAdmin == 1) {
             const passSuccess = await bcrypt.compare(req.body.loginPassword, adminFound.password)
             if (passSuccess) {
@@ -60,7 +58,6 @@ const checkAdmin = async (req, res) => {
 const user = async (req, res) => {
     try {
         const userData = await userDetails.find({ isAdmin: 0 }).sort({ '_id': -1 })
-        console.log(userData)
         res.render('admin_userDetails', { userData })
     } catch (e) {
         res.redirect('/admin/errorPage')
@@ -72,7 +69,6 @@ const user = async (req, res) => {
 const block = async (req, res) => {
     try {
         const name = req.params.username
-        // console.log(name)
         const userData = await userDetails.findOne({ username: name })
         let val = 1
         if (userData.status == 1)
@@ -90,7 +86,6 @@ const searchUser = async (req, res) => {
     try {
         const nameSearch = req.body.search
         const regex = new RegExp(`${nameSearch}`, 'i')
-        console.log(regex)
         const userData = await userDetails.find({ $and: [{ username: { $regex: regex } }, { isAdmin: 0 }] })
         res.render('admin_userDetails', { userData, nameSearch })
     } catch (e) {
@@ -104,7 +99,6 @@ const searchUser = async (req, res) => {
 const list = async (req, res) => {
     try {
         const name = req.params.id
-        console.log(name)
         const productData = await editCat.findOne({ name: name })
         let val = 1
         if (productData.list == 1)
@@ -131,25 +125,10 @@ const deleteproduct = async (req, res) => {
     }
 }
 
-// const editproduct = async (req, res) => {
-//     try {
-//         const editData = await productDetails.findOne({ name: req.params.id })
-//         // const {name, category, description, price, stock } = editData
-//         res.render('admin_edit_product', { editData })
-//     } catch (e) {
-//         console.log("Eoor in the editproduct admin controller : " + e)
-//     }
-// }
-
-
-
-
 
 const logout = async (req, res) => {
     try {
         await req.session.destroy()
-        // req.session.adminAuth = false
-
         res.redirect('/admin')
     }
     catch (e) {
@@ -180,9 +159,6 @@ const add_coupon = (req, res) => {
     }
 }
 
-const list_product = (req, res) => {
-
-}
 
 const offers = (req, res) => {
     try {
@@ -213,7 +189,6 @@ module.exports = {
     admin,
     coupon,
     add_coupon,
-    list_product,
     check,
     offers,
     errorPage,

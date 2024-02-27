@@ -70,8 +70,9 @@ const user_register = async (req, res) => {
                 pass = req.query.pass
                 const cat = await catDetails.find({ list: 0 })
                 res.render('user-register', { uname, username, email, phone, password, uemali, ephone, pass, cat })
+            } else {
+                res.render('user-register')
             }
-            res.render('user-register')
         }
     } catch (e) {
         console.log("error in the user-register of user side: " + e)
@@ -112,7 +113,7 @@ const otpVerification = async (req, res) => {
             const diff = otptime - time
             console.log(diff)
             console.log(req.session.details)
-            if (OTP == req.body.otp ||resendOTP == req.body.otp ) {
+            if (OTP == req.body.otp || resendOTP == req.body.otp) {
                 if (diff <= 300000) {
                     const { username, email, phone, password } = req.session.details
                     const hashedpass = await bcrypt.hash(password, 10)
