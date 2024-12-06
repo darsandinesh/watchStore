@@ -136,12 +136,17 @@ const edit_product = async (body, file, id) => {
                 })
 
             //res.redirect('/admin/products')
+            return true;
         } else {
+            
             console.log('data not retrived from edit_product route ')
+            return false
         }
     } catch (e) {
-        res.redirect('/admin/errorPage')
+        // res.redirect('/admin/errorPage')
+        
         console.log('error in the edit_product of productController in admin : ' + e)
+        return false
     }
 }
 

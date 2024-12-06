@@ -46,7 +46,6 @@ router.post('/add_products', imagemanage.imgUpload)
 // router.post('/edit_products/:id', adminCon.check,productmanage.edit_product)
 router.post('/edit_products/:id', adminCon.check, imagemanage.singleImage)
 
-
 //edit product details
 router.get('/edit_product/:id', adminCon.check, productmanage.editproduct)
 //'admin_edit'

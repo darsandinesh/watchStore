@@ -29,7 +29,7 @@ const imgUpload = (req, res) => {
 
     for (const file of files) {
       const resizedImageBuffer = await sharp(file.path)
-        .resize({ width: 300, height: 300 }) 
+        .resize({ width: 300, height: 300 })
         .toBuffer();
 
       const fileName = Date.now() + '-' + file.originalname;
@@ -66,11 +66,11 @@ const singleImage = (req, res) => {
 
         for (const file of files) {
           const resizedImageBuffer = await sharp(file.path)
-            .resize({ width: 300, height: 300 }) 
+            .resize({ width: 300, height: 300 })
             .toBuffer();
 
 
-          const fileName = Date.now() + '-' + file.originalname; 
+          const fileName = Date.now() + '-' + file.originalname;
           const filePath = path.join('./public/uploads/', fileName);
           console.log(filePath, 'filePath kitti--------------')
 
@@ -86,8 +86,10 @@ const singleImage = (req, res) => {
         }
 
         console.log(uploadedImages, 'uploadedImages-----------------uploadedImages');
-        product.edit_product(req.body, uploadedImages, req.params.id)
-        res.redirect('/admin/products')
+        const result = product.edit_product(req.body, uploadedImages, req.params.id)
+        console.log(result, '--------------res')
+        if (result) res.redirect('/admin/products');
+        else res.redirect('/admin/errorPage')
       }
     })
   } catch (e) {
